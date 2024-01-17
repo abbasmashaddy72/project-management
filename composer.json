@@ -10,20 +10,30 @@
     "require": {
         "php": "^8.1",
         "awcodes/filament-curator": "^3.4",
+        "awcodes/filament-quick-create": "^3.3",
+        "awcodes/filament-versions": "^2.0",
         "awcodes/light-switch": "^1.0",
         "awcodes/overlook": "^2.0",
         "bezhansalleh/filament-shield": "^3.1",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
+        "filipfonal/filament-log-manager": "^2.0",
         "guava/filament-icon-picker": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "jeffgreco13/filament-breezy": "^2.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "phpsa/filament-dadjokes": "^2.0",
         "protonemedia/laravel-verify-new-email": "^1.9",
+        "pxlrbt/filament-environment-indicator": "^2.0",
         "saade/filament-fullcalendar": "^3.0",
-        "stichoza/google-translate-php": "^5.1"
+        "shuvroroy/filament-spatie-laravel-health": "^2.0",
+        "spatie/ssl-certificate": "^2.6",
+        "spatie/url": "^2.3",
+        "stechstudio/filament-impersonate": "^3.5",
+        "stichoza/google-translate-php": "^5.1",
+        "ysfkaya/filament-phone-input": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -50,8 +60,7 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

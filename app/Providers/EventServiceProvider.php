@@ -35,4 +35,9 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
+
+    public function listens()
+    {
+        return config('moonguard.events.listen');
+    }
 }

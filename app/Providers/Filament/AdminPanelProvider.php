@@ -8,9 +8,11 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
+use App\Filament\Widgets\SiteStatsWidget;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Phpsa\FilamentDadJokes\Widgets\DadJokeWidget;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -25,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
+            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js', 'resources/js/filament/admin/sticky-header.js'])
             ->id('admin')
             ->path('admin')
             ->login()
@@ -41,6 +43,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                SiteStatsWidget::class,
+                DadJokeWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,11 +58,14 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                'web',
+                'auth',
                 Authenticate::class,
             ])->plugins([
                 \Awcodes\LightSwitch\LightSwitchPlugin::make(),
+                \Awcodes\FilamentQuickCreate\QuickCreatePlugin::make(),
+                \Awcodes\FilamentVersions\VersionsPlugin::make(),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                \ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin::make(),
                 \Awcodes\Curator\CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
@@ -67,7 +74,8 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationSort(3)
                     ->navigationCountBadge(),
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
-                    ->myProfile(),
+                    ->myProfile()
+                    ->enableTwoFactorAuthentication(),
                 \Awcodes\Overlook\OverlookPlugin::make()
                     ->sort(2)
                     ->columns([
@@ -78,6 +86,8 @@ class AdminPanelProvider extends PanelProvider
                         'xl' => 5,
                         '2xl' => null,
                     ]),
+                \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
+                \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
             ])->maxContentWidth(MaxWidth::Full)
             ->spa()
             ->widgets([
