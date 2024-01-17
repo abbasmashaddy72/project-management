@@ -16,7 +16,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Actions\Action;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use App\Repositories\SiteRepository;
 use App\Repositories\UptimeCheckRepository;
 use App\Repositories\SslCertificateCheckRepository;
@@ -32,6 +32,10 @@ class SiteResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
 
+    protected static ?string $navigationGroup = 'Site Vigilance';
+
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     /**
@@ -42,7 +46,7 @@ class SiteResource extends Resource
         return $form
             ->schema([
                 TextInput::make('url')
-                    ->unique(ignorable: fn (?MoonGuardSite $record): ?MoonGuardSite => $record)
+                    ->unique(ignorable: fn (?SiteVigilanceSite $record): ?SiteVigilanceSite => $record)
                     ->required(),
                 TextInput::make('name')
                     ->required(),

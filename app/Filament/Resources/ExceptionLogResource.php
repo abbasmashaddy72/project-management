@@ -24,6 +24,10 @@ class ExceptionLogResource extends Resource
 
     protected static ?string $navigationLabel = 'Exceptions';
 
+    protected static ?string $navigationGroup = 'Site Vigilance';
+
+    protected static ?int $navigationSort = 2;
+
     public static ?string $statusFilter;
 
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-circle';

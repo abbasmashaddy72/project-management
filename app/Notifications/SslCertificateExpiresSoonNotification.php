@@ -8,14 +8,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Messages\SlackAttachment;
-use App\Contracts\MoonGuardSslCertificateCheck;
+use App\Contracts\SiteVigilanceSslCertificateCheck;
 
 class SslCertificateExpiresSoonNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
-        public MoonGuardSslCertificateCheck $sslCertificateCheck,
+        public SiteVigilanceSslCertificateCheck $sslCertificateCheck,
         public String $channel
     ) {
     }

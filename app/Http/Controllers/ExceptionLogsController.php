@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Models\Site;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use App\Repositories\SiteRepository;
-use App\Contracts\MoonGuardExceptionLogGroup;
+use App\Contracts\SiteVigilanceExceptionLogGroup;
 use App\Events\ExceptionLogGroupCreatedEvent;
 use App\Events\ExceptionLogGroupUpdatedEvent;
 use App\Http\Requests\StoreExceptionLogRequest;
@@ -23,7 +23,7 @@ class ExceptionLogsController extends Controller
 
         abort_if(!$site, 403);
 
-        /** @var MoonGuardExceptionLogGroup|null $group */
+        /** @var SiteVigilanceExceptionLogGroup|null $group */
         $group = ExceptionLogGroupRepository::query()
             ->where('file', $request->input('file'))
             ->where('type', $request->input('type'))
@@ -41,7 +41,7 @@ class ExceptionLogsController extends Controller
         ]);
     }
 
-    protected function createExceptionLogGroup(StoreExceptionLogRequest $request, MoonGuardSite $site)
+    protected function createExceptionLogGroup(StoreExceptionLogRequest $request, SiteVigilanceSite $site)
     {
         $group = ExceptionLogGroupRepository::create([
             'message' => $request->input('message'),
@@ -60,9 +60,9 @@ class ExceptionLogsController extends Controller
         return $group;
     }
 
-    protected function updateExceptionLogGroup(StoreExceptionLogRequest $request, MoonGuardExceptionLogGroup $group)
+    protected function updateExceptionLogGroup(StoreExceptionLogRequest $request, SiteVigilanceExceptionLogGroup $group)
     {
-        $timeInMinutesBetweenUpdates = config('moonguard.exceptions.notify_time_between_group_updates_in_minutes');
+        $timeInMinutesBetweenUpdates = config('sitevigilance.exceptions.notify_time_between_group_updates_in_minutes');
         $timeDiffInMinutesFromLastException = now()->diffInMinutes($group->last_seen);
 
         $group->update([
@@ -77,7 +77,7 @@ class ExceptionLogsController extends Controller
         }
     }
 
-    protected function createExceptionLog(StoreExceptionLogRequest $request, MoonGuardExceptionLogGroup $group)
+    protected function createExceptionLog(StoreExceptionLogRequest $request, SiteVigilanceExceptionLogGroup $group)
     {
         $group->exceptionLogs()->create(
             $request->safe()->except('api_token'),

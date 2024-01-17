@@ -2,6 +2,6 @@
 
 namespace App\Contracts;
 
-interface MoonGuardUser
+interface SiteVigilanceUser
 {
 }

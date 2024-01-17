@@ -15,7 +15,7 @@ class CheckSslCertificateCommand extends Command
     public function handle()
     {
         if (!SslCertificateCheckRepository::isEnabled()) {
-            $this->info('[SSL] This check is disabled. If you want to enable it, check the moonguard config file.');
+            $this->info('[SSL] This check is disabled. If you want to enable it, check the sitevigilance config file.');
 
             return;
         }

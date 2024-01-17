@@ -7,16 +7,16 @@ use App\Console\Commands\CheckUptimeCommand;
 use App\Console\Commands\DeleteOldExceptionCommand;
 use App\Console\Commands\CheckSslCertificateCommand;
 
-class MoonGuardCommandsScheduler
+class SiteVigilanceCommandsScheduler
 {
-    public static function scheduleMoonGuardCommands(Schedule $schedule, string $uptimeCheckCron, string $sslCertificateCheckCron, ?string $deleteOldExceptionCron = null)
+    public static function scheduleSiteVigilanceCommands(Schedule $schedule, string $uptimeCheckCron, string $sslCertificateCheckCron, ?string $deleteOldExceptionCron = null)
     {
         /** @var bool $uptimeCheckIsEnabled */
-        $uptimeCheckIsEnabled = config('moonguard.uptime_check.enabled');
+        $uptimeCheckIsEnabled = config('sitevigilance.uptime_check.enabled');
         /** @var bool $sslCheckIsEnabled */
-        $sslCheckIsEnabled = config('moonguard.ssl_certificate_check.enabled');
+        $sslCheckIsEnabled = config('sitevigilance.ssl_certificate_check.enabled');
         /** @var bool $deleteOldExceptionIsEnabled */
-        $deleteOldExceptionIsEnabled = config('moonguard.exception_deletion.enabled');
+        $deleteOldExceptionIsEnabled = config('sitevigilance.exception_deletion.enabled');
 
         if ($uptimeCheckIsEnabled) {
             $schedule->command(CheckUptimeCommand::class)

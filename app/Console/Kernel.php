@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command(CheckUptimeCommand::class)->everyMinute();
         // $schedule->command(CheckSslCertificateCommand::class)->everyTwoHours();
         // $schedule->command(DeleteOldExceptionCommand::class)->daily();
-        MoonGuardCommandsScheduler::scheduleMoonGuardCommands(
+        SiteVigilanceCommandsScheduler::scheduleSiteVigilanceCommands(
             $schedule,
             '* * * * *', // <-- Uptime Check Cron
             '* * * * *', //<-- SSL Certificate Cron

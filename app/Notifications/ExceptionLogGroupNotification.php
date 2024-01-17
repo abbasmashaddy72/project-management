@@ -8,14 +8,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Messages\SlackAttachment;
-use App\Contracts\MoonGuardExceptionLogGroup;
+use App\Contracts\SiteVigilanceExceptionLogGroup;
 
 class ExceptionLogGroupNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
-        public MoonGuardExceptionLogGroup $exceptionLogGroup,
+        public SiteVigilanceExceptionLogGroup $exceptionLogGroup,
         public String $channel
     ) {
     }

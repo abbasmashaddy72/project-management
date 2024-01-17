@@ -38,6 +38,6 @@ class EventServiceProvider extends ServiceProvider
 
     public function listens()
     {
-        return config('moonguard.events.listen');
+        return config('sitevigilance.events.listen');
     }
 }

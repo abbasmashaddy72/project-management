@@ -6,9 +6,9 @@ use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Client\Response;
 use App\ValueObjects\Period;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use App\Events\UptimeCheckFailedEvent;
-use App\Contracts\MoonGuardUptimeCheck;
+use App\Contracts\SiteVigilanceUptimeCheck;
 use App\Events\UptimeCheckRecoveredEvent;
 use App\Exceptions\InvalidPeriodException;
 use App\Repositories\UptimeCheckRepository;
@@ -16,12 +16,12 @@ use App\Events\RequestTookLongerThanMaxDurationEvent;
 
 class UptimeCheckService
 {
-    protected MoonGuardUptimeCheck $uptimeCheck;
+    protected SiteVigilanceUptimeCheck $uptimeCheck;
 
     /**
      * @throws InvalidPeriodException
      */
-    public function check(MoonGuardSite $site, Response|Exception $response): void
+    public function check(SiteVigilanceSite $site, Response|Exception $response): void
     {
         if (!$site->uptimeCheck) {
             $this->uptimeCheck = UptimeCheckRepository::resolveModel();
@@ -137,7 +137,7 @@ class UptimeCheckService
 
     protected function shouldNotifyAboutUptimeFailing(): bool
     {
-        if ($this->uptimeCheck->check_times_failed_in_a_row === config('moonguard.uptime_check.notify_failed_check_after_consecutive_failures')) {
+        if ($this->uptimeCheck->check_times_failed_in_a_row === config('sitevigilance.uptime_check.notify_failed_check_after_consecutive_failures')) {
             return true;
         }
 
@@ -145,7 +145,7 @@ class UptimeCheckService
             return false;
         }
 
-        if ($this->uptimeCheck->check_failed_event_fired_on_date->diffInMinutes() >= config('moonguard.uptime_check.resend_uptime_check_failed_notification_every_minutes')) {
+        if ($this->uptimeCheck->check_failed_event_fired_on_date->diffInMinutes() >= config('sitevigilance.uptime_check.resend_uptime_check_failed_notification_every_minutes')) {
             return true;
         }
 

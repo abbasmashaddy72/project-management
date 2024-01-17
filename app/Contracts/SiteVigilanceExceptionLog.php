@@ -15,10 +15,10 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
  * @property array $trace
  * @property array $request
  * @property Carbon $thrown_at
- * @property MoonGuardSite $site
- * @property MoonGuardExceptionLogGroup $exceptionLogGroup
+ * @property SiteVigilanceSite $site
+ * @property SiteVigilanceExceptionLogGroup $exceptionLogGroup
  */
-interface MoonGuardExceptionLog
+interface SiteVigilanceExceptionLog
 {
     public function site(): HasOneThrough;
 

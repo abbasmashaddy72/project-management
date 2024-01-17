@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property string $api_token
  * @property RequestDuration $max_request_duration_ms
  * @property Url $url
- * @property MoonGuardUptimeCheck $uptimeCheck
- * @property MoonGuardSslCertificateCheck $sslCertificateCheck
- * @property MoonGuardExceptionLog $exceptionLogs
+ * @property SiteVigilanceUptimeCheck $uptimeCheck
+ * @property SiteVigilanceSslCertificateCheck $sslCertificateCheck
+ * @property SiteVigilanceExceptionLog $exceptionLogs
  */
-interface MoonGuardSite
+interface SiteVigilanceSite
 {
     public function scopeWhereUptimeCheckEnabled(Builder $query): Builder;
 

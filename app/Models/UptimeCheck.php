@@ -13,11 +13,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\ValueObjects\RequestDuration;
-use App\Contracts\MoonGuardUptimeCheck;
+use App\Contracts\SiteVigilanceUptimeCheck;
 use App\Repositories\UptimeCheckRepository;
 use App\Database\Factories\UptimeCheckFactory;
 
-class UptimeCheck extends Model implements MoonGuardUptimeCheck
+class UptimeCheck extends Model implements SiteVigilanceUptimeCheck
 {
     use HasFactory;
 

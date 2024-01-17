@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMoonGuardTables extends Migration
+class CreateSiteVigilanceTables extends Migration
 {
     public function up()
     {

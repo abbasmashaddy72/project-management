@@ -9,14 +9,14 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Messages\SlackAttachment;
 use App\ValueObjects\RequestDuration;
-use App\Contracts\MoonGuardUptimeCheck;
+use App\Contracts\SiteVigilanceUptimeCheck;
 
 class RequestTookLongerThanMaxDurationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
-        public MoonGuardUptimeCheck $uptimeCheck,
+        public SiteVigilanceUptimeCheck $uptimeCheck,
         public RequestDuration $maxRequestDuration,
         public String $channel
     ) {

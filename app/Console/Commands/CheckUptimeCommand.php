@@ -15,7 +15,7 @@ class CheckUptimeCommand extends Command
     public function handle()
     {
         if (!UptimeCheckRepository::isEnabled()) {
-            $this->info('[Uptime] This check is disabled. If you want to enable it, check the moonguard config file.');
+            $this->info('[Uptime] This check is disabled. If you want to enable it, check the sitevigilance config file.');
 
             return;
         }

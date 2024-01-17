@@ -14,7 +14,7 @@ class DeleteOldExceptionCommand extends Command
     public function handle()
     {
         if (!$this->isEnabled()) {
-            $this->info('Exception deletion is disabled. If you want to enable it, check the moonguard config file.');
+            $this->info('Exception deletion is disabled. If you want to enable it, check the sitevigilance config file.');
 
             return;
         }
@@ -30,12 +30,12 @@ class DeleteOldExceptionCommand extends Command
 
     public function isEnabled(): bool
     {
-        return config('moonguard.exception_deletion.enabled');
+        return config('sitevigilance.exception_deletion.enabled');
     }
 
     public static function getExceptionAge(): int
     {
-        return config('moonguard.exception_deletion.delete_exceptions_older_than_days');
+        return config('sitevigilance.exception_deletion.delete_exceptions_older_than_days');
     }
 
     public static function deleteOldExceptions(int $time): void

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Contracts\MoonGuardUser;
+use App\Contracts\SiteVigilanceUser;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use ProtoneMedia\LaravelVerifyNewEmail\MustVerifyNewEmail;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail, MoonGuardUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, SiteVigilanceUser
 {
     use HasApiTokens, HasFactory, Notifiable, MustVerifyNewEmail, HasRoles, HasPanelShield, TwoFactorAuthenticatable;
 

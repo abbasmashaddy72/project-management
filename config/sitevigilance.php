@@ -88,12 +88,12 @@ return [
     ],
     'routes' => [
         /*
-         * The prefix for the MoonGuard API routes.
+         * The prefix for the SiteVigilance API routes.
          */
-        'prefix' => 'moonguard/api',
+        'prefix' => 'sitevigilance/api',
 
         /*
-         * The middleware for the MoonGuard API routes.
+         * The middleware for the SiteVigilance API routes.
          */
         'middleware' => 'throttle:api',
     ],

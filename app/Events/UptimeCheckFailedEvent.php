@@ -5,14 +5,14 @@ namespace App\Events;
 use Illuminate\Queue\SerializesModels;
 use App\ValueObjects\Period;
 use Illuminate\Foundation\Events\Dispatchable;
-use App\Contracts\MoonGuardUptimeCheck;
+use App\Contracts\SiteVigilanceUptimeCheck;
 
 class UptimeCheckFailedEvent
 {
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public MoonGuardUptimeCheck $uptimeCheck, public Period $downtimePeriod)
+    public function __construct(public SiteVigilanceUptimeCheck $uptimeCheck, public Period $downtimePeriod)
     {
     }
 }

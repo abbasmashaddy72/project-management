@@ -12,7 +12,7 @@ class RequestTookLongerThanMaxDurationListener
 {
     public function handle(RequestTookLongerThanMaxDurationEvent $event): void
     {
-        $channels = config('moonguard.notifications.channels');
+        $channels = config('sitevigilance.notifications.channels');
 
         foreach ($channels as $channel) {
             $notifiables = ($channel === 'slack') ? new SlackNotifiable() : UserRepository::all();

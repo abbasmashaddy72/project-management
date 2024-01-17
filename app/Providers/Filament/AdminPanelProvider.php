@@ -33,6 +33,11 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->navigationGroups([
+                'Site Vigilance',
+                'User Management',
+                'System'
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -61,12 +66,10 @@ class AdminPanelProvider extends PanelProvider
                 \Awcodes\FilamentQuickCreate\QuickCreatePlugin::make(),
                 \Awcodes\FilamentVersions\VersionsPlugin::make(),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                \ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin::make(),
                 \Awcodes\Curator\CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
                     ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Content')
                     ->navigationSort(3)
                     ->navigationCountBadge(),
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()

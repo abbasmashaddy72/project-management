@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use App\Contracts\MoonGuardExceptionLog;
+use App\Contracts\SiteVigilanceExceptionLog;
 use App\Database\Factories\ExceptionLogFactory;
 use App\Repositories\ExceptionLogGroupRepository;
 
-class ExceptionLog extends Model implements MoonGuardExceptionLog
+class ExceptionLog extends Model implements SiteVigilanceExceptionLog
 {
     use HasFactory;
 

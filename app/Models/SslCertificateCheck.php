@@ -12,11 +12,11 @@ use App\Enums\SslCertificateStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Contracts\MoonGuardSslCertificateCheck;
+use App\Contracts\SiteVigilanceSslCertificateCheck;
 use App\Repositories\SslCertificateCheckRepository;
 use App\Database\Factories\SslCertificateCheckFactory;
 
-class SslCertificateCheck extends Model implements MoonGuardSslCertificateCheck
+class SslCertificateCheck extends Model implements SiteVigilanceSslCertificateCheck
 {
     use HasFactory;
 

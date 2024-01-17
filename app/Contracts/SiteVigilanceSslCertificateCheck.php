@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|int $site_id
  * @property Url $url
  * @property string $certificate_check_failure_reason;
- * @property MoonGuardSite $site
+ * @property SiteVigilanceSite $site
  * @property bool $is_enabled
  *
  */
-interface MoonGuardSslCertificateCheck
+interface SiteVigilanceSslCertificateCheck
 {
     public function site(): BelongsTo;
 

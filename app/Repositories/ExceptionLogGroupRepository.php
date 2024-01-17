@@ -2,30 +2,30 @@
 
 namespace App\Repositories;
 
-use App\Contracts\MoonGuardExceptionLogGroup;
+use App\Contracts\SiteVigilanceExceptionLogGroup;
 
 class ExceptionLogGroupRepository extends ModelRepository
 {
-    protected static string $contract = MoonGuardExceptionLogGroup::class;
+    protected static string $contract = SiteVigilanceExceptionLogGroup::class;
 
-    protected static string $modelClassConfigKey = 'moonguard.exceptions.exception_log_group.model';
+    protected static string $modelClassConfigKey = 'sitevigilance.exceptions.exception_log_group.model';
 
     public static function isEnabled(): bool
     {
-        return config('moonguard.exceptions.enabled');
+        return config('sitevigilance.exceptions.enabled');
     }
 
-    public static function findOrFail(string|int $id): MoonGuardExceptionLogGroup
+    public static function findOrFail(string|int $id): SiteVigilanceExceptionLogGroup
     {
         return static::resolveModelClass()::findOrFail($id);
     }
 
-    public static function create(array $attributes = []): MoonGuardExceptionLogGroup
+    public static function create(array $attributes = []): SiteVigilanceExceptionLogGroup
     {
         return static::resolveModelClass()::create($attributes);
     }
 
-    public static function resolveModel(): MoonGuardExceptionLogGroup
+    public static function resolveModel(): SiteVigilanceExceptionLogGroup
     {
         $modelClass = static::resolveModelClass();
 

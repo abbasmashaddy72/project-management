@@ -10,6 +10,6 @@ class SlackNotifiable
 
     public function routeNotificationForSlack(): string
     {
-        return config('moonguard.notifications.slack.webhook_url');
+        return config('sitevigilance.notifications.slack.webhook_url');
     }
 }

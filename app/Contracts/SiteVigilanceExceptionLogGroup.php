@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $line
  * @property Carbon $first_seen
  * @property Carbon $last_seen
- * @property MoonGuardSite $site
+ * @property SiteVigilanceSite $site
  */
-interface MoonGuardExceptionLogGroup
+interface SiteVigilanceExceptionLogGroup
 {
     public function exceptionLogs(): HasMany;
 

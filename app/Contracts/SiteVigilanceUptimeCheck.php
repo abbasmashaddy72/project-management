@@ -19,9 +19,9 @@ use App\ValueObjects\RequestDuration;
  * @property int $check_times_failed_in_a_row
  * @property bool $was_failing
  * @property bool $is_enabled
- * @property MoonGuardSite $site
+ * @property SiteVigilanceSite $site
  */
-interface MoonGuardUptimeCheck
+interface SiteVigilanceUptimeCheck
 {
     public function site(): BelongsTo;
 

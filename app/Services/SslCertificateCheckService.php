@@ -4,17 +4,17 @@ namespace App\Services;
 
 use Exception;
 use Spatie\SslCertificate\SslCertificate;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use App\Events\SslCertificateCheckFailedEvent;
 use App\Events\SslCertificateExpiresSoonEvent;
-use App\Contracts\MoonGuardSslCertificateCheck;
+use App\Contracts\SiteVigilanceSslCertificateCheck;
 use App\Repositories\SslCertificateCheckRepository;
 
 class SslCertificateCheckService
 {
-    protected MoonGuardSslCertificateCheck $sslCertificateCheck;
+    protected SiteVigilanceSslCertificateCheck $sslCertificateCheck;
 
-    public function check(MoonGuardSite $site): void
+    public function check(SiteVigilanceSite $site): void
     {
         if (!$site->sslCertificateCheck) {
             $this->sslCertificateCheck = SslCertificateCheckRepository::resolveModel();
@@ -35,7 +35,7 @@ class SslCertificateCheckService
 
     protected function notifyAfterSavingCertificate(SslCertificate $certificate): void
     {
-        $maxDaysToExpireFromConfig = config('moonguard.ssl_certificate_check.notify_expiring_soon_if_certificate_expires_within_days');
+        $maxDaysToExpireFromConfig = config('sitevigilance.ssl_certificate_check.notify_expiring_soon_if_certificate_expires_within_days');
 
         $isCertificateValidAndAboutToExpire = $this->sslCertificateCheck->certificateIsValid()
             && $this->sslCertificateCheck->certificateIsAboutToExpire($maxDaysToExpireFromConfig);

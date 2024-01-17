@@ -9,20 +9,20 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use App\Enums\ExceptionLogStatus;
 use App\Filament\Resources\SiteResource;
 use App\Repositories\ExceptionLogRepository;
-use App\Contracts\MoonGuardExceptionLogGroup;
+use App\Contracts\SiteVigilanceExceptionLogGroup;
 use App\Repositories\ExceptionLogGroupRepository;
 
 class SiteExceptionLogs extends Page
 {
     use WithPagination;
 
-    public MoonGuardSite $site;
+    public SiteVigilanceSite $site;
 
-    public MoonGuardExceptionLogGroup $exceptionLogGroup;
+    public SiteVigilanceExceptionLogGroup $exceptionLogGroup;
 
     public Collection $exceptionLogsCollection;
 

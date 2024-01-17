@@ -6,7 +6,7 @@ use Spatie\Url\Url;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,7 +20,7 @@ use App\Repositories\ExceptionLogRepository;
 use App\Repositories\ExceptionLogGroupRepository;
 use App\Repositories\SslCertificateCheckRepository;
 
-class Site extends Model implements MoonGuardSite
+class Site extends Model implements SiteVigilanceSite
 {
     use HasFactory;
 

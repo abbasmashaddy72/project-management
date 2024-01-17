@@ -2,20 +2,20 @@
 
 namespace App\Repositories;
 
-use App\Contracts\MoonGuardUptimeCheck;
+use App\Contracts\SiteVigilanceUptimeCheck;
 
 class UptimeCheckRepository extends ModelRepository
 {
-    protected static string $contract = MoonGuardUptimeCheck::class;
+    protected static string $contract = SiteVigilanceUptimeCheck::class;
 
-    protected static string $modelClassConfigKey = 'moonguard.uptime_check.model';
+    protected static string $modelClassConfigKey = 'sitevigilance.uptime_check.model';
 
     public static function isEnabled(): bool
     {
-        return config('moonguard.uptime_check.enabled');
+        return config('sitevigilance.uptime_check.enabled');
     }
 
-    public static function resolveModel(): MoonGuardUptimeCheck
+    public static function resolveModel(): SiteVigilanceUptimeCheck
     {
         $modelClass = static::resolveModelClass();
 

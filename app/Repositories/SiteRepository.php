@@ -2,20 +2,20 @@
 
 namespace App\Repositories;
 
-use App\Contracts\MoonGuardSite;
+use App\Contracts\SiteVigilanceSite;
 
 class SiteRepository extends ModelRepository
 {
-    protected static string $contract = MoonGuardSite::class;
+    protected static string $contract = SiteVigilanceSite::class;
 
-    protected static string $modelClassConfigKey = 'moonguard.site.model';
+    protected static string $modelClassConfigKey = 'sitevigilance.site.model';
 
-    public static function findOrFail(string|int $id): MoonGuardSite
+    public static function findOrFail(string|int $id): SiteVigilanceSite
     {
         return static::resolveModelClass()::findOrFail($id);
     }
 
-    public static function resolveModel(): MoonGuardSite
+    public static function resolveModel(): SiteVigilanceSite
     {
         $modelClass = static::resolveModelClass();
 
