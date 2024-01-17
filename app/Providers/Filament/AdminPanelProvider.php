@@ -12,7 +12,6 @@ use App\Filament\Widgets\SiteStatsWidget;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Phpsa\FilamentDadJokes\Widgets\DadJokeWidget;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -27,9 +26,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js', 'resources/js/filament/admin/sticky-header.js'])
+            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->id('admin')
-            ->path('admin')
+            ->path('/')
             ->login()
             ->colors([
                 'primary' => Color::Blue,
@@ -41,10 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
                 SiteStatsWidget::class,
-                DadJokeWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
