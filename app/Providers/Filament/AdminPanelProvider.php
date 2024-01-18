@@ -47,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 SiteStatsWidget::class,
             ])
+            ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

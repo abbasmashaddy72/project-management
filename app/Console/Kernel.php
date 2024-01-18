@@ -16,9 +16,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->command(CheckUptimeCommand::class)->everyMinute();
-        // $schedule->command(CheckSslCertificateCommand::class)->everyTwoHours();
-        // $schedule->command(DeleteOldExceptionCommand::class)->daily();
         SiteVigilanceCommandsScheduler::scheduleSiteVigilanceCommands(
             $schedule,
             '* * * * *', // <-- Uptime Check Cron

@@ -16,11 +16,21 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 ShieldSeeder::class,
                 UserSeeder::class,
+                TicketTypeSeeder::class,
+                TicketPrioritySeeder::class,
+                TicketStatusSeeder::class,
+                ActivitySeeder::class,
+                ProjectStatusSeeder::class,
             ]);
         } else {
             $this->call([
                 ShieldSeeder::class,
                 UserSeeder::class,
+                TicketTypeSeeder::class,
+                TicketPrioritySeeder::class,
+                TicketStatusSeeder::class,
+                ActivitySeeder::class,
+                ProjectStatusSeeder::class,
             ]);
         }
     }

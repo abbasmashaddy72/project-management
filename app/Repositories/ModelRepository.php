@@ -48,7 +48,7 @@ abstract class ModelRepository
     /**
      * @throws Throwable
      */
-    protected static function getContract(): string
+    public static function getContract(): string
     {
         throw_if(!static::$contract, new ModelContractNotSetException('Model contract not set on ' . static::class));
 
@@ -58,7 +58,7 @@ abstract class ModelRepository
     /**
      * @throws Throwable
      */
-    protected static function getModelClassConfigKey(): string
+    public static function getModelClassConfigKey(): string
     {
         throw_if(!static::$modelClassConfigKey, new ModelClassConfigKeyNotSetException('Model class config key not set on ' . static::class));
 
