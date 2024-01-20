@@ -36,18 +36,18 @@ class RequestTookLongerThanMaxDurationNotification extends Notification implemen
             ->line($this->uptimeCheck->site->name);
     }
 
-    public function toSlack(): SlackMessage
-    {
-        return (new SlackMessage)
-            ->warning()
-            ->attachment(
-                fn (SlackAttachment $attachment) => $attachment
-                    ->title($this->getMessageText())
-                    ->fallback($this->getMessageText())
-                    ->footer($this->uptimeCheck->site->name)
-                    ->timestamp(now())
-            );
-    }
+    // public function toSlack(): SlackMessage
+    // {
+    //     return (new SlackMessage)
+    //         ->warning()
+    //         ->attachment(
+    //             fn (SlackAttachment $attachment) => $attachment
+    //                 ->title($this->getMessageText())
+    //                 ->fallback($this->getMessageText())
+    //                 ->footer($this->uptimeCheck->site->name)
+    //                 ->timestamp(now())
+    //         );
+    // }
 
     protected function getMessageText(): string
     {

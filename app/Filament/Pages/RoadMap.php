@@ -2,12 +2,13 @@
 
 namespace App\Filament\Pages;
 
+use Carbon\Carbon;
 use App\Models\Epic;
 use App\Models\Project;
-use Carbon\Carbon;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Pages\Page;
 use Illuminate\Database\Eloquent\Builder;
 
 class RoadMap extends Page implements HasForms
@@ -21,6 +22,7 @@ class RoadMap extends Page implements HasForms
     public static ?int $navigationSort = 5;
 
     public $project;
+    public $selectedProject;
 
     public Epic|null $epic = null;
 
@@ -59,25 +61,21 @@ class RoadMap extends Page implements HasForms
         }
     }
 
-    public function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            Select::make('selectedProject')
-                ->placeholder(__('Project'))
-                ->disableLabel()
-                ->searchable()
-                ->extraAttributes([
-                    'class' => 'min-w-[16rem]'
-                ])
-                ->disablePlaceholderSelection()
-                ->required()
-                ->options(function () {
-                    return $this->projectQuery()
-                        ->get()
-                        ->pluck('name', 'id')
-                        ->toArray();
-                })
-        ];
+        return $form
+            ->schema([
+                Select::make('selectedProject')
+                    ->placeholder(__('Project'))
+                    ->searchable()
+                    ->required()
+                    ->options(function () {
+                        return $this->projectQuery()
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+            ]);
     }
 
     public function filter(): void

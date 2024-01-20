@@ -6,7 +6,7 @@ use App\Helpers\KanbanScrumHelper;
 use App\Models\Project;
 use Filament\Facades\Filament;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Pages\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -31,7 +31,7 @@ class Kanban extends Page implements HasForms
     {
         $this->project = $project;
         if ($this->project->type === 'scrum') {
-            $this->redirect(route('filament.pages.scrum/{project}', ['project' => $project]));
+            $this->redirect(route('filament.admin.pages.scrum/{project}', ['project' => $project]));
         } elseif (
             $this->project->owner_id != auth()->user()->id
             &&

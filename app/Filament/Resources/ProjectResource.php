@@ -45,91 +45,74 @@ class ProjectResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Grid::make()
-                            ->columns(3)
-                            ->schema([
-                                Forms\Components\Grid::make()
-                                    ->columnSpan(2)
-                                    ->schema([
-                                        Forms\Components\Grid::make()
-                                            ->columnSpan(2)
-                                            ->columns(12)
-                                            ->schema([
-                                                Forms\Components\TextInput::make('name')
-                                                    ->label(__('Project name'))
-                                                    ->required()
-                                                    ->columnSpan(10)
-                                                    ->maxLength(255),
+        return $form->schema([
+            Forms\Components\Grid::make()->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label(__('Project name'))
+                    ->required()
+                    ->maxLength(255),
 
-                                                Forms\Components\TextInput::make('ticket_prefix')
-                                                    ->label(__('Ticket prefix'))
-                                                    ->maxLength(3)
-                                                    ->columnSpan(2)
-                                                    ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
-                                                    ->disabled(
-                                                        fn ($record) => $record && $record->tickets()->count() != 0
-                                                    )
-                                                    ->required()
-                                            ]),
+                Forms\Components\TextInput::make('ticket_prefix')
+                    ->label(__('Ticket prefix'))
+                    ->maxLength(3)
+                    ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
+                    ->disabled(
+                        fn ($record) => $record && $record->tickets()->count() != 0
+                    )
+                    ->required(),
 
-                                        Forms\Components\Select::make('owner_id')
-                                            ->label(__('Project owner'))
-                                            ->searchable()
-                                            ->options(fn () => User::all()->pluck('name', 'id')->toArray())
-                                            ->default(fn () => auth()->user()->id)
-                                            ->required(),
+                Forms\Components\Select::make('owner_id')
+                    ->label(__('Project owner'))
+                    ->searchable()
+                    ->options(fn () => User::all()->pluck('name', 'id')->toArray())
+                    ->default(fn () => auth()->user()->id)
+                    ->required(),
 
-                                        Forms\Components\Select::make('status_id')
-                                            ->label(__('Project status'))
-                                            ->searchable()
-                                            ->options(fn () => ProjectStatus::all()->pluck('name', 'id')->toArray())
-                                            ->default(fn () => ProjectStatus::where('is_default', true)->first()?->id)
-                                            ->required(),
-                                    ]),
+                Forms\Components\Select::make('status_id')
+                    ->label(__('Project status'))
+                    ->searchable()
+                    ->options(fn () => ProjectStatus::all()->pluck('name', 'id')->toArray())
+                    ->default(fn () => ProjectStatus::where('is_default', true)->first()?->id)
+                    ->required(),
+            ])->columns(2),
 
-                                Forms\Components\RichEditor::make('description')
-                                    ->label(__('Project description'))
-                                    ->columnSpan(3),
+            Forms\Components\RichEditor::make('description')
+                ->label(__('Project description'))
+                ->columnSpanFull(),
 
-                                Forms\Components\Select::make('type')
-                                    ->label(__('Project type'))
-                                    ->searchable()
-                                    ->options([
-                                        'kanban' => __('Kanban'),
-                                        'scrum' => __('Scrum')
-                                    ])
-                                    ->reactive()
-                                    ->default(fn () => 'kanban')
-                                    ->helperText(function ($state) {
-                                        if ($state === 'kanban') {
-                                            return __('Display and move your project forward with issues on a powerful board.');
-                                        } elseif ($state === 'scrum') {
-                                            return __('Achieve your project goals with a board, backlog, and roadmap.');
-                                        }
-                                        return '';
-                                    })
-                                    ->required(),
+            Forms\Components\Select::make('type')
+                ->label(__('Project type'))
+                ->searchable()
+                ->options([
+                    'kanban' => __('Kanban'),
+                    'scrum' => __('Scrum')
+                ])
+                ->reactive()
+                ->default(fn () => 'kanban')
+                ->helperText(function ($state) {
+                    if ($state === 'kanban') {
+                        return __('Display and move your project forward with issues on a powerful board.');
+                    } elseif ($state === 'scrum') {
+                        return __('Achieve your project goals with a board, backlog, and roadmap.');
+                    }
+                    return '';
+                })
+                ->required(),
 
-                                Forms\Components\Select::make('status_type')
-                                    ->label(__('Statuses configuration'))
-                                    ->helperText(
-                                        __('If custom type selected, you need to configure project specific statuses')
-                                    )
-                                    ->searchable()
-                                    ->options([
-                                        'default' => __('Default'),
-                                        'custom' => __('Custom configuration')
-                                    ])
-                                    ->default(fn () => 'default')
-                                    ->disabled(fn ($record) => $record && $record->tickets()->count())
-                                    ->required(),
-                            ]),
-                    ]),
-            ]);
+            Forms\Components\Select::make('status_type')
+                ->label(__('Statuses configuration'))
+                ->helperText(
+                    __('If custom type selected, you need to configure project specific statuses')
+                )
+                ->searchable()
+                ->options([
+                    'default' => __('Default'),
+                    'custom' => __('Custom configuration')
+                ])
+                ->default(fn () => 'default')
+                ->disabled(fn ($record) => $record && $record->tickets()->count())
+                ->required(),
+        ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -230,9 +213,9 @@ class ProjectResource extends Resource
                         ->color('secondary')
                         ->url(function ($record) {
                             if ($record->type === 'scrum') {
-                                return route('filament.pages.scrum/{project}', ['project' => $record->id]);
+                                return route('filament.admin.pages.scrum.{project}', ['project' => $record->id]);
                             } else {
-                                return route('filament.pages.kanban/{project}', ['project' => $record->id]);
+                                return route('filament.admin.pages.kanban.{project}', ['project' => $record->id]);
                             }
                         }),
                 ])->color('secondary'),

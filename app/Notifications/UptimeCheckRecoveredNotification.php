@@ -36,18 +36,18 @@ class UptimeCheckRecoveredNotification extends Notification implements ShouldQue
             ->line($this->uptime->site->name);
     }
 
-    public function toSlack(): SlackMessage
-    {
-        return (new SlackMessage)
-            ->success()
-            ->attachment(
-                fn (SlackAttachment $attachment) => $attachment
-                    ->title($this->getMessageText())
-                    ->fallback($this->getMessageText())
-                    ->footer($this->uptime->site->name)
-                    ->timestamp(now())
-            );
-    }
+    // public function toSlack(): SlackMessage
+    // {
+    //     return (new SlackMessage)
+    //         ->success()
+    //         ->attachment(
+    //             fn (SlackAttachment $attachment) => $attachment
+    //                 ->title($this->getMessageText())
+    //                 ->fallback($this->getMessageText())
+    //                 ->footer($this->uptime->site->name)
+    //                 ->timestamp(now())
+    //         );
+    // }
 
     protected function getMessageText(): string
     {

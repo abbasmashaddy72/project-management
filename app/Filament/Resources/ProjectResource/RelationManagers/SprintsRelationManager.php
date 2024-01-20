@@ -151,9 +151,9 @@ class SprintsRelationManager extends RelationManager
                                     )
                                     ->url(function () use ($record) {
                                         if ($record->project->type === 'scrum') {
-                                            return route('filament.pages.scrum/{project}', ['project' => $record->project->id]);
+                                            return route('filament.admin.pages.scrum/{project}', ['project' => $record->project->id]);
                                         } else {
-                                            return route('filament.pages.kanban/{project}', ['project' => $record->project->id]);
+                                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id]);
                                         }
                                     }),
                             ])

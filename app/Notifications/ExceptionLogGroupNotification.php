@@ -38,21 +38,21 @@ class ExceptionLogGroupNotification extends Notification implements ShouldQueue
             ->action('Review', $this->getActionUrl());
     }
 
-    public function toSlack(): SlackMessage
-    {
-        $url = $this->getActionUrl();
-        $footer = "{$this->exceptionLogGroup->site->name} | {$this->exceptionLogGroup->site->url}";
+    // public function toSlack(): SlackMessage
+    // {
+    //     $url = $this->getActionUrl();
+    //     $footer = "{$this->exceptionLogGroup->site->name} | {$this->exceptionLogGroup->site->url}";
 
-        return (new SlackMessage)
-            ->error()
-            ->attachment(
-                fn (SlackAttachment $attachment) => $attachment
-                    ->title($this->exceptionLogGroup->type, $url)
-                    ->content($this->exceptionLogGroup->message)
-                    ->footer($footer)
-                    ->timestamp($this->exceptionLogGroup->last_seen)
-            );
-    }
+    //     return (new SlackMessage)
+    //         ->error()
+    //         ->attachment(
+    //             fn (SlackAttachment $attachment) => $attachment
+    //                 ->title($this->exceptionLogGroup->type, $url)
+    //                 ->content($this->exceptionLogGroup->message)
+    //                 ->footer($footer)
+    //                 ->timestamp($this->exceptionLogGroup->last_seen)
+    //         );
+    // }
 
     protected function getActionUrl(): string
     {

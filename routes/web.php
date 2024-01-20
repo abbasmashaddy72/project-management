@@ -19,7 +19,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 
 // Share ticket
 Route::get('/tickets/share/{ticket:code}', function (Ticket $ticket) {
-    return redirect()->to(route('filament.resources.tickets.view', $ticket));
+    return redirect()->to(route('filament.admin.resources.tickets.view', $ticket));
 })->name('filament.resources.tickets.share');
 
 // Validate an account

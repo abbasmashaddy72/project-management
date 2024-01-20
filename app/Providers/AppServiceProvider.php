@@ -2,11 +2,19 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Facades\Health;
-use Spatie\Health\Checks\Checks\OptimizedAppCheck;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
+use Spatie\CpuLoadHealthCheck\CpuLoadCheck;
+use Spatie\Health\Checks\Checks\CacheCheck;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
 use Spatie\Health\Checks\Checks\EnvironmentCheck;
+use Spatie\Health\Checks\Checks\DatabaseSizeCheck;
+use Spatie\Health\Checks\Checks\OptimizedAppCheck;
+use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Spatie\Health\Checks\Checks\DatabaseConnectionCountCheck;
+use Spatie\SecurityAdvisoriesHealthCheck\SecurityAdvisoriesCheck;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,10 +31,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::unguard();
         Health::checks([
+            CacheCheck::new(),
             OptimizedAppCheck::new(),
+            CpuLoadCheck::new()
+                ->failWhenLoadIsHigherInTheLast5Minutes(2.0)
+                ->failWhenLoadIsHigherInTheLast15Minutes(1.5),
+            DatabaseCheck::new(),
+            DatabaseConnectionCountCheck::new()
+                ->failWhenMoreConnectionsThan(100),
+            DatabaseSizeCheck::new()
+                ->failWhenSizeAboveGb(errorThresholdGb: 5.0),
             DebugModeCheck::new(),
             EnvironmentCheck::new(),
+            SecurityAdvisoriesCheck::new(),
+            UsedDiskSpaceCheck::new(),
         ]);
     }
 }

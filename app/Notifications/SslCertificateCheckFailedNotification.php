@@ -34,19 +34,19 @@ class SslCertificateCheckFailedNotification extends Notification implements Shou
             ->line($this->sslCertificateCheck->site->name);
     }
 
-    public function toSlack(): SlackMessage
-    {
-        return (new SlackMessage)
-            ->error()
-            ->attachment(
-                fn (SlackAttachment $attachment) => $attachment
-                    ->title($this->getMessageText())
-                    ->content($this->sslCertificateCheck->check_failure_reason)
-                    ->fallback($this->getMessageText())
-                    ->footer($this->sslCertificateCheck->site->name)
-                    ->timestamp(now())
-            );
-    }
+    // public function toSlack(): SlackMessage
+    // {
+    //     return (new SlackMessage)
+    //         ->error()
+    //         ->attachment(
+    //             fn (SlackAttachment $attachment) => $attachment
+    //                 ->title($this->getMessageText())
+    //                 ->content($this->sslCertificateCheck->check_failure_reason)
+    //                 ->fallback($this->getMessageText())
+    //                 ->footer($this->sslCertificateCheck->site->name)
+    //                 ->timestamp(now())
+    //         );
+    // }
 
     protected function getMessageText(): string
     {

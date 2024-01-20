@@ -34,19 +34,19 @@ class SslCertificateExpiresSoonNotification extends Notification implements Shou
             ->line($this->sslCertificateCheck->site->name);
     }
 
-    public function toSlack(): SlackMessage
-    {
-        return (new SlackMessage)
-            ->warning()
-            ->attachment(
-                fn (SlackAttachment $attachment) => $attachment
-                    ->title($this->getMessageText())
-                    ->content("Expires {$this->sslCertificateCheck->expiration_date->diffForHumans()}")
-                    ->fallback($this->getMessageText())
-                    ->footer($this->sslCertificateCheck->site->name)
-                    ->timestamp(now())
-            );
-    }
+    // public function toSlack(): SlackMessage
+    // {
+    //     return (new SlackMessage)
+    //         ->warning()
+    //         ->attachment(
+    //             fn (SlackAttachment $attachment) => $attachment
+    //                 ->title($this->getMessageText())
+    //                 ->content("Expires {$this->sslCertificateCheck->expiration_date->diffForHumans()}")
+    //                 ->fallback($this->getMessageText())
+    //                 ->footer($this->sslCertificateCheck->site->name)
+    //                 ->timestamp(now())
+    //         );
+    // }
 
     protected function getMessageText(): string
     {

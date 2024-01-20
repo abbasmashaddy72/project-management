@@ -103,8 +103,7 @@ class SiteResource extends Resource
                                                 $livewire->data['api_token_input'] = $token;
                                             }
                                         }
-                                    )
-                                    ->requiresConfirmation()
+                                    )->requiresConfirmation()
                             ),
                     ]),
 

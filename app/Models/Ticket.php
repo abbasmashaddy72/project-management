@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\CarbonInterval;
+use App\Notifications\TicketCreated;
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\TicketStatusUpdated;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;

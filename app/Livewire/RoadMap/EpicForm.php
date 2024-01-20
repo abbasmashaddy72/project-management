@@ -3,18 +3,22 @@
 namespace App\Livewire\RoadMap;
 
 use App\Models\Epic;
-use App\Models\Project;
 use App\Models\Ticket;
+use App\Models\Project;
+use Livewire\Component;
+use Filament\Forms\Form;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Contracts\HasForms;
-use Livewire\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Concerns\InteractsWithForms;
 
 class EpicForm extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public Epic $epic;
     public array $epics = [];
 
@@ -34,38 +38,39 @@ class EpicForm extends Component implements HasForms
         return view('livewire.road-map.epic-form');
     }
 
-    public function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            Grid::make()
-                ->schema([
-                    Select::make('project_id')
-                        ->label(__('Project'))
-                        ->disabled()
-                        ->options(Project::all()->pluck('name', 'id')),
+        return $form
+            ->schema([
+                Grid::make()
+                    ->schema([
+                        Select::make('project_id')
+                            ->label(__('Project'))
+                            ->disabled()
+                            ->options(Project::all()->pluck('name', 'id')),
 
-                    Select::make('parent_id')
-                        ->label(__('Parent epic'))
-                        ->searchable()
-                        ->options($this->epics),
-                ]),
+                        Select::make('parent_id')
+                            ->label(__('Parent epic'))
+                            ->searchable()
+                            ->options($this->epics),
+                    ]),
 
-            TextInput::make('name')
-                ->label(__('Epic name'))
-                ->required()
-                ->maxLength(255),
+                TextInput::make('name')
+                    ->label(__('Epic name'))
+                    ->required()
+                    ->maxLength(255),
 
-            Grid::make()
-                ->schema([
-                    DatePicker::make('starts_at')
-                        ->label(__('Starts at'))
-                        ->required(),
+                Grid::make()
+                    ->schema([
+                        DatePicker::make('starts_at')
+                            ->label(__('Starts at'))
+                            ->required(),
 
-                    DatePicker::make('ends_at')
-                        ->label(__('Ends at'))
-                        ->required(),
-                ]),
-        ];
+                        DatePicker::make('ends_at')
+                            ->label(__('Ends at'))
+                            ->required(),
+                    ]),
+            ]);
     }
 
     public function submit(): void

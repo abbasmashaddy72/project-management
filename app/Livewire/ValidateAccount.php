@@ -3,14 +3,18 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Contracts\HasForms;
-use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Filament\Forms\Form;
+use Filament\Facades\Filament;
+use Illuminate\Contracts\View\View;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
 
 class ValidateAccount extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public User $user;
 
     public function mount()
@@ -23,22 +27,23 @@ class ValidateAccount extends Component implements HasForms
         return view('livewire.validate-account');
     }
 
-    public function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            TextInput::make('password')
-                ->password()
-                ->required()
-                ->confirmed()
-                ->label(__('Account password'))
-                ->placeholder(__('Choose your account password')),
+        return $form
+            ->schema([
+                TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->confirmed()
+                    ->label(__('Account password'))
+                    ->placeholder(__('Choose your account password')),
 
-            TextInput::make('password_confirmation')
-                ->password()
-                ->required()
-                ->label(__('Password confirmation'))
-                ->placeholder(__('Confirm your chosen password')),
-        ];
+                TextInput::make('password_confirmation')
+                    ->password()
+                    ->required()
+                    ->label(__('Password confirmation'))
+                    ->placeholder(__('Confirm your chosen password')),
+            ]);
     }
 
     public function validateAccount(): void
@@ -50,6 +55,6 @@ class ValidateAccount extends Component implements HasForms
         $this->user->save();
         auth()->login($this->user);
         Filament::notify('success', __('Account verified'), true);
-        redirect()->to(route('filament.pages.dashboard'));
+        redirect()->to(route('filament.admin.pages.dashboard'));
     }
 }

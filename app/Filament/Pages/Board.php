@@ -3,11 +3,12 @@
 namespace App\Filament\Pages;
 
 use App\Models\Project;
-use Filament\Forms\Components\Group;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Board extends Page implements HasForms
@@ -40,11 +41,11 @@ class Board extends Page implements HasForms
         return __('Management');
     }
 
-    public function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            Group::make()
-                ->schema([
+        return $form
+            ->schema([
+                Group::make()->schema([
                     Grid::make()
                         ->columns(1)
                         ->schema([
@@ -61,7 +62,7 @@ class Board extends Page implements HasForms
                                     })->pluck('name', 'id')->toArray()),
                         ]),
                 ]),
-        ];
+            ]);
     }
 
     public function search(): void
@@ -69,9 +70,9 @@ class Board extends Page implements HasForms
         $data = $this->form->getState();
         $project = Project::find($data['project']);
         if ($project->type === "scrum") {
-            $this->redirect(route('filament.pages.scrum/{project}', ['project' => $project]));
+            $this->redirect(route('filament.admin.pages.scrum/{project}', ['project' => $project]));
         } else {
-            $this->redirect(route('filament.pages.kanban/{project}', ['project' => $project]));
+            $this->redirect(route('filament.admin.pages.kanban.{project}', ['project' => $project]));
         }
     }
 }

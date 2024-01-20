@@ -40,29 +40,26 @@ class TicketTypeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
+                Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('Type name'))
-                                    ->required()
-                                    ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('Type name'))
+                            ->required()
+                            ->maxLength(255),
 
-                                Forms\Components\ColorPicker::make('color')
-                                    ->label(__('Type color'))
-                                    ->required(),
+                        Forms\Components\ColorPicker::make('color')
+                            ->label(__('Type color'))
+                            ->required(),
 
-                                IconPicker::make('icon')
-                                    ->label(__('Type icon'))
-                                    ->required(),
+                        IconPicker::make('icon')
+                            ->label(__('Type icon'))
+                            ->required(),
 
-                                Forms\Components\Checkbox::make('is_default')
-                                    ->label(__('Default type'))
-                                    ->helperText(
-                                        __('If checked, this type will be automatically affected to new tickets')
-                                    ),
-                            ])
+                        Forms\Components\Checkbox::make('is_default')
+                            ->label(__('Default type'))
+                            ->helperText(
+                                __('If checked, this type will be automatically affected to new tickets')
+                            ),
                     ])
             ]);
     }

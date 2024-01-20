@@ -38,31 +38,28 @@ class TicketStatusResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
+                Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('Status name'))
-                                    ->required()
-                                    ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('Status name'))
+                            ->required()
+                            ->maxLength(255),
 
-                                Forms\Components\ColorPicker::make('color')
-                                    ->label(__('Status color'))
-                                    ->required(),
+                        Forms\Components\ColorPicker::make('color')
+                            ->label(__('Status color'))
+                            ->required(),
 
-                                Forms\Components\Checkbox::make('is_default')
-                                    ->label(__('Default status'))
-                                    ->helperText(
-                                        __('If checked, this status will be automatically affected to new projects')
-                                    ),
+                        Forms\Components\Checkbox::make('is_default')
+                            ->label(__('Default status'))
+                            ->helperText(
+                                __('If checked, this status will be automatically affected to new projects')
+                            ),
 
-                                Forms\Components\TextInput::make('order')
-                                    ->label(__('Status order'))
-                                    ->integer()
-                                    ->default(fn () => TicketStatus::whereNull('project_id')->count() + 1)
-                                    ->required(),
-                            ])
+                        Forms\Components\TextInput::make('order')
+                            ->label(__('Status order'))
+                            ->integer()
+                            ->default(fn () => TicketStatus::whereNull('project_id')->count() + 1)
+                            ->required(),
                     ])
             ]);
     }

@@ -38,21 +38,17 @@ class ActivityResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
+                Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('Activity name'))
-                                    ->required()
-                                    ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('Activity name'))
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\RichEditor::make('description')
+                            ->label(__('Description'))
+                            ->required()
+                            ->columnSpan(2),
 
-                                Forms\Components\RichEditor::make('description')
-                                    ->label(__('Description'))
-                                    ->required()
-                                    ->columnSpan(2),
-
-                            ])
                     ])
             ]);
     }
