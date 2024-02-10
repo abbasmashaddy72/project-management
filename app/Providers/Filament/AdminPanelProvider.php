@@ -4,12 +4,16 @@ namespace App\Providers\Filament;
 
 use Filament\Pages;
 use Filament\Panel;
+use App\Models\Team;
 use Filament\Widgets;
+use Illuminate\View\View;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
 use App\Filament\Widgets\SiteStatsWidget;
 use Filament\Http\Middleware\Authenticate;
+use App\Filament\Pages\Tenancy\RegisterTeam;
+use Filament\Http\Middleware\IdentifyTenant;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -25,14 +29,19 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->id('admin')
+            ->default()
             ->path('/')
+            ->tenant(Team::class)
             ->login()
+            ->registration()
+            ->emailVerification()
+            ->passwordReset()
+            ->tenantRegistration(RegisterTeam::class)
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->navigationGroups([
                 'Site Vigilance',
                 'User Management',
@@ -46,8 +55,10 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 SiteStatsWidget::class,
+                \Awcodes\Overlook\Widgets\OverlookWidget::class,
             ])
             ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -58,9 +69,10 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                IdentifyTenant::class,
             ])
             ->authMiddleware([
-                'auth',
+                // 'auth',
                 Authenticate::class,
             ])->plugins([
                 \Awcodes\LightSwitch\LightSwitchPlugin::make(),
@@ -89,9 +101,7 @@ class AdminPanelProvider extends PanelProvider
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
             ])->maxContentWidth(MaxWidth::Full)
-            ->spa()
-            ->widgets([
-                \Awcodes\Overlook\Widgets\OverlookWidget::class,
-            ])->sidebarCollapsibleOnDesktop();
+            ->renderHook('panels::topbar.start', fn (): View => view('filament.app.hooks.welcome_user'))
+            ->sidebarCollapsibleOnDesktop()->spa();
     }
 }

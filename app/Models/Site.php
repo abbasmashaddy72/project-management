@@ -3,26 +3,27 @@
 namespace App\Models;
 
 use Spatie\Url\Url;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Contracts\SiteVigilanceSite;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\MultiTenancy;
 use App\Casts\RequestDurationCast;
 use App\Collections\SiteCollection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Contracts\SiteVigilanceSite;
 use App\Database\Factories\SiteFactory;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\UptimeCheckRepository;
 use App\Repositories\ExceptionLogRepository;
 use App\Repositories\ExceptionLogGroupRepository;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Repositories\SslCertificateCheckRepository;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Site extends Model implements SiteVigilanceSite
 {
-    use HasFactory;
+    use HasFactory, MultiTenancy;
 
     protected $fillable = [
         'url',
@@ -31,6 +32,7 @@ class Site extends Model implements SiteVigilanceSite
         'ssl_certificate_check_enabled',
         'max_request_duration_ms',
         'down_for_maintenance_at',
+        'api_token_enabled',
         'api_token',
     ];
 

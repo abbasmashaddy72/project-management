@@ -31,11 +31,20 @@ class UsersRelationManager extends RelationManager
                     ->label(__('User full name'))
                     ->searchable()
                     ->sortable(),
-
-                Tables\Columns\BadgeColumn::make('pivot.role')
+                Tables\Columns\TextColumn::make('pivot.role')
+                    ->badge()
                     ->label(__('User role'))
-                    ->enum(config('system.projects.affectations.roles.list'))
-                    ->colors(config('system.projects.affectations.roles.colors'))
+                    ->color(function (string $state): string {
+                        $colors = config('system.projects.affectations.roles.colors');
+
+                        foreach ($colors as $key => $color) {
+                            if ($state === $key) {
+                                return $color;
+                            }
+                        }
+
+                        return 'default';
+                    })
                     ->searchable()
                     ->sortable(),
             ])

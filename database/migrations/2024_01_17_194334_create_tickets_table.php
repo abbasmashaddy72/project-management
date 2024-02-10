@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->longText('content');
+            $table->string('issue_link')->nullable();
+            $table->string('pr_link')->nullable();
             $table->float('estimation')->nullable();
             $table->longText('attachments')->nullable();
             $table->softDeletes();

@@ -3,12 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use Ramsey\Uuid\Uuid;
 use Laravel\Sanctum\HasApiTokens;
 use App\Contracts\SiteVigilanceUser;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\UserCreatedNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use ProtoneMedia\LaravelVerifyNewEmail\MustVerifyNewEmail;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail, SiteVigilanceUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, SiteVigilanceUser, HasTenants
 {
     use HasApiTokens, HasFactory, Notifiable, MustVerifyNewEmail, HasRoles, HasPanelShield, TwoFactorAuthenticatable, SoftDeletes;
 
@@ -33,6 +37,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
     protected $fillable = [
         'name',
         'email',
+        'contact_no',
+        'address',
+        'details',
         'password',
         'creation_token',
     ];
@@ -66,6 +73,13 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
                 $item->password = bcrypt(uniqid());
                 $item->creation_token = Uuid::uuid4()->toString();
             }
+            //  setPermissionsTeamId(1);
+            //     // Assign the role based on whether this is the first user
+            //     if (User::count() == 1) {
+            //         $item->assignRole('super_admin');
+            //     } else {
+            //         $item->assignRole('panel_user');
+            //     }
         });
 
         static::created(function (User $item) {
@@ -73,6 +87,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
                 $item->notify(new UserCreatedNotification($item));
             }
         });
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasVerifiedEmail();
     }
 
     public function projectsOwning(): HasMany
@@ -112,5 +131,25 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
                 return $this->hours->sum('value');
             }
         );
+    }
+
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->ownedTeams;
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->ownedTeams->contains($tenant);
+    }
+
+    public function ownedTeams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'user_id');
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id')->using(Member::class);
     }
 }

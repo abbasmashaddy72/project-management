@@ -2,20 +2,22 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
+use Closure;
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Sprint;
 use App\Models\Ticket;
-use Carbon\Carbon;
-use Closure;
-use Filament\Facades\Filament;
-use Filament\Forms;
-use Filament\Notifications\Actions\Action;
-use Filament\Notifications\Notification;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
-use Filament\Tables;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Facades\Filament;
 use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class SprintsRelationManager extends RelationManager
 {
@@ -53,14 +55,13 @@ class SprintsRelationManager extends RelationManager
                         Forms\Components\DatePicker::make('starts_at')
                             ->label(__('Sprint start date'))
                             ->reactive()
-                            ->afterStateUpdated(fn ($state, Closure $set) => $set('ends_at', Carbon::parse($state)->addWeek()->subDay()))
-                            ->beforeOrEqual(fn (Closure $get) => $get('ends_at'))
+                            ->afterStateUpdated(fn ($state, Set $set) => $set('ends_at', Carbon::parse($state)->addWeek()->subDay()))
+                            ->beforeOrEqual(fn (Get $get) => $get('ends_at'))
                             ->required(),
 
                         Forms\Components\DatePicker::make('ends_at')
                             ->label(__('Sprint end date'))
-                            ->reactive()
-                            ->afterOrEqual(fn (Closure $get) => $get('starts_at'))
+                            ->afterOrEqual(fn (Get $get) => $get('starts_at'))
                             ->required(),
 
                         Forms\Components\RichEditor::make('description')
