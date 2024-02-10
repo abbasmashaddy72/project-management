@@ -5,7 +5,8 @@
                 <p class="text-xl text-center text-gray-500">
                     There are no sites at the moment
                 </p>
-                <a href="{{ route('filament.admin.resources.sites.create') }}" class="mt-4">
+                <a href="{{ route('filament.admin.resources.sites.create', ['tenant' => \Filament\Facades\Filament::getTenant()->id]) }}"
+                    class="mt-4">
                     <x-filament::button>
                         Create a new one
                     </x-filament::button>

@@ -3,20 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        // reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-
         if (config('app.env') == 'production') {
             $user = User::create([
                 'name' => 'Super Admin',
@@ -24,14 +17,26 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            User::find(1)->first()->assignRole('super_admin');
+            $user->assignRole('super_admin');
         } else {
             $users = User::factory()->count(rand(100, 300))->create();
+
             $superAdmin = $users->first();
             $superAdmin->update([
                 'email' => 'superadmin@project.com',
             ]);
             $superAdmin->assignRole('super_admin');
+
+            // Retrieve the existing team named 'Default'
+            $team = Team::where('name', 'Default')->first();
+
+            if ($team) {
+                // Update the team's user_id with the first user's id
+                $team->update(['user_id' => $superAdmin->id]);
+
+                // Attach the first user to the existing team
+                $team->members()->attach($superAdmin);
+            }
         }
     }
 }

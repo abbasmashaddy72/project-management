@@ -5,7 +5,6 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use App\Models\Team;
-use Filament\Widgets;
 use Illuminate\View\View;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -23,6 +22,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -31,8 +31,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->default()
-            ->path('/')
-            ->tenant(Team::class)
+            ->path('')
+            ->tenant(Team::class, 'id', 'team')
             ->login()
             ->registration()
             ->emailVerification()
@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 SiteStatsWidget::class,
-                \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                // \Awcodes\Overlook\Widgets\OverlookWidget::class,
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -74,11 +74,29 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 // 'auth',
                 Authenticate::class,
-            ])->plugins([
+            ])->tenantMiddleware([
+                SyncSpatiePermissionsWithFilamentTenants::class,
+            ], isPersistent: true)
+            ->plugins([
                 \Awcodes\LightSwitch\LightSwitchPlugin::make(),
                 \Awcodes\FilamentQuickCreate\QuickCreatePlugin::make(),
                 \Awcodes\FilamentVersions\VersionsPlugin::make(),
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
                 \Awcodes\Curator\CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
@@ -88,16 +106,16 @@ class AdminPanelProvider extends PanelProvider
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
                     ->myProfile()
                     ->enableTwoFactorAuthentication(),
-                \Awcodes\Overlook\OverlookPlugin::make()
-                    ->sort(2)
-                    ->columns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'md' => 3,
-                        'lg' => 4,
-                        'xl' => 5,
-                        '2xl' => null,
-                    ]),
+                // \Awcodes\Overlook\OverlookPlugin::make()
+                //     ->sort(2)
+                //     ->columns([
+                //         'default' => 1,
+                //         'sm' => 2,
+                //         'md' => 3,
+                //         'lg' => 4,
+                //         'xl' => 5,
+                //         '2xl' => null,
+                //     ]),
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
             ])->maxContentWidth(MaxWidth::Full)

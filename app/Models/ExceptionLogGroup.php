@@ -3,18 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Repositories\ExceptionLogRepository;
 use App\Contracts\SiteVigilanceExceptionLogGroup;
-use App\Database\Factories\ExceptionLogGroupFactory;
+use App\Traits\HasTenantScope;
 
 class ExceptionLogGroup extends Model implements SiteVigilanceExceptionLogGroup
 {
-    use HasFactory;
+    use HasFactory, HasTenantScope;
 
     protected $fillable = [
         'site_id',
@@ -39,10 +38,5 @@ class ExceptionLogGroup extends Model implements SiteVigilanceExceptionLogGroup
     public function site(): BelongsTo
     {
         return $this->belongsTo(SiteRepository::resolveModelClass());
-    }
-
-    protected static function newFactory(): Factory
-    {
-        return ExceptionLogGroupFactory::new();
     }
 }

@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Spatie\Url\Url;
-use App\Traits\MultiTenancy;
+use App\Traits\HasTenantScope;
 use App\Casts\RequestDurationCast;
 use App\Collections\SiteCollection;
 use App\Contracts\SiteVigilanceSite;
-use App\Database\Factories\SiteFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\UptimeCheckRepository;
@@ -16,14 +15,13 @@ use App\Repositories\ExceptionLogGroupRepository;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Repositories\SslCertificateCheckRepository;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Site extends Model implements SiteVigilanceSite
 {
-    use HasFactory, MultiTenancy;
+    use HasFactory, HasTenantScope;
 
     protected $fillable = [
         'url',
@@ -91,10 +89,5 @@ class Site extends Model implements SiteVigilanceSite
     public function newCollection(array $models = []): SiteCollection
     {
         return new SiteCollection($models);
-    }
-
-    protected static function newFactory(): Factory
-    {
-        return SiteFactory::new();
     }
 }

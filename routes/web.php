@@ -32,9 +32,6 @@ Route::get('/validate-account/{user:creation_token}', function (User $user) {
         DispatchServingFilamentEvent::class
     ]);
 
-// Login default redirection
-Route::redirect('/', '/login')->name('login');
-
 // Road map JSON data
 Route::get('road-map/data/{project}', [DataController::class, 'data'])
     ->middleware(['verified', 'auth'])

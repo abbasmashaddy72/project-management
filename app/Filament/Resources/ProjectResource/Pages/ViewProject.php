@@ -23,9 +23,9 @@ class ViewProject extends ViewRecord
                 ->url(function () {
                     if ($this->record->type === 'scrum') {
                         return route('filament.admin.pages.scrum.{project}', ['project' => $this->record->id]);
-                    } else {
-                        return route('filament.admin.pages.kanban.{project}', ['project' => $this->record->id]);
                     }
+                        return route('filament.admin.pages.kanban.{project}', ['project' => $this->record->id]);
+                    
                 }),
 
             Actions\EditAction::make(),

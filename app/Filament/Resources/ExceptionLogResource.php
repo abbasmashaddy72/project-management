@@ -65,7 +65,11 @@ class ExceptionLogResource extends Resource
                         ExceptionLogStatus::IGNORED->value => 'Ignored',
                         ExceptionLogStatus::REVIEWED->value => 'Reviewed',
                     ])->query(function (Builder $query, array $data): Builder {
-                        if ($data['value']) {
+                        if (!$data['value']){
+                        self::$statusFilter = null;
+
+                        return $query;
+                    } 
                             self::$statusFilter = $data['value'];
 
                             return $query
@@ -73,11 +77,7 @@ class ExceptionLogResource extends Resource
                                     $data['value'],
                                     fn (Builder $query, $value): Builder => $query->whereRelation('exceptionLogs', 'status', $value)
                                 );
-                        }
-                        self::$statusFilter = null;
-
-                        return $query;
-                    }),
+                        }),
             ], layout: FiltersLayout::AboveContent);
     }
 

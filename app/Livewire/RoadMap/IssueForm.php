@@ -2,7 +2,6 @@
 
 namespace App\Livewire\RoadMap;
 
-use Closure;
 use Filament\Forms;
 use App\Models\User;
 use App\Models\Ticket;
@@ -13,7 +12,6 @@ use Filament\Forms\Form;
 use App\Models\TicketType;
 use App\Models\TicketStatus;
 use App\Models\TicketPriority;
-use Filament\Facades\Filament;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -124,12 +122,12 @@ class IssueForm extends Component implements HasForms
                                 ->get()
                                 ->pluck('name', 'id')
                                 ->toArray();
-                        } else {
+                        }
                             return TicketStatus::whereNull('project_id')
                                 ->get()
                                 ->pluck('name', 'id')
                                 ->toArray();
-                        }
+                        
                     })
                     ->required(),
 

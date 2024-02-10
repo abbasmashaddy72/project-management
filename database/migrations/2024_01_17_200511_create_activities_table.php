@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->mediumText('description');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

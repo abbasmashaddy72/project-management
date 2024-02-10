@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('pr_link')->nullable();
             $table->float('estimation')->nullable();
             $table->longText('attachments')->nullable();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

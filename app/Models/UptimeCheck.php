@@ -7,7 +7,6 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\UptimeStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Casts\RequestDurationCast;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
@@ -15,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\ValueObjects\RequestDuration;
 use App\Contracts\SiteVigilanceUptimeCheck;
 use App\Repositories\UptimeCheckRepository;
-use App\Database\Factories\UptimeCheckFactory;
 
 class UptimeCheck extends Model implements SiteVigilanceUptimeCheck
 {
@@ -96,10 +94,5 @@ class UptimeCheck extends Model implements SiteVigilanceUptimeCheck
                 $uptime->status_last_change_date = now();
             }
         });
-    }
-
-    protected static function newFactory(): Factory
-    {
-        return UptimeCheckFactory::new();
     }
 }

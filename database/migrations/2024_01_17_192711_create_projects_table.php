@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ticket_prefix')->unique();
             $table->string('type')->default('kanban');
             $table->string('status_type')->default('default');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

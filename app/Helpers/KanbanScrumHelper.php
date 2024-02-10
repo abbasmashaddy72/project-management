@@ -155,12 +155,13 @@ trait KanbanScrumHelper
     public function recordUpdated(int $record, int $newIndex, int $newStatus): void
     {
         $ticket = Ticket::find($record);
-        if ($ticket) {
+        if (!$ticket){
+    return;} 
             $ticket->order = $newIndex;
             $ticket->status_id = $newStatus;
             $ticket->save();
             Filament::notify('success', __('Ticket updated'));
-        }
+        
     }
 
     public function isMultiProject(): bool
@@ -236,7 +237,9 @@ trait KanbanScrumHelper
 
     protected function scrumSubHeading(): string|Htmlable|null
     {
-        if ($this->project?->currentSprint) {
+        if (!$this->project?->currentSprint) {
+            return null;
+        }
             return new HtmlString(
                 '<div class="flex flex-col w-full gap-1">'
                     . '<div class="flex items-center w-full gap-2">'
@@ -261,8 +264,6 @@ trait KanbanScrumHelper
                         . '</span>' : '')
                     . '</div>'
             );
-        } else {
-            return null;
-        }
+        
     }
 }

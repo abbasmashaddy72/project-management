@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Factories;
+namespace Database\Factories;
 
 use App\Models\Site;
 use App\Models\ExceptionLogGroup;

@@ -7,8 +7,6 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\ValueObjects\Period;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Messages\SlackAttachment;
 use App\Contracts\SiteVigilanceUptimeCheck;
 
 class UptimeCheckRecoveredNotification extends Notification implements ShouldQueue

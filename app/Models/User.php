@@ -24,10 +24,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use ProtoneMedia\LaravelVerifyNewEmail\MustVerifyNewEmail;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail, SiteVigilanceUser, HasTenants
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyNewEmail, HasRoles, HasPanelShield, TwoFactorAuthenticatable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, MustVerifyNewEmail, HasRoles, HasPanelShield, TwoFactorAuthenticatable, SoftDeletes, HasSuperAdmin;
 
     /**
      * The attributes that are mass assignable.
@@ -73,13 +74,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
                 $item->password = bcrypt(uniqid());
                 $item->creation_token = Uuid::uuid4()->toString();
             }
-            //  setPermissionsTeamId(1);
-            //     // Assign the role based on whether this is the first user
-            //     if (User::count() == 1) {
-            //         $item->assignRole('super_admin');
-            //     } else {
-            //         $item->assignRole('panel_user');
-            //     }
         });
 
         static::created(function (User $item) {

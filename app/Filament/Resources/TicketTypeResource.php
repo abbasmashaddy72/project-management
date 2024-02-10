@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketTypeResource\Pages;
-use App\Filament\Resources\TicketTypeResource\RelationManagers;
-use App\Models\TicketType;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\TicketType;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
+use App\Filament\Resources\TicketTypeResource\Pages;
 
 class TicketTypeResource extends Resource
 {
@@ -20,6 +20,11 @@ class TicketTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?int $navigationSort = 1;
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query();
+    }
 
     public static function getNavigationLabel(): string
     {

@@ -46,7 +46,8 @@ class SslCertificateCheckService
             event(new SslCertificateExpiresSoonEvent($this->sslCertificateCheck));
         }
 
-        if ($isCertificateInvalid) {
+        if (!$isCertificateInvalid){
+    return;} 
             $reason = 'Unknown';
 
             if (!$certificate->appliesToUrl($this->sslCertificateCheck->url)) {
@@ -61,7 +62,7 @@ class SslCertificateCheckService
             $this->sslCertificateCheck->save();
 
             $this->notifyFailure();
-        }
+        
     }
 
     protected function notifyFailure(): void

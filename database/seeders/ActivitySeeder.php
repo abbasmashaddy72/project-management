@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ActivitySeeder extends Seeder
 {
@@ -39,7 +38,12 @@ class ActivitySeeder extends Seeder
     public function run()
     {
         foreach ($this->data as $item) {
-            Activity::firstOrCreate($item);
+            // Merge team_id into $item
+            $itemWithTeamId = array_merge($item, ['team_id' => 1]);
+
+            Activity::firstOrCreate(
+                $itemWithTeamId // Conditions and values
+            );
         }
     }
 }

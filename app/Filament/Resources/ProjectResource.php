@@ -2,13 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Exports\ProjectHoursExport;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use App\Models\ProjectFavorite;
 use App\Models\ProjectStatus;
-use App\Models\Ticket;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
@@ -17,8 +15,6 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectResource extends Resource
 {
@@ -214,9 +210,9 @@ class ProjectResource extends Resource
                         ->url(function ($record) {
                             if ($record->type === 'scrum') {
                                 return route('filament.admin.pages.scrum.{project}', ['project' => $record->id]);
-                            } else {
-                                return route('filament.admin.pages.kanban.{project}', ['project' => $record->id]);
                             }
+                                return route('filament.admin.pages.kanban.{project}', ['project' => $record->id]);
+                            
                         }),
                 ])->color('secondary'),
             ])

@@ -15,7 +15,6 @@ class CreateSiteVigilanceTables extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-
             $table->string('url')->unique();
             $table->string('name');
             $table->boolean('uptime_check_enabled')->default(true);
@@ -23,13 +22,12 @@ class CreateSiteVigilanceTables extends Migration
             $table->unsignedInteger('max_request_duration_ms')->default(1000);
             $table->timestamp('down_for_maintenance_at')->nullable();
             $table->string('api_token', 60)->nullable();
-
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->timestamps();
         });
 
         Schema::create('uptime_checks', function (Blueprint $table) {
             $table->id();
-
             $table->string('look_for_string')->default('');
             $table->string('status')->default(UptimeStatus::NOT_YET_CHECKED->value);
             $table->text('check_failure_reason')->nullable();
@@ -42,38 +40,33 @@ class CreateSiteVigilanceTables extends Migration
             $table->text('check_payload')->nullable();
             $table->text('check_additional_headers')->nullable();
             $table->string('check_response_checker')->nullable();
-
             $table->foreignIdFor(SiteRepository::resolveModelClass())
                 ->constrained()
                 ->onDelete('cascade');
-
             $table->timestamps();
         });
 
         Schema::create('ssl_certificate_checks', function (Blueprint $table) {
             $table->id();
-
             $table->string('status')->default(SslCertificateStatus::NOT_YET_CHECKED->value);
             $table->string('issuer')->nullable();
             $table->timestamp('expiration_date')->nullable();
             $table->string('check_failure_reason')->nullable();
-
             $table->foreignIdFor(SiteRepository::resolveModelClass())
                 ->constrained()
                 ->onDelete('cascade');
-
             $table->timestamps();
         });
 
         Schema::create('exception_log_groups', function (Blueprint $table) {
             $table->id();
-
             $table->text('message');
             $table->string('type');
             $table->string('file');
             $table->unsignedInteger('line');
             $table->timestamp('first_seen');
             $table->timestamp('last_seen');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->timestamps();
 
             $table->foreignIdFor(SiteRepository::resolveModelClass())
@@ -84,7 +77,6 @@ class CreateSiteVigilanceTables extends Migration
 
         Schema::create('exception_logs', function (Blueprint $table) {
             $table->id();
-
             $table->text('message');
             $table->string('type');
             $table->string('file');
@@ -93,6 +85,7 @@ class CreateSiteVigilanceTables extends Migration
             $table->json('trace');
             $table->json('request')->nullable();
             $table->timestamp('thrown_at');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
 
             $table->foreignIdFor(ExceptionLogGroupRepository::resolveModelClass())
                 ->constrained()

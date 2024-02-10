@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\MultiTenancy;
+use App\Traits\HasTenantScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model
 {
-    use HasFactory, SoftDeletes, MultiTenancy;
+    use HasFactory, SoftDeletes, HasTenantScope;
 
     protected $fillable = [
         'status_id',
@@ -111,15 +111,15 @@ class Project extends Model
     {
         return new Attribute(
             get: function () {
-                if ($this->currentSprint) {
-                    return $this->sprints()
-                        ->whereNull('started_at')
-                        ->whereNull('ended_at')
-                        ->where('starts_at', '>=', $this->currentSprint->ends_at)
-                        ->orderBy('starts_at')
-                        ->first();
+                if (!$this->currentSprint) {
+                    return null;
                 }
-                return null;
+                return $this->sprints()
+                    ->whereNull('started_at')
+                    ->whereNull('ended_at')
+                    ->where('starts_at', '>=', $this->currentSprint->ends_at)
+                    ->orderBy('starts_at')
+                    ->first();
             }
         );
     }

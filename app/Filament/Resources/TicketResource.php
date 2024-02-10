@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TicketResource\Pages;
-use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Epic;
 use App\Models\Project;
 use App\Models\Ticket;
@@ -94,14 +93,14 @@ class TicketResource extends Resource
                     Forms\Components\Repeater::make('relations')
                         ->itemLabel(function (array $state) {
                             $ticketRelation = TicketRelation::find($state['id'] ?? 0);
-                            if ($ticketRelation) {
+                            if (!$ticketRelation){
+                            return null;
+                        } 
                                 return __(config('system.tickets.relations.list.' . $ticketRelation->type))
                                     . ' '
                                     . $ticketRelation->relation->name
                                     . ' (' . $ticketRelation->relation->code . ')';
-                            }
-                            return null;
-                        })
+                            })
                         ->label('')
                         ->relationship()
                         ->collapsible()
@@ -166,12 +165,12 @@ class TicketResource extends Resource
                                         ->get()
                                         ->pluck('name', 'id')
                                         ->toArray();
-                                } else {
+                                }
                                     return TicketStatus::whereNull('project_id')
                                         ->get()
                                         ->pluck('name', 'id')
                                         ->toArray();
-                                }
+                                
                             })
                             ->default(function ($get) {
                                 $project = Project::where('id', $get('project_id'))->first();
@@ -180,12 +179,12 @@ class TicketResource extends Resource
                                         ->where('is_default', true)
                                         ->first()
                                         ?->id;
-                                } else {
+                                }
                                     return TicketStatus::whereNull('project_id')
                                         ->where('is_default', true)
                                         ->first()
                                         ?->id;
-                                }
+                                
                             })
                             ->required(),
 

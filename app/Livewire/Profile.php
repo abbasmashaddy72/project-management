@@ -15,7 +15,9 @@ class Profile extends MyProfileComponent
         $fields = parent::getUpdateProfileFormSchema();
         $fields[1]->helperText(function () {
             $pendingEmail = $this->user->getPendingEmail();
-            if ($pendingEmail) {
+            if (!$pendingEmail) {
+                return '';
+            }
                 return new HtmlString(
                     '<span>' .
                         __('You have a pending email verification for :email.', [
@@ -26,9 +28,7 @@ class Profile extends MyProfileComponent
                     ' . __('Click here to resend') . '
                 </a>'
                 );
-            } else {
-                return '';
-            }
+            
         });
         return $fields;
     }

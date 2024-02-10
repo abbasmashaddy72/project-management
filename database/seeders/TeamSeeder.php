@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Team;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TeamSeeder extends Seeder
@@ -13,9 +12,9 @@ class TeamSeeder extends Seeder
      */
     public function run(): void
     {
-        Team::create([
+        $team = Team::create([
             'name' => 'Default',
         ]);
-        setPermissionsTeamId(1);
+        setPermissionsTeamId($team->id);
     }
 }

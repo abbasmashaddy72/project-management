@@ -7,14 +7,12 @@ use Spatie\Url\Url;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\SslCertificate\SslCertificate;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Enums\SslCertificateStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Repositories\SiteRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Contracts\SiteVigilanceSslCertificateCheck;
 use App\Repositories\SslCertificateCheckRepository;
-use App\Database\Factories\SslCertificateCheckFactory;
 
 class SslCertificateCheck extends Model implements SiteVigilanceSslCertificateCheck
 {
@@ -73,10 +71,5 @@ class SslCertificateCheck extends Model implements SiteVigilanceSslCertificateCh
         return Attribute::make(
             get: fn () => SslCertificateCheckRepository::isEnabled(),
         );
-    }
-
-    protected static function newFactory(): Factory
-    {
-        return SslCertificateCheckFactory::new();
     }
 }

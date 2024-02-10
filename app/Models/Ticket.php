@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Carbon\CarbonInterval;
-use App\Traits\MultiTenancy;
+use App\Traits\HasTenantScope;
 use App\Notifications\TicketCreated;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\TicketStatusUpdated;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ticket extends Model
 {
-    use HasFactory, SoftDeletes, MultiTenancy;
+    use HasFactory, SoftDeletes, HasTenantScope;
 
     protected $fillable = [
         'name',

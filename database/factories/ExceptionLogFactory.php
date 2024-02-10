@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Factories;
+namespace Database\Factories;
 
 use Illuminate\Support\Carbon;
 use App\Models\ExceptionLog;

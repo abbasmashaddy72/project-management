@@ -34,18 +34,19 @@ class TranslateLangFile extends Command
         foreach ($locales as $locale) {
             Artisan::call('translatable:export ' . $locale);
             $filePath = lang_path($locale . '.json');
-            if (File::exists($filePath)) {
-                $this->info('Translating ' . $locale . ', please wait...');
-                $results = [];
-                $localeFile = File::get($filePath);
-                $localeFileContent = array_keys(json_decode($localeFile, true));
-                $translator = new GoogleTranslate($locale);
-                $translator->setSource('en');
-                foreach ($localeFileContent as $key) {
-                    $results[$key] = $translator->translate($key);
-                }
-                File::put($filePath, json_encode($results, JSON_UNESCAPED_UNICODE));
+            if (!File::exists($filePath)) {
+                continue;
             }
+            $this->info('Translating ' . $locale . ', please wait...');
+            $results = [];
+            $localeFile = File::get($filePath);
+            $localeFileContent = array_keys(json_decode($localeFile, true));
+            $translator = new GoogleTranslate($locale);
+            $translator->setSource('en');
+            foreach ($localeFileContent as $key) {
+                $results[$key] = $translator->translate($key);
+            }
+            File::put($filePath, json_encode($results, JSON_UNESCAPED_UNICODE));
         }
         return Command::SUCCESS;
     }

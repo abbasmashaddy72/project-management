@@ -4,9 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\DeleteOldExceptionCommand;
-use App\Console\Commands\CheckSslCertificateCommand;
-use App\Console\Commands\CheckUptimeCommand;
 
 class Kernel extends ConsoleKernel
 {

@@ -239,7 +239,8 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function setPermissionStateForRecordPermissions(Component $component, string $operation, array $permissions, ?Model $record): void
     {
 
-        if (in_array($operation, ['edit', 'view'])) {
+        if (!in_array($operation, ['edit', 'view'])){
+    return;} 
 
             if (blank($record)) {
                 return;
@@ -253,7 +254,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                         ->toArray()
                 );
             }
-        }
+        
     }
 
     public static function getPageOptions(): array
@@ -360,7 +361,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     record: $record
                 )
             )
-            ->dehydrated(fn ($state) => ! blank($state))
+            ->dehydrated(fn ($state) => !blank($state))
             ->bulkToggleable()
             ->gridDirection('row')
             ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())

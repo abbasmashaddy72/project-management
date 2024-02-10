@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Invite new member to the team to collaborate with you.') }}
+        {{ __('Invite a new member to the team to collaborate with you.') }}
     </x-slot>
 
     <x-slot name="headerEnd">
@@ -22,15 +22,11 @@
             </x-filament::tabs.item>
         </x-filament::tabs>
 
-        <div x-ref="teamMembers"
-            @active-tab.window="$event.detail.propname === 'activeTab' ? ($event.detail.id === 'teamMembers' ? $refs.teamMembers.classList.remove('hidden') : $el.classList.add('hidden')) : null"
-            class="">
+        <div x-show="activeTab === 'teamMembers'">
             {{ $this->table }}
         </div>
 
-        <div x-ref="invitations"
-            @active-tab.window="$event.detail.propname === 'activeTab' ? ($event.detail.id === 'invitations' ? $refs.invitations.classList.remove('hidden') : $el.classList.add('hidden')) : null"
-            class="hidden">
+        <div x-show="activeTab === 'invitations'">
             <livewire:team-invitation />
         </div>
     </div>

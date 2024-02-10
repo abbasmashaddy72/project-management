@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
-use Closure;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
@@ -14,7 +13,6 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use Illuminate\Support\HtmlString;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -153,9 +151,9 @@ class SprintsRelationManager extends RelationManager
                                     ->url(function () use ($record) {
                                         if ($record->project->type === 'scrum') {
                                             return route('filament.admin.pages.scrum/{project}', ['project' => $record->project->id]);
-                                        } else {
-                                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id]);
                                         }
+                                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id]);
+                                        
                                     }),
                             ])
                             ->send();
