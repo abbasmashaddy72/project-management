@@ -2,12 +2,13 @@
 
 namespace App\Filament\Pages;
 
-use App\Helpers\KanbanScrumHelper;
 use App\Models\Project;
-use Filament\Facades\Filament;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Actions\Action;
 use Filament\Pages\Page;
+use Filament\Actions\Action;
+use Filament\Facades\Filament;
+use App\Helpers\KanbanScrumHelper;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Kanban extends Page implements HasForms
@@ -51,7 +52,10 @@ class Kanban extends Page implements HasForms
                 ->color('secondary')
                 ->action(function () {
                     $this->getRecords();
-                    Filament::notify('success', __('Kanban board updated'));
+                    Notification::make()
+                        ->title(__('Kanban board updated'))
+                        ->success()
+                        ->send();
                 })
         ];
     }

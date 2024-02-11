@@ -20,6 +20,7 @@
         "blade-ui-kit/blade-icons": "^1.5",
         "filament/filament": "^3.2",
         "filament/notifications": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
         "filipfonal/filament-log-manager": "^2.0",
         "guava/filament-icon-picker": "^2.0",

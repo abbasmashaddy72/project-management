@@ -7,6 +7,7 @@ namespace App\Livewire\Timesheet;
 use Filament\Tables;
 use App\Models\Ticket;
 use Livewire\Component;
+use App\Models\TicketHour;
 use Filament\Tables\Table;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Contracts\HasTable;
@@ -18,11 +19,13 @@ class TimeLogged extends Component implements HasForms, HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
+    public $ticket;
+
     public function table(Table $table): Table
     {
         return $table
             ->query(
-                Ticket::query()->has('hours')
+                TicketHour::query()->where('ticket_id', $this->ticket->id)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
@@ -37,11 +40,10 @@ class TimeLogged extends Component implements HasForms, HasTable
                     ->searchable(),
                 Tables\Columns\TextColumn::make('comment')
                     ->label(__('Comment'))
-                    ->limit(50)
-                    ->sortable()
-                    ->searchable(),
+                    ->limit(50),
 
                 Tables\Columns\TextColumn::make('activity.name')
+                    ->badge()
                     ->label(__('Activity'))
                     ->sortable(),
 

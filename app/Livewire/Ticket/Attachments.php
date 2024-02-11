@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Livewire\Ticket;
+namespace App\Livewire\Ticket;
 
 use App\Models\Ticket;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
+use Filament\Facades\Filament;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\DeleteAction;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 
 class Attachments extends Component implements HasForms, HasTable
 {
@@ -43,12 +43,13 @@ class Attachments extends Component implements HasForms, HasTable
     protected function getFormSchema(): array
     {
         return [
-            SpatieMediaLibraryFileUpload::make('attachments')
+            CuratorPicker::make('attachments')
                 ->label(__('Attachments'))
                 ->hint(__('Important: If a file has the same name, it will be replaced'))
                 ->helperText(__('Here you can attach all files needed for this ticket'))
                 ->multiple()
-                ->disablePreview()
+                ->tenantAware()
+                ->listDisplay()
         ];
     }
 

@@ -71,18 +71,7 @@
             const g = new JSGantt.GanttChart(document.getElementById('gantt-chart'), 'week');
             // Set settings
             g.setOptions({
-                vCaptionType: 'Complete',
-                vDayColWidth: 26,
-                vWeekColWidth: 52,
-                vMonthColWidth: 52,
-                vDateTaskDisplayFormat: 'day dd month yyyy',
-                vDayMajorDateDisplayFormat: 'mon yyyy - Week ww',
-                vWeekMinorDateDisplayFormat: 'dd mon',
-                vLang: '{{ config('app.locale') }}',
-                vShowTaskInfoLink: 1,
-                vShowEndWeekDate: 0,
-                vUseSingleCell: 10000,
-                vFormatArr: ['Day', 'Week', 'Month'],
+                // ... (your other options)
                 vEvents: {
                     taskname: (task) => {
                         const data = task.getAllData();
@@ -103,16 +92,32 @@
 
             window.addEventListener('projectChanged', (e) => {
                 g.ClearTasks();
-                JSGantt.parseJSON(e.detail.url, g);
-                const minDate = e.detail.start_date.split('-');
-                const maxDate = e.detail.end_date.split('-');
-                const scrollToDate = e.detail.scroll_to.split('-');
-                g.setMinDate(new Date(minDate[0], (+minDate[1]) - 1, minDate['2']));
-                g.setMaxDate(new Date(maxDate[0], (+maxDate[1]) - 1, maxDate['2']));
-                g.setScrollTo(new Date(scrollToDate[0], (+scrollToDate[1]) - 1, scrollToDate['2']));
+                try {
+                    JSGantt.parseJSON(e.detail.url, g);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+
+                const start_date = e.detail.start_date ? e.detail.start_date.split('-') : null;
+                const end_date = e.detail.end_date ? e.detail.end_date.split('-') : null;
+                const scrollToDate = e.detail.scroll_to ? e.detail.scroll_to.split('-') : null;
+
+                g.setMinDate(start_date ? new Date(start_date[0], (+start_date[1]) - 1, start_date[2]) : null);
+                g.setMaxDate(end_date ? new Date(end_date[0], (+end_date[1]) - 1, end_date[2]) : null);
+
+                // Check if vScrollTo is not null before accessing its methods or properties
+                if (g.vScrollTo) {
+                    g.vScrollTo(scrollToDate ? new Date(scrollToDate[0], (+scrollToDate[1]) - 1, scrollToDate[2]) :
+                        null);
+                }
+
                 g.Draw();
             });
         </script>
     @endpush
+
+
+
+
 
 </x-filament::page>
