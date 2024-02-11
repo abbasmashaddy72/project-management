@@ -2,23 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketResource\Pages;
+use Filament\Forms;
 use App\Models\Epic;
-use App\Models\Project;
+use App\Models\User;
+use Filament\Tables;
 use App\Models\Ticket;
+use App\Models\Project;
+use Filament\Forms\Form;
+use App\Models\TicketType;
+use Filament\Tables\Table;
+use App\Models\TicketStatus;
 use App\Models\TicketPriority;
 use App\Models\TicketRelation;
-use App\Models\TicketStatus;
-use App\Models\TicketType;
-use App\Models\User;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
-use Filament\Tables;
 use Illuminate\Support\HtmlString;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\TicketResource\Pages;
 
 class TicketResource extends Resource
 {
@@ -93,14 +94,14 @@ class TicketResource extends Resource
                     Forms\Components\Repeater::make('relations')
                         ->itemLabel(function (array $state) {
                             $ticketRelation = TicketRelation::find($state['id'] ?? 0);
-                            if (!$ticketRelation){
-                            return null;
-                        } 
-                                return __(config('system.tickets.relations.list.' . $ticketRelation->type))
-                                    . ' '
-                                    . $ticketRelation->relation->name
-                                    . ' (' . $ticketRelation->relation->code . ')';
-                            })
+                            if (!$ticketRelation) {
+                                return null;
+                            }
+                            return __(config('system.tickets.relations.list.' . $ticketRelation->type))
+                                . ' '
+                                . $ticketRelation->relation->name
+                                . ' (' . $ticketRelation->relation->code . ')';
+                        })
                         ->label('')
                         ->relationship()
                         ->collapsible()
@@ -145,14 +146,32 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('owner_id')
                             ->label(__('Ticket owner'))
                             ->searchable()
-                            ->options(fn () => User::all()->pluck('name', 'id')->toArray())
+                            ->options(function () {
+                                $teamId = Filament::getTenant()->id;
+
+                                // Assuming you have a relationship between Team and User
+                                $users = User::whereHas('teams', function ($query) use ($teamId) {
+                                    $query->where('team_id', $teamId);
+                                })->pluck('name', 'id')->toArray();
+
+                                return $users;
+                            })
                             ->default(fn () => auth()->user()->id)
                             ->required(),
 
                         Forms\Components\Select::make('responsible_id')
                             ->label(__('Ticket responsible'))
                             ->searchable()
-                            ->options(fn () => User::all()->pluck('name', 'id')->toArray()),
+                            ->options(function () {
+                                $teamId = Filament::getTenant()->id;
+
+                                // Assuming you have a relationship between Team and User
+                                $users = User::whereHas('teams', function ($query) use ($teamId) {
+                                    $query->where('team_id', $teamId);
+                                })->pluck('name', 'id')->toArray();
+
+                                return $users;
+                            }),
                     ]),
                     Forms\Components\Fieldset::make('Status')->schema([
                         Forms\Components\Select::make('status_id')
@@ -166,11 +185,10 @@ class TicketResource extends Resource
                                         ->pluck('name', 'id')
                                         ->toArray();
                                 }
-                                    return TicketStatus::whereNull('project_id')
-                                        ->get()
-                                        ->pluck('name', 'id')
-                                        ->toArray();
-                                
+                                return TicketStatus::whereNull('project_id')
+                                    ->get()
+                                    ->pluck('name', 'id')
+                                    ->toArray();
                             })
                             ->default(function ($get) {
                                 $project = Project::where('id', $get('project_id'))->first();
@@ -180,11 +198,10 @@ class TicketResource extends Resource
                                         ->first()
                                         ?->id;
                                 }
-                                    return TicketStatus::whereNull('project_id')
-                                        ->where('is_default', true)
-                                        ->first()
-                                        ?->id;
-                                
+                                return TicketStatus::whereNull('project_id')
+                                    ->where('is_default', true)
+                                    ->first()
+                                    ?->id;
                             })
                             ->required(),
 
@@ -300,12 +317,30 @@ class TicketResource extends Resource
                 Tables\Filters\SelectFilter::make('owner_id')
                     ->label(__('Owner'))
                     ->multiple()
-                    ->options(fn () => User::all()->pluck('name', 'id')->toArray()),
+                    ->options(function () {
+                        $teamId = Filament::getTenant()->id;
+
+                        // Assuming you have a relationship between Team and User
+                        $users = User::whereHas('teams', function ($query) use ($teamId) {
+                            $query->where('team_id', $teamId);
+                        })->pluck('name', 'id')->toArray();
+
+                        return $users;
+                    }),
 
                 Tables\Filters\SelectFilter::make('responsible_id')
                     ->label(__('Responsible'))
                     ->multiple()
-                    ->options(fn () => User::all()->pluck('name', 'id')->toArray()),
+                    ->options(function () {
+                        $teamId = Filament::getTenant()->id;
+
+                        // Assuming you have a relationship between Team and User
+                        $users = User::whereHas('teams', function ($query) use ($teamId) {
+                            $query->where('team_id', $teamId);
+                        })->pluck('name', 'id')->toArray();
+
+                        return $users;
+                    }),
 
                 Tables\Filters\SelectFilter::make('status_id')
                     ->label(__('Status'))

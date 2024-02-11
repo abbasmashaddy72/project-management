@@ -38,6 +38,7 @@
         "spatie/url": "^2.3",
         "stechstudio/filament-impersonate": "^3.5",
         "stichoza/google-translate-php": "^5.1",
+        "webmozart/assert": "*",
         "ysfkaya/filament-phone-input": "^2.2"
     },
     "require-dev": {

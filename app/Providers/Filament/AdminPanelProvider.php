@@ -40,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterTeam::class)
             ->colors([
                 'primary' => Color::Blue,
+                'secondary' => Color::Zinc,
             ])
             ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->navigationGroups([
@@ -72,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
                 IdentifyTenant::class,
             ])
             ->authMiddleware([
-                // 'auth',
+                'auth',
                 Authenticate::class,
             ])->tenantMiddleware([
                 SyncSpatiePermissionsWithFilamentTenants::class,

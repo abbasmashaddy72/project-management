@@ -2,19 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
+use App\Models\Project;
+use Filament\Forms\Set;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use App\Models\ProjectStatus;
+use Filament\Facades\Filament;
+use App\Models\ProjectFavorite;
+use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
-use App\Models\Project;
-use App\Models\ProjectFavorite;
-use App\Models\ProjectStatus;
-use App\Models\User;
-use Filament\Facades\Filament;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
-use Filament\Tables;
-use Illuminate\Support\HtmlString;
 
 class ProjectResource extends Resource
 {
@@ -46,11 +48,11 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label(__('Project name'))
                     ->required()
-                    ->maxLength(255),
+                    ->live()
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('ticket_prefix', Str::limit(Str::slug($state), 3, ''))),
 
                 Forms\Components\TextInput::make('ticket_prefix')
                     ->label(__('Ticket prefix'))
-                    ->maxLength(3)
                     ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
                     ->disabled(
                         fn ($record) => $record && $record->tickets()->count() != 0
@@ -60,7 +62,16 @@ class ProjectResource extends Resource
                 Forms\Components\Select::make('owner_id')
                     ->label(__('Project owner'))
                     ->searchable()
-                    ->options(fn () => User::all()->pluck('name', 'id')->toArray())
+                    ->options(function () {
+                        $teamId = Filament::getTenant()->id;
+
+                        // Assuming you have a relationship between Team and User
+                        $users = User::whereHas('teams', function ($query) use ($teamId) {
+                            $query->where('team_id', $teamId);
+                        })->pluck('name', 'id')->toArray();
+
+                        return $users;
+                    })
                     ->default(fn () => auth()->user()->id)
                     ->required(),
 
@@ -209,10 +220,9 @@ class ProjectResource extends Resource
                         ->color('secondary')
                         ->url(function ($record) {
                             if ($record->type === 'scrum') {
-                                return route('filament.admin.pages.scrum.{project}', ['project' => $record->id]);
+                                return route('filament.admin.pages.scrum.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                             }
-                                return route('filament.admin.pages.kanban.{project}', ['project' => $record->id]);
-                            
+                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                         }),
                 ])->color('secondary'),
             ])

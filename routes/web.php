@@ -18,7 +18,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 */
 
 // Share ticket
-Route::get('/tickets/share/{ticket:code}', function (Ticket $ticket) {
+Route::get('{tenant}/tickets/share/{ticket:code}', function (Ticket $ticket) {
     return redirect()->to(route('filament.admin.resources.tickets.view', $ticket));
 })->name('filament.resources.tickets.share');
 
@@ -31,6 +31,8 @@ Route::get('/validate-account/{user:creation_token}', function (User $user) {
         'web',
         DispatchServingFilamentEvent::class
     ]);
+
+Route::redirect('/', '/login')->name('login');
 
 // Road map JSON data
 Route::get('road-map/data/{project}', [DataController::class, 'data'])

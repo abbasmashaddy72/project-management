@@ -25,7 +25,7 @@
                     @endif
                     <div class="divide-y divide-gray-200">
                         <a class="pb-2"
-                            href="{{ route('filament.admin.resources.sites.edit', ['record' => $site->id]) }}">
+                            href="{{ route('filament.admin.resources.sites.edit', ['record' => $site->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]) }}">
                             <h3 class="text-xl font-bold">{{ $site->name }}</h3>
                             <span class="text-sm text-gray-400">{{ $site->url }}</span>
                         </a>

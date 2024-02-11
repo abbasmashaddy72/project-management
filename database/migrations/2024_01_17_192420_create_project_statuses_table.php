@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('color')->default('#cecece');
             $table->boolean('is_default')->default(false);
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -38,12 +38,7 @@ class ActivitySeeder extends Seeder
     public function run()
     {
         foreach ($this->data as $item) {
-            // Merge team_id into $item
-            $itemWithTeamId = array_merge($item, ['team_id' => 1]);
-
-            Activity::firstOrCreate(
-                $itemWithTeamId // Conditions and values
-            );
+            Activity::firstOrCreate($item);
         }
     }
 }

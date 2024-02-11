@@ -8,7 +8,6 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\TicketStatus;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TicketStatusResource\Pages;
 
 class TicketStatusResource extends Resource
@@ -19,10 +18,7 @@ class TicketStatusResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return static::getModel()::query();
-    }
+    protected static bool $isScopedToTenant = false;
 
     public static function getNavigationLabel(): string
     {

@@ -62,9 +62,9 @@ class TeamMembers extends Component implements HasActions, HasTable, HasForms
     {
         return $table
             ->query(
-                User::query()
-                    ->join('team_user', 'users.id', '=', 'team_user.user_id')
-                    ->where('team_user.team_id', Filament::getTenant()->id)
+                User::query()->whereHas('teams', function ($query) {
+                    $query->where('team_id', Filament::getTenant()->id);
+                })
             )
             ->columns([
                 TextColumn::make('name'),

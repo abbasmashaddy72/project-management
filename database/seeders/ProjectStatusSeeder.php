@@ -38,12 +38,7 @@ class ProjectStatusSeeder extends Seeder
     public function run()
     {
         foreach ($this->data as $item) {
-            // Merge team_id into $item
-            $itemWithTeamId = array_merge($item, ['team_id' => 1]);
-
-            ProjectStatus::firstOrCreate(
-                $itemWithTeamId // Conditions and values
-            );
+            ProjectStatus::firstOrCreate($item);
         }
     }
 }

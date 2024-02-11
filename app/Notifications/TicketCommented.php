@@ -60,7 +60,7 @@ class TicketCommented extends Notification implements ShouldQueue
             ->line(__('See more details of this ticket by clicking on the button below:'))
             ->action(
                 __('View details'),
-                route('filament.resources.tickets.share', $this->ticketComment->ticket->code)
+                route('filament.resources.tickets.share', ['ticket' => $this->ticketComment->ticket->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id])
             );
     }
 
@@ -76,12 +76,12 @@ class TicketCommented extends Notification implements ShouldQueue
                 )
             )
             ->icon('heroicon-o-ticket')
-            ->body(fn() => __('by :name', ['name' => $this->ticketComment->user->name]))
+            ->body(fn () => __('by :name', ['name' => $this->ticketComment->user->name]))
             ->actions([
                 Action::make('view')
                     ->link()
                     ->icon('heroicon-s-eye')
-                    ->url(fn() => route('filament.resources.tickets.share', $this->ticketComment->ticket->code)),
+                    ->url(fn () => route('filament.resources.tickets.share', ['ticket' => $this->ticketComment->ticket->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id])),
             ])
             ->getDatabaseMessage();
     }

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->dateTime('ends_at');
             $table->longText('description')->nullable();
             $table->foreignId('project_id')->constrained('projects');
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('ended_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

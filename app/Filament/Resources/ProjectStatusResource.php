@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProjectStatusResource\Pages;
-use App\Models\ProjectStatus;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\ProjectStatus;
+use Filament\Resources\Resource;
+use App\Filament\Resources\ProjectStatusResource\Pages;
 
 class ProjectStatusResource extends Resource
 {
@@ -17,6 +17,8 @@ class ProjectStatusResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?int $navigationSort = 1;
+
+    protected static bool $isScopedToTenant = false;
 
     public static function getNavigationLabel(): string
     {

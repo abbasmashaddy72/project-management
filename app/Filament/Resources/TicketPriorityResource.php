@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketPriorityResource\Pages;
-use App\Models\TicketPriority;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\TicketPriority;
+use Filament\Resources\Resource;
+use App\Filament\Resources\TicketPriorityResource\Pages;
 
 class TicketPriorityResource extends Resource
 {
@@ -17,6 +17,8 @@ class TicketPriorityResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
 
     protected static ?int $navigationSort = 4;
+
+    protected static bool $isScopedToTenant = false;
 
     public static function getNavigationLabel(): string
     {

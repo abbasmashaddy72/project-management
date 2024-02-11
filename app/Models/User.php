@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Panel;
 use Ramsey\Uuid\Uuid;
 use Laravel\Sanctum\HasApiTokens;

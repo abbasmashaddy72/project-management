@@ -40,4 +40,14 @@ class Team extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function sites(): HasMany
+    {
+        return $this->hasMany(Site::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'team_user', 'team_id', 'user_id')->using(Member::class);
+    }
 }

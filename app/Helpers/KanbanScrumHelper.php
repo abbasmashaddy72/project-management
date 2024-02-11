@@ -155,13 +155,13 @@ trait KanbanScrumHelper
     public function recordUpdated(int $record, int $newIndex, int $newStatus): void
     {
         $ticket = Ticket::find($record);
-        if (!$ticket){
-    return;} 
-            $ticket->order = $newIndex;
-            $ticket->status_id = $newStatus;
-            $ticket->save();
-            Filament::notify('success', __('Ticket updated'));
-        
+        if (!$ticket) {
+            return;
+        }
+        $ticket->order = $newIndex;
+        $ticket->status_id = $newStatus;
+        $ticket->save();
+        Filament::notify('success', __('Ticket updated'));
     }
 
     public function isMultiProject(): bool
@@ -196,7 +196,7 @@ trait KanbanScrumHelper
     protected function kanbanHeading(): string|Htmlable
     {
         $heading = '<div class="flex flex-col w-full gap-1">';
-        $heading .= '<a href="' . route('filament.admin.pages.board') . '"
+        $heading .= '<a href="' . route('filament.admin.pages.board', ['tenant' => \Filament\Facades\Filament::getTenant()->id]) . '"
                             class="text-xs font-medium text-primary-500 hover:underline">';
         $heading .= __('Back to board');
         $heading .= '</a>';
@@ -240,30 +240,29 @@ trait KanbanScrumHelper
         if (!$this->project?->currentSprint) {
             return null;
         }
-            return new HtmlString(
-                '<div class="flex flex-col w-full gap-1">'
-                    . '<div class="flex items-center w-full gap-2">'
-                    . '<span class="px-2 py-1 text-sm text-white rounded bg-danger-500">'
-                    . $this->project->currentSprint->name
+        return new HtmlString(
+            '<div class="flex flex-col w-full gap-1">'
+                . '<div class="flex items-center w-full gap-2">'
+                . '<span class="px-2 py-1 text-sm text-white rounded bg-danger-500">'
+                . $this->project->currentSprint->name
+                . '</span>'
+                . '<span class="text-xs text-gray-400">'
+                . __('Started at:') . ' ' . $this->project->currentSprint->started_at->format(__('Y-m-d')) . ' - '
+                . __('Ends at:') . ' ' . $this->project->currentSprint->ends_at->format(__('Y-m-d')) . ' - '
+                . ($this->project->currentSprint->remaining ?
+                    (
+                        __('Remaining:') . ' ' . $this->project->currentSprint->remaining . ' ' . __('days'))
+                    : ''
+                )
+                . '</span>'
+                . '</div>'
+                . ($this->project->nextSprint ? '<span class="text-xs font-medium text-primary-500">'
+                    . __('Next sprint:') . ' ' . $this->project->nextSprint->name . ' - '
+                    . __('Starts at:') . ' ' . $this->project->nextSprint->starts_at->format(__('Y-m-d'))
+                    . ' (' . __('in') . ' ' . $this->project->nextSprint->starts_at->diffForHumans() . ')'
                     . '</span>'
-                    . '<span class="text-xs text-gray-400">'
-                    . __('Started at:') . ' ' . $this->project->currentSprint->started_at->format(__('Y-m-d')) . ' - '
-                    . __('Ends at:') . ' ' . $this->project->currentSprint->ends_at->format(__('Y-m-d')) . ' - '
-                    . ($this->project->currentSprint->remaining ?
-                        (
-                            __('Remaining:') . ' ' . $this->project->currentSprint->remaining . ' ' . __('days'))
-                        : ''
-                    )
-                    . '</span>'
-                    . '</div>'
-                    . ($this->project->nextSprint ? '<span class="text-xs font-medium text-primary-500">'
-                        . __('Next sprint:') . ' ' . $this->project->nextSprint->name . ' - '
-                        . __('Starts at:') . ' ' . $this->project->nextSprint->starts_at->format(__('Y-m-d'))
-                        . ' (' . __('in') . ' ' . $this->project->nextSprint->starts_at->diffForHumans() . ')'
-                        . '</span>'
-                        . '</span>' : '')
-                    . '</div>'
-            );
-        
+                    . '</span>' : '')
+                . '</div>'
+        );
     }
 }

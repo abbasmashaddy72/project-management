@@ -8,7 +8,6 @@ use App\Models\Activity;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ActivityResource\Pages;
 
 class ActivityResource extends Resource
@@ -19,10 +18,7 @@ class ActivityResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return static::getModel()::query();
-    }
+    protected static bool $isScopedToTenant = false;
 
     public static function getNavigationLabel(): string
     {

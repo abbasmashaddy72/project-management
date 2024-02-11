@@ -8,7 +8,6 @@ use Filament\Forms\Form;
 use App\Models\TicketType;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
 use App\Filament\Resources\TicketTypeResource\Pages;
@@ -21,10 +20,7 @@ class TicketTypeResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return static::getModel()::query();
-    }
+    protected static bool $isScopedToTenant = false;
 
     public static function getNavigationLabel(): string
     {
@@ -58,7 +54,12 @@ class TicketTypeResource extends Resource
 
                         IconPicker::make('icon')
                             ->label(__('Type icon'))
-                            ->required(),
+                            ->required()
+                            ->columns([
+                                'default' => 1,
+                                'lg' => 3,
+                                '2xl' => 5,
+                            ]),
 
                         Forms\Components\Checkbox::make('is_default')
                             ->label(__('Default type'))

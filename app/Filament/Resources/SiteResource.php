@@ -46,6 +46,7 @@ class SiteResource extends Resource
         return $form
             ->schema([
                 TextInput::make('url')
+                    ->url()
                     ->unique(ignorable: fn (?SiteVigilanceSite $record): ?SiteVigilanceSite => $record)
                     ->required(),
                 TextInput::make('name')

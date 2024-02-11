@@ -135,8 +135,11 @@ class SprintsRelationManager extends RelationManager
                             ->whereNotNull('started_at')
                             ->whereNull('ended_at')
                             ->update(['ended_at' => $now]);
+
                         $record->started_at = $now;
+                        $record->ended_at = null; // Reset the ended_at field
                         $record->save();
+
                         Notification::make('sprint_started')
                             ->success()
                             ->body(__('Sprint started at') . ' ' . $now)
@@ -145,15 +148,13 @@ class SprintsRelationManager extends RelationManager
                                     ->color('secondary')
                                     ->button()
                                     ->label(
-                                        fn ()
-                                        => ($record->project->type === 'scrum' ? __('Scrum board') : __('Kanban board'))
+                                        fn () => ($record->project->type === 'scrum' ? __('Scrum board') : __('Kanban board'))
                                     )
                                     ->url(function () use ($record) {
                                         if ($record->project->type === 'scrum') {
-                                            return route('filament.admin.pages.scrum/{project}', ['project' => $record->project->id]);
+                                            return route('filament.admin.pages.scrum/{project}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                                         }
-                                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id]);
-                                        
+                                        return route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                                     }),
                             ])
                             ->send();
@@ -171,15 +172,15 @@ class SprintsRelationManager extends RelationManager
                         $record->ended_at = $now;
                         $record->save();
 
-                        Notification::make('sprint_started')
+                        Notification::make('sprint_ended') // Adjust the notification key to 'sprint_ended'
                             ->success()
                             ->body(__('Sprint ended at') . ' ' . $now)
                             ->send();
                     }),
 
+
                 Tables\Actions\Action::make('tickets')
                     ->label(__('Tickets'))
-                    ->color('secondary')
                     ->icon('heroicon-o-ticket')
                     ->mountUsing(fn (Forms\ComponentContainer $form, Sprint $record) => $form->fill([
                         'tickets' => $record->tickets->pluck('id')->toArray()
@@ -187,7 +188,7 @@ class SprintsRelationManager extends RelationManager
                     ->modalHeading(fn ($record) => $record->name . ' - ' . __('Associated tickets'))
                     ->form([
                         Forms\Components\Placeholder::make('info')
-                            ->disableLabel()
+                            ->label('')
                             ->extraAttributes([
                                 'class' => 'text-danger-500 text-xs'
                             ])
