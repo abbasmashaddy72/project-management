@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('sprints', function (Blueprint $table) {
             $table->id();
             $table->foreignId('epic_id')->nullable()->constrained('epics');
+            $table->foreignId('project_id')->constrained('projects');
             $table->string('name');
             $table->dateTime('starts_at');
-            $table->dateTime('ends_at');
-            $table->longText('description')->nullable();
-            $table->foreignId('project_id')->constrained('projects');
             $table->dateTime('started_at')->nullable();
+            $table->dateTime('ends_at');
             $table->dateTime('ended_at')->nullable();
+            $table->longText('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

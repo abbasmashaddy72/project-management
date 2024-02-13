@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             ]);
             $user->assignRole('super_admin');
         } else {
-            $users = User::factory()->count(rand(100, 300))->create();
+            $users = User::factory()->count(1)->create();
 
             $superAdmin = $users->first();
             $superAdmin->update([

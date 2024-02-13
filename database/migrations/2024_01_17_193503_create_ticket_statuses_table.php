@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('ticket_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained('projects');
-            $table->integer('order')->default(1);
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
             $table->string('color')->default('#cecece');
+            $table->integer('order')->default(1);
             $table->boolean('is_default')->default(false);
             $table->softDeletes();
             $table->timestamps();

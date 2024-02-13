@@ -20,18 +20,17 @@ class Ticket extends Model
 
     protected $fillable = [
         'name',
-        'content',
-        'owner_id',
-        'responsible_id',
-        'status_id',
-        'project_id',
         'code',
         'order',
-        'type_id',
-        'priority_id',
+        'content',
+        'issue_link',
+        'pr_link',
         'estimation',
-        'epic_id',
-        'sprint_id'
+        'attachments',
+    ];
+
+    protected $casts = [
+        'attachments' => 'array',
     ];
 
     public static function boot()

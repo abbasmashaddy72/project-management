@@ -21,11 +21,10 @@ class ExceptionLog extends Model implements SiteVigilanceExceptionLog
         'type',
         'file',
         'status',
+        'line',
         'trace',
         'request',
-        'line',
         'thrown_at',
-        'exception_log_group_id',
     ];
 
     protected $casts = [

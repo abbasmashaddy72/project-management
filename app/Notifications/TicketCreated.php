@@ -57,7 +57,7 @@ class TicketCreated extends Notification implements ShouldQueue
             ->line('- ' . __('Type:') . ' ' . $this->ticket->type->name)
             ->line('- ' . __('Priority:') . ' ' . $this->ticket->priority->name)
             ->line(__('See more details of this ticket by clicking on the button below:'))
-            ->action(__('View details'), route('filament.resources.tickets.share', $this->ticket->code));
+            ->action(__('View details'), route('filament.resources.tickets.share', ['ticket' => $this->ticket->code, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
     }
 
     public function toDatabase(User $notifiable): array
@@ -65,12 +65,12 @@ class TicketCreated extends Notification implements ShouldQueue
         return FilamentNotification::make()
             ->title(__('New ticket created'))
             ->icon('heroicon-o-ticket')
-            ->body(fn() => $this->ticket->name)
+            ->body(fn () => $this->ticket->name)
             ->actions([
                 Action::make('view')
                     ->link()
                     ->icon('heroicon-s-eye')
-                    ->url(fn() => route('filament.resources.tickets.share', $this->ticket->code)),
+                    ->url(fn () => route('filament.resources.tickets.share', ['ticket' => $this->ticket->code, 'tenant' => \Filament\Facades\Filament::getTenant()->id])),
             ])
             ->getDatabaseMessage();
     }

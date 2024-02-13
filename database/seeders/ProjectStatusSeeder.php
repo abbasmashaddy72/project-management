@@ -38,6 +38,7 @@ class ProjectStatusSeeder extends Seeder
     public function run()
     {
         foreach ($this->data as $item) {
+            $item['team_id'] = 1;
             ProjectStatus::firstOrCreate($item);
         }
     }

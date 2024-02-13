@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('owner_id')->constrained('users');
             $table->foreignId('status_id')->constrained('project_statuses');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('ticket_prefix')->unique();
             $table->string('type')->default('kanban');
             $table->string('status_type')->default('default');
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

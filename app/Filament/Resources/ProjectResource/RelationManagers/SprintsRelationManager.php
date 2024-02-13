@@ -223,7 +223,10 @@ class SprintsRelationManager extends RelationManager
                         $tickets = $data['tickets'];
                         Ticket::where('sprint_id', $record->id)->update(['sprint_id' => null]);
                         Ticket::whereIn('id', $tickets)->update(['sprint_id' => $record->id]);
-                        Filament::notify('success', __('Tickets associated with sprint'));
+                        Notification::make()
+                            ->title(__('Tickets associated with sprint'))
+                            ->success()
+                            ->send();
                     }),
 
                 Tables\Actions\EditAction::make(),

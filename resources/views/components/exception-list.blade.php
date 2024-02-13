@@ -6,32 +6,37 @@
     @endif
 
     <ul
-        class="overflow-hidden bg-white border divide-y divide-gray-200 shadow dark:divide-gray-600 dark:border-gray-600 sm:rounded-md dark:bg-gray-900">
+        class="overflow-hidden bg-white border divide-y divide-gray-200 rounded shadow dark:divide-gray-600 dark:border-gray-600 dark:bg-gray-900">
         @foreach ($exceptions as $exception)
             <li class="relative">
                 <button type="button" class="w-full p-6 text-left focus:outline-none"
-                    :class="selected === {{ $loop->index }} ? '!bg-primary-800 dark:bg-primary-100' :
-                        'bg-white hover:bg-primary-50 dark:bg-gray-900 dark:hover:bg-primary-800'"
+                    :class="selected === {{ $loop->index }} ? 'bg-primary-600 dark:bg-gray-950' :
+                        'bg-white hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-700'"
                     @click="selected !== {{ $loop->index }} ? selected = {{ $loop->index }} : selected = null">
+
                     <div class="truncate">
                         <div class="flex justify-between text-sm"
-                            :class="selected === {{ $loop->index }} ? 'text-gray-400 dark:text-gray-300' :
-                                'text-gray-500 dark:text-gray-400'">
+                            :class="selected === {{ $loop->index }} ? 'text-white' :
+                                'text-gray-600 dark:text-gray-400'">
+
                             <p class="font-medium truncate">{{ $exception->type }}</p>
-                            <p>{{ $exception->thrown_at->toCookieString() }}</p>
+                            <p>{{ $exception->thrown_at->toCookieString() }}
+                            </p>
                         </div>
+
                         <div class="flex mt-2">
                             <p class="text-xl font-bold"
                                 :class="selected === {{ $loop->index }} ? 'text-white' : 'text-gray-900 dark:text-gray-100'">
                                 {{ $exception->message }}
                             </p>
                         </div>
+
                         <p class="mt-2 text-sm font-medium truncate"
-                            :class="selected === {{ $loop->index }} ? 'text-gray-400' : 'text-gray-500 dark:text-gray-400'">
-                            {{ $exception->file }}</p>
+                            :class="selected === {{ $loop->index }} ? 'text-white' : 'text-gray-600 dark:text-gray-400'">
+                            {{ $exception->file }}
+                        </p>
                     </div>
                 </button>
-
 
                 <div class="relative overflow-hidden max-h-0 transition-all dark:bg-gray-900 !duration-700"
                     style="" x-ref="container{{ $loop->index }}"
@@ -66,11 +71,12 @@
 
                         <dl class="grid grid-cols-1 mt-4 gap-x-4 gap-y-8 sm:grid-cols-2">
 
-                            <div class="sm:col-span-2">
+                            {{-- <div class="sm:col-span-2">
                                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">URL</dt>
                                 <dd class="mt-1 text-sm text-gray-900 dark:text-gray-200">
+                                    @dd($exception->request())
                                     {{ $exception->request['url'] }}</dd>
-                            </div>
+                            </div> --}}
 
                             @if (isset($exception->request['params']) && count($exception->request['params']) > 0)
                                 <div class="sm:col-span-2">

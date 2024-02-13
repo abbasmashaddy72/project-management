@@ -4,20 +4,17 @@ namespace App\Livewire\Ticket;
 
 use App\Models\Ticket;
 use Livewire\Component;
-use Filament\Facades\Filament;
+use Filament\Forms\Form;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Tables\Concerns\InteractsWithTable;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Livewire\WithFileUploads;
 
-class Attachments extends Component implements HasForms, HasTable
+class Attachments extends Component implements HasForms
 {
-    use InteractsWithForms, InteractsWithTable;
+    use InteractsWithForms, WithFileUploads;
 
     public Ticket $ticket;
 
@@ -35,30 +32,24 @@ class Attachments extends Component implements HasForms, HasTable
         return view('livewire.ticket.attachments');
     }
 
-    protected function getFormModel(): Model|string|null
+    public function form(Form $form): Form
     {
-        return $this->ticket;
+        return $form
+            ->schema([
+                CuratorPicker::make('attachments')
+                    ->helperText(__('Here you can attach all files needed for this ticket'))
+                    ->multiple()
+                    ->tenantAware()
+                    ->listDisplay()
+            ])
+            ->statePath('data');
     }
 
-    protected function getFormSchema(): array
+    public function upload(): void
     {
-        return [
-            CuratorPicker::make('attachments')
-                ->label(__('Attachments'))
-                ->hint(__('Important: If a file has the same name, it will be replaced'))
-                ->helperText(__('Here you can attach all files needed for this ticket'))
-                ->multiple()
-                ->tenantAware()
-                ->listDisplay()
-        ];
-    }
+        $this->ticket->update($this->form->getState());
 
-    public function perform(): void
-    {
-        $this->form->getState();
-        $this->form->fill();
         $this->emit('filesUploaded');
-        Filament::notify('success', __('Ticket attachments saved'));
     }
 
     public function filesUploaded(): void
@@ -66,39 +57,11 @@ class Attachments extends Component implements HasForms, HasTable
         $this->ticket->refresh();
     }
 
-    protected function getTableQuery(): Builder
+    protected function getSavedNotification(): ?Notification
     {
-        return $this->ticket->media()->getQuery();
-    }
-
-    protected function getTableColumns(): array
-    {
-        return [
-            TextColumn::make('name')
-                ->label(__('Name'))
-                ->sortable()
-                ->searchable(),
-
-            TextColumn::make('human_readable_size')
-                ->label(__('Size'))
-                ->sortable()
-                ->searchable(),
-
-            TextColumn::make('mime_type')
-                ->label(__('Mime type'))
-                ->sortable()
-                ->searchable(),
-        ];
-    }
-
-    protected function getTableActions(): array
-    {
-        return [
-            DeleteAction::make()
-                ->action(function ($record) {
-                    $record->delete();
-                    Filament::notify('success', __('Ticket attachment deleted'));
-                })
-        ];
+        return Notification::make()
+            ->title(__('Ticket attachments saved'))
+            ->success()
+            ->send();
     }
 }

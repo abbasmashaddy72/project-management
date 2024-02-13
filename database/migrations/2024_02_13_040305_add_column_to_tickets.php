@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ticket_hours', function (Blueprint $table) {
-            $table->foreignId('activity_id')->after('user_id')->nullable()->constrained('activities');
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->longText('attachments')->after('estimation')->nullable();
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ticket_hours', function (Blueprint $table) {
-            $table->dropForeign(['activity_id']);
-            $table->dropColumn('activity_id');
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->dropColumn('attachments');
         });
     }
 };

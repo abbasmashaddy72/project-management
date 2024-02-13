@@ -19,15 +19,14 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('type_id')->constrained('ticket_types');
             $table->foreignId('priority_id')->constrained('ticket_priorities');
-            $table->integer('order')->default(0);
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
             $table->string('code');
+            $table->integer('order')->default(0);
             $table->longText('content');
             $table->string('issue_link')->nullable();
             $table->string('pr_link')->nullable();
             $table->float('estimation')->nullable();
-            $table->longText('attachments')->nullable();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -33,6 +33,7 @@ class TicketPrioritySeeder extends Seeder
     public function run()
     {
         foreach ($this->data as $item) {
+            $item['team_id'] = 1;
             TicketPriority::firstOrCreate($item);
         }
     }

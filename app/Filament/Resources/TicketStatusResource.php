@@ -18,8 +18,6 @@ class TicketStatusResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static bool $isScopedToTenant = false;
-
     public static function getNavigationLabel(): string
     {
         return __('Ticket statuses');

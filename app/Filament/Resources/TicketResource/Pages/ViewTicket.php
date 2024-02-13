@@ -97,8 +97,8 @@ class ViewTicket extends ViewRecord implements HasForms
                 ->color('warning')
                 ->modalWidth('sm')
                 ->modalHeading(__('Log worked time'))
-                ->modalSubheading(__('Use the following form to add your worked time in this ticket.'))
-                ->modalButton(__('Log'))
+                ->modalDescription(__('Use the following form to add your worked time in this ticket.'))
+                ->modalSubmitActionLabel(__('Log'))
                 ->visible(fn () => in_array(
                     auth()->user()->id,
                     [$this->record->owner_id, $this->record->responsible_id]
@@ -123,6 +123,7 @@ class ViewTicket extends ViewRecord implements HasForms
                     $value = $data['time'];
                     $comment = $data['comment'];
                     TicketHour::create([
+                        'team_id' => \Filament\Facades\Filament::getTenant()->id,
                         'ticket_id' => $this->record->id,
                         'activity_id' => $data['activity_id'],
                         'user_id' => auth()->user()->id,
@@ -193,7 +194,9 @@ class ViewTicket extends ViewRecord implements HasForms
             ->project
             ->users()
             ->where('users.id', auth()->user()->id)
-            ->where('role', 'administrator')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'super_admin');
+            })
             ->count() != 0;
     }
 

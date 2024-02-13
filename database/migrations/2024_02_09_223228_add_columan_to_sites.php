@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sites', function (Blueprint $table) {
-            $table->string('down_for_maintenance')->nullable()->before('down_for_maintenance_at');
-            $table->string('api_token_enabled')->nullable()->before('api_token');
+            $table->boolean('down_for_maintenance')->nullable()->before('down_for_maintenance_at');
+            $table->boolean('api_token_enabled')->nullable()->before('api_token');
         });
     }
 

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Support\Str;
 use App\Models\Site;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Team;
+use Illuminate\Support\Str;
 use App\ValueObjects\RequestDuration;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SiteFactory extends Factory
 {
@@ -15,11 +16,12 @@ class SiteFactory extends Factory
     {
         return [
             'url' => $this->faker->url(),
-            'name' => $this->faker->sentence(),
+            'name' => $this->faker->words(2, true),
             'max_request_duration_ms' => RequestDuration::from(1000),
             'uptime_check_enabled' => true,
             'ssl_certificate_check_enabled' => true,
             'api_token' => Str::random(60),
+            'team_id' => Team::first()->id,
         ];
     }
 }

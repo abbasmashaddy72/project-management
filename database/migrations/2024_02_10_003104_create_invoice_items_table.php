@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('invoice_id')->constrained('invoices')->cascadeOnDelete();
+            $table->foreignId('sprint_id')->nullable()->constrained('sprints')->cascadeOnDelete();
             $table->string('description');
-            $table->integer('duration_in_seconds');
+            $table->integer('duration_in_hours');
             $table->integer('amount');
             $table->string('currency', 3);
-            $table->foreignId('sprint_id')->nullable()->constrained('sprints')->cascadeOnDelete();
-            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
-            $table->foreignId('invoice_id')->constrained('invoices')->cascadeOnDelete();
             $table->timestamps();
         });
     }

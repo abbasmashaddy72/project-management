@@ -16,8 +16,6 @@ class Project extends Model
     use HasFactory, SoftDeletes, HasTenantScope;
 
     protected $fillable = [
-        'status_id',
-        'owner_id',
         'name',
         'description',
         'ticket_prefix',
@@ -37,7 +35,7 @@ class Project extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'project_users', 'project_id', 'user_id')->withPivot(['role']);
+        return $this->belongsToMany(User::class, 'project_users', 'project_id', 'user_id');
     }
 
     public function tickets(): HasMany

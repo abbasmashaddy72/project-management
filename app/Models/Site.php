@@ -29,6 +29,7 @@ class Site extends Model implements SiteVigilanceSite
         'uptime_check_enabled',
         'ssl_certificate_check_enabled',
         'max_request_duration_ms',
+        'down_for_maintenance',
         'down_for_maintenance_at',
         'api_token_enabled',
         'api_token',
@@ -39,6 +40,8 @@ class Site extends Model implements SiteVigilanceSite
         'down_for_maintenance_at' => 'immutable_datetime',
         'uptime_check_enabled' => 'boolean',
         'ssl_certificate_check_enabled' => 'boolean',
+        'down_for_maintenance' => 'boolean',
+        'api_token_enabled' => 'boolean',
     ];
 
     public function scopeWhereUptimeCheckEnabled(Builder $query): Builder

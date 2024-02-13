@@ -18,7 +18,6 @@ class ExceptionLogGroup extends Model implements SiteVigilanceExceptionLogGroup
     use HasFactory, HasTenantScope;
 
     protected $fillable = [
-        'site_id',
         'message',
         'type',
         'file',

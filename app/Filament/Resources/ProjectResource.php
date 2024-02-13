@@ -15,6 +15,7 @@ use Filament\Facades\Filament;
 use App\Models\ProjectFavorite;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
+use Filament\Notifications\Notification;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 
@@ -204,7 +205,10 @@ class ProjectResource extends Resource
                                 'user_id' => auth()->user()->id
                             ]);
                         }
-                        Filament::notify('success', __('Project updated'));
+                        Notification::make()
+                            ->title(__('Project updated'))
+                            ->success()
+                            ->send();
                     }),
 
                 Tables\Actions\ViewAction::make(),

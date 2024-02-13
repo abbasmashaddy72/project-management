@@ -20,7 +20,18 @@ class UptimeCheck extends Model implements SiteVigilanceUptimeCheck
     use HasFactory;
 
     protected $fillable = [
-        'site_id',
+        'look_for_string',
+        'status',
+        'check_failure_reason',
+        'check_times_failed_in_a_row',
+        'status_last_change_date',
+        'last_check_date',
+        'check_failed_event_fired_on_date',
+        'request_duration_ms',
+        'check_method',
+        'check_payload',
+        'check_additional_headers',
+        'check_response_checker',
     ];
 
     protected $casts = [

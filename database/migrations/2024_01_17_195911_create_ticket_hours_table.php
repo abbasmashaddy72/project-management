@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ticket_id')->constrained('tickets');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->float('value');
             $table->longText('comment')->nullable();
             $table->timestamps();

@@ -18,17 +18,16 @@ class Profile extends MyProfileComponent
             if (!$pendingEmail) {
                 return '';
             }
-                return new HtmlString(
-                    '<span>' .
-                        __('You have a pending email verification for :email.', [
-                            'email' => $pendingEmail
-                        ])
-                        . '</span> <a wire:click="resendPending"
+            return new HtmlString(
+                '<span>' .
+                    __('You have a pending email verification for :email.', [
+                        'email' => $pendingEmail
+                    ])
+                    . '</span> <a wire:click="resendPending"
                                    class="hover:cursor-pointer hover:text-primary-500 hover:underline">
                     ' . __('Click here to resend') . '
                 </a>'
-                );
-            
+            );
         });
         return $fields;
     }

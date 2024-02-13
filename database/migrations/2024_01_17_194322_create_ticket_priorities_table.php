@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ticket_priorities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
             $table->string('color')->default('#cecece');
             $table->boolean('is_default')->default(false);

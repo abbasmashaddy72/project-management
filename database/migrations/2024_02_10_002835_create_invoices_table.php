@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
             $table->string('summary')->nullable();
             $table->integer('total');
             $table->integer('subtotal');
@@ -20,9 +23,6 @@ return new class extends Migration
             $table->string('currency');
             $table->date('start');
             $table->date('end');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
-            $table->foreignId('client_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->date('issued_on')->nullable();
             $table->date('due_on')->nullable();
             $table->date('paid_on')->nullable();

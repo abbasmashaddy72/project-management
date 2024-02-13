@@ -18,8 +18,7 @@ class SslCertificateCheckFactory extends Factory
             'issuer' => $this->faker->word(),
             'expiration_date' => now()->addDays(15),
             'check_failure_reason' => null,
-
-            'site_id' => fn () => Site::factory(),
+            'site_id' => Site::pluck('id')->random(),
         ];
     }
 }

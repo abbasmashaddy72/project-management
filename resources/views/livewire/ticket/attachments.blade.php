@@ -1,16 +1,12 @@
-<div class="w-full flex flex-col gap-5">
-    <form wire:submit.prevent="perform" class="w-full">
+<div class="flex flex-col w-full gap-5" wire:key='attachments'>
+    <x-filament-panels::form wire:submit="upload">
         {{ $this->form }}
 
-        <button type="submit" wire:loading.prop="disabled"
-                class="px-3 py-2 bg-primary-500 disabled:bg-gray-300 hover:bg-primary-600 text-white rounded mt-3">
+        <x-filament::button type="submit" class="mt-2" wire:loading.prop="disabled">
             {{ __('Upload') }}
-        </button>
-    </form>
+        </x-filament::button>
+    </x-filament-panels::form>
 
-    <div class="w-full flex flex-col gap-1 pt-3">
-        <div class="w-full">
-            {{ $this->table }}
-        </div>
-    </div>
+    <x-filament-actions::modals />
+    <x-curator::modals.modal />
 </div>

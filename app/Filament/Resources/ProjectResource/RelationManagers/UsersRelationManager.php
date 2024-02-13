@@ -2,12 +2,11 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class UsersRelationManager extends RelationManager
 {
@@ -28,25 +27,13 @@ class UsersRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('User full name'))
+                    ->label(__('User Name'))
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pivot.role')
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(str_replace('_', ' ', $state)))
                     ->badge()
-                    ->label(__('User role'))
-                    ->color(function (string $state): string {
-                        $colors = config('system.projects.affectations.roles.colors');
-
-                        foreach ($colors as $key => $color) {
-                            if ($state === $key) {
-                                return $color;
-                            }
-                        }
-
-                        return 'default';
-                    })
-                    ->searchable()
-                    ->sortable(),
             ])
             ->filters([
                 //
@@ -55,25 +42,17 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
+                    ->recordSelectSearchColumns(['name', 'email'])
+                    ->recordTitle(fn ($record) => $record->name . ', ' . $record->roles->pluck('name')->first())
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
                         $action->getRecordSelect(),
-                        Forms\Components\Select::make('role')
-                            ->label(__('User role'))
-                            ->searchable()
-                            ->default(fn () => config('system.projects.affectations.roles.default'))
-                            ->options(fn () => config('system.projects.affectations.roles.list'))
-                            ->required(),
                     ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->modalWidth('xl')
                     ->form(fn (Tables\Actions\EditAction $action): array => [
-                        Forms\Components\Select::make('role')
-                            ->label(__('User role'))
-                            ->searchable()
-                            ->options(fn () => config('system.projects.affectations.roles.list'))
-                            ->required(),
+                        $action->getRecordSelect(),
                     ]),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\DetachAction::make(),

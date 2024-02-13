@@ -2,20 +2,21 @@
 
 namespace App\Helpers;
 
-use App\Models\Project;
-use App\Models\Ticket;
-use App\Models\TicketPriority;
-use App\Models\TicketStatus;
-use App\Models\TicketType;
 use App\Models\User;
+use App\Models\Ticket;
+use App\Models\Project;
+use App\Models\TicketType;
+use App\Models\TicketStatus;
+use App\Models\TicketPriority;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Forms\Components\Placeholder;
+use Illuminate\Contracts\Support\Htmlable;
 
 trait KanbanScrumHelper
 {
@@ -161,7 +162,10 @@ trait KanbanScrumHelper
         $ticket->order = $newIndex;
         $ticket->status_id = $newStatus;
         $ticket->save();
-        Filament::notify('success', __('Ticket updated'));
+        Notification::make()
+            ->title(__('Tickets updated'))
+            ->success()
+            ->send();
     }
 
     public function isMultiProject(): bool
@@ -217,7 +221,7 @@ trait KanbanScrumHelper
     protected function scrumHeading(): string|Htmlable
     {
         $heading = '<div class="flex flex-col w-full gap-1">';
-        $heading .= '<a href="' . route('filament.admin.pages.board') . '"
+        $heading .= '<a href="' . route('filament.admin.pages.board', ['tenant' => \Filament\Facades\Filament::getTenant()->id]) . '"
                             class="text-xs font-medium text-primary-500 hover:underline">';
         $heading .= __('Back to board');
         $heading .= '</a>';

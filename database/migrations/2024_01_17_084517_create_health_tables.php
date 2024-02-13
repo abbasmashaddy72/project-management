@@ -10,10 +10,9 @@ return new class extends Migration
     public function up()
     {
         $tableName = EloquentHealthResultStore::getHistoryItemInstance()->getTable();
-    
+
         Schema::create($tableName, function (Blueprint $table) {
             $table->id();
-
             $table->string('check_name');
             $table->string('check_label');
             $table->string('status');
@@ -22,11 +21,10 @@ return new class extends Migration
             $table->json('meta');
             $table->timestamp('ended_at');
             $table->uuid('batch');
-
             $table->timestamps();
         });
-        
-        Schema::table($tableName, function(Blueprint $table) {
+
+        Schema::table($tableName, function (Blueprint $table) {
             $table->index('created_at');
             $table->index('batch');
         });

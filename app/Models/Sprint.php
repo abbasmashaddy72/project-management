@@ -16,11 +16,10 @@ class Sprint extends Model
     protected $fillable = [
         'name',
         'starts_at',
-        'ends_at',
-        'description',
-        'project_id',
         'started_at',
-        'ended_at'
+        'ends_at',
+        'ended_at',
+        'description',
     ];
 
     protected $casts = [

@@ -12,6 +12,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 
@@ -82,7 +83,10 @@ class EpicForm extends Component implements HasForms
         $this->epic->starts_at = $data['starts_at'];
         $this->epic->ends_at = $data['ends_at'];
         $this->epic->save();
-        Filament::notify('success', __('Epic successfully saved'));
+        Notification::make()
+            ->title(__('Epic successfully saved'))
+            ->success()
+            ->send();
         $this->cancel(true);
     }
 

@@ -18,8 +18,6 @@ class TicketPriorityResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
-    protected static bool $isScopedToTenant = false;
-
     public static function getNavigationLabel(): string
     {
         return __('Ticket priorities');

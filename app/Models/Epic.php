@@ -14,8 +14,6 @@ class Epic extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'project_id',
-        'parent_id',
         'name',
         'starts_at',
         'ends_at',

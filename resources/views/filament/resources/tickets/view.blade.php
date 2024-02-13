@@ -269,15 +269,13 @@
             @if ($tab === 'comments')
                 <form wire:submit.prevent="submitComment" class="pb-5">
                     {{ $this->form }}
-                    <button type="submit"
-                        class="px-3 py-2 mt-3 text-white rounded bg-primary-500 hover:bg-primary-600">
+                    <x-filament::button type="submit" class="mt-2" wire:loading.prop="disabled">
                         {{ __($selectedCommentId ? 'Edit comment' : 'Add comment') }}
-                    </button>
+                    </x-filament::button>
                     @if ($selectedCommentId)
-                        <button type="button" wire:click="cancelEditComment"
-                            class="px-3 py-2 mt-3 text-white rounded bg-warning-500 hover:bg-warning-600">
+                        <x-filament::button type="button" wire:click="cancelEditComment" color='danger'>
                             {{ __('Cancel') }}
-                        </button>
+                        </x-filament::button>
                     @endif
                 </form>
                 @foreach ($record->comments->sortByDesc('created_at') as $comment)
@@ -286,8 +284,8 @@
                         <div class="flex justify-between w-full">
                             <span class="flex items-center gap-1 text-sm text-gray-500">
                                 <span class="flex items-center gap-1 font-medium">
-                                    <x-user-avatar :user="$comment->user" />
-                                    {{ $comment->user->name }}
+                                    <x-user-avatar :user="$comment->user" class="w-6 h-6 rounded-full" />
+                                    <span>{{ $comment->user->name }}</span>
                                 </span>
                                 <span class="px-2 text-gray-400">|</span>
                                 {{ $comment->created_at->format('Y-m-d g:i A') }}
@@ -307,7 +305,7 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="w-full prose">
+                        <div class="w-full prose text-gray-700 dark:text-gray-300">
                             {!! $comment->content !!}
                         </div>
                     </div>

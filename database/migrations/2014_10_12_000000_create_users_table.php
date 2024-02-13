@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('contact_no');
+            $table->string('address');
+            $table->longText('details')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->uuid('creation_token')->nullable();

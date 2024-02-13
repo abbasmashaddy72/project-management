@@ -25,7 +25,7 @@ class ListExceptionLogGroups extends ListRecords
     {
         return fn (Model $record): string => route(
             'filament.admin.resources.exceptions.show',
-            ['record' => $record]
+            ['record' => $record, 'tenant' => \Filament\Facades\Filament::getTenant()->id]
         );
     }
 }

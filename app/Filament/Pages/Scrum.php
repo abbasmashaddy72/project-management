@@ -8,6 +8,7 @@ use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use App\Helpers\KanbanScrumHelper;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Scrum extends Page implements HasForms
@@ -50,7 +51,7 @@ class Scrum extends Page implements HasForms
                 ->visible(fn () => $this->project->currentSprint)
                 ->label(__('Manage sprints'))
                 ->color('primary')
-                ->url(route('filament.resources.projects.edit', $this->project)),
+                ->url(route('filament.admin.resources.projects.edit', ['record' => $this->project, 'tenant' => \Filament\Facades\Filament::getTenant()->id])),
 
             Action::make('refresh')
                 ->button()
@@ -59,7 +60,10 @@ class Scrum extends Page implements HasForms
                 ->color('secondary')
                 ->action(function () {
                     $this->getRecords();
-                    Filament::notify('success', __('Kanban board updated'));
+                    Notification::make()
+                        ->title(__('Kanban board updated'))
+                        ->success()
+                        ->send();
                 }),
         ];
     }
