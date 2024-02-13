@@ -21,6 +21,9 @@ class SiteFactory extends Factory
             'uptime_check_enabled' => true,
             'ssl_certificate_check_enabled' => true,
             'api_token' => Str::random(60),
+            'cpu_limit' => $this->faker->randomNumber(),
+            'ram_limit' => $this->faker->randomNumber(),
+            'disk_limit' => $this->faker->randomNumber(),
             'team_id' => Team::first()->id,
         ];
     }

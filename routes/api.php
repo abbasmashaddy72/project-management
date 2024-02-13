@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExceptionLogsController;
+use App\Http\Controllers\ServerMetricsController;
 use App\Repositories\ExceptionLogGroupRepository;
 
 /*
@@ -19,3 +19,5 @@ use App\Repositories\ExceptionLogGroupRepository;
 if (ExceptionLogGroupRepository::isEnabled()) {
     Route::post('/exceptions', ExceptionLogsController::class)->name('api.exceptions');
 }
+
+Route::post('/hardware', ServerMetricsController::class)->name('api.hardware');

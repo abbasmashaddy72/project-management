@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\ExceptionLog;
-use App\Models\ExceptionLogGroup;
 use App\Models\Site;
-use App\Models\SslCertificateCheck;
 use App\Models\UptimeCheck;
+use App\Models\ExceptionLog;
+use App\Models\ServerMetric;
 use Illuminate\Database\Seeder;
+use App\Models\ExceptionLogGroup;
+use App\Models\SslCertificateCheck;
 
 class DatabaseSeeder extends Seeder
 {
@@ -44,6 +45,7 @@ class DatabaseSeeder extends Seeder
             SslCertificateCheck::factory(10)->create();
             ExceptionLogGroup::factory(10)->create();
             ExceptionLog::factory(10)->create();
+            ServerMetric::factory(10)->create();
         }
     }
 }

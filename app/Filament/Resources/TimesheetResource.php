@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TimesheetResource\Pages;
-use App\Models\Activity;
-use App\Models\TicketHour;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\Activity;
+use Filament\Forms\Form;
+use App\Models\TicketHour;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Contracts\TimesheetService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
-use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
+use App\Filament\Resources\TimesheetResource\Pages;
 
 class TimesheetResource extends Resource
 {
@@ -66,20 +68,10 @@ class TimesheetResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label(__('Owner'))
+                Tables\Columns\TextColumn::make('ticket.project.name')
+                    ->label(__('Project Name'))
                     ->sortable()
-                    ->formatStateUsing(fn ($record) => view('components.user-avatar', ['user' => $record->user]))
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('value')
-                    ->label(__('Hours'))
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('comment')
-                    ->label(__('Comment'))
-                    ->limit(50)
-                    ->sortable()
+                    ->description(fn (TicketHour $record): ?string => $record->comment)
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('activity.name')
@@ -90,9 +82,22 @@ class TimesheetResource extends Resource
                     ->label(__('Ticket'))
                     ->sortable(),
 
+                Tables\Columns\TextColumn::make('value')
+                    ->label(__('Hours'))
+                    ->sortable()
+                    ->summarize(Sum::make())
+                    ->formatStateUsing(fn (TicketHour $record): string => (new TimesheetService())->decimalToTime($record->value))
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('Owner'))
+                    ->sortable()
+                    ->formatStateUsing(fn ($record) => view('components.user-avatar', ['user' => $record->user]))
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Created at'))
-                    ->dateTime()
+                    ->dateTime('l d F Y')
                     ->sortable()
                     ->searchable(),
             ])

@@ -33,6 +33,10 @@ class Site extends Model implements SiteVigilanceSite
         'down_for_maintenance_at',
         'api_token_enabled',
         'api_token',
+        'cpu_limit',
+        'ram_limit',
+        'disk_limit',
+        'server_monitoring_notification_enabled',
     ];
 
     protected $casts = [
@@ -42,6 +46,7 @@ class Site extends Model implements SiteVigilanceSite
         'ssl_certificate_check_enabled' => 'boolean',
         'down_for_maintenance' => 'boolean',
         'api_token_enabled' => 'boolean',
+        'server_monitoring_notification_enabled' => 'boolean',
     ];
 
     public function scopeWhereUptimeCheckEnabled(Builder $query): Builder
@@ -87,6 +92,11 @@ class Site extends Model implements SiteVigilanceSite
     public function exceptionLogGroups(): HasMany
     {
         return $this->hasMany(ExceptionLogGroupRepository::resolveModelClass());
+    }
+
+    public function latestServerMetric(): HasOne
+    {
+        return $this->hasOne(ServerMetric::class)->latestOfMany();
     }
 
     public function newCollection(array $models = []): SiteCollection

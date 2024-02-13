@@ -5,16 +5,16 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Repositories\ExceptionLogGroupRepository;
 
-class DeleteOldExceptionCommand extends Command
+class PruneExceptionCommand extends Command
 {
     protected $signature = 'exception:delete';
 
-    protected $description = 'Delete old exceptions';
+    protected $description = 'Prune old exceptions';
 
     public function handle()
     {
         if (!$this->isEnabled()) {
-            $this->info('Exception deletion is disabled. If you want to enable it, check the sitevigilance config file.');
+            $this->info('Exception prune is disabled. If you want to enable it, check the sitevigilance config file.');
 
             return;
         }
@@ -30,12 +30,12 @@ class DeleteOldExceptionCommand extends Command
 
     public function isEnabled(): bool
     {
-        return config('sitevigilance.exception_deletion.enabled');
+        return config('sitevigilance.prune_exception.enabled');
     }
 
     public static function getExceptionAge(): int
     {
-        return config('sitevigilance.exception_deletion.delete_exceptions_older_than_days');
+        return config('sitevigilance.prune_exception.prune_exceptions_older_than_days');
     }
 
     public static function deleteOldExceptions(int $time): void

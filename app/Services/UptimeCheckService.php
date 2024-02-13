@@ -45,22 +45,23 @@ class UptimeCheckService
      */
     protected function handleResponse(Response $response): void
     {
-        if (!$response->ok()){
+        if (!$response->ok()) {
 
-        $this->handleResponseError($response);
-    return;} 
-            $this->uptimeCheck->saveSuccessfulCheck($response);
-
-            if ($this->uptimeCheck->was_failing) {
-                $this->notifyUptimeWasRecovered();
-            }
-
-            if ($this->uptimeCheck->requestTookTooLong()) {
-                $this->notifyRequestTookLongerThanMaxRequestDuration();
-            }
-
+            $this->handleResponseError($response);
             return;
         }
+        $this->uptimeCheck->saveSuccessfulCheck($response);
+
+        if ($this->uptimeCheck->was_failing) {
+            $this->notifyUptimeWasRecovered();
+        }
+
+        if ($this->uptimeCheck->requestTookTooLong()) {
+            $this->notifyRequestTookLongerThanMaxRequestDuration();
+        }
+
+        return;
+    }
 
     /**
      * @throws InvalidPeriodException

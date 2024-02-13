@@ -52,7 +52,17 @@ class Dashboard extends Page
      */
     public function getVisibleWidgets(): array
     {
-        return $this->filterVisibleWidgets($this->getWidgets());
+        $widgets = $this->getWidgets();
+
+        return array_filter($widgets, function ($widget) {
+            $hiddenWidgets = [
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\CpuLoadChart::class,
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\DiskSpaceChart::class,
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\MemoryLoadChart::class,
+            ];
+
+            return !in_array($widget, $hiddenWidgets);
+        });
     }
 
     /**

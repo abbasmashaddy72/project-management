@@ -9,7 +9,6 @@ use Illuminate\View\View;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
-use App\Filament\Widgets\SiteStatsWidget;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Tenancy\RegisterTeam;
 use Filament\Http\Middleware\IdentifyTenant;
@@ -55,8 +54,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                SiteStatsWidget::class,
-                // \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                \App\Filament\Widgets\SiteStatsWidget::class,
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\CpuLoadChart::class,
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\DiskSpaceChart::class,
+                \App\Filament\Resources\ServerMonitoringResource\Widgets\MemoryLoadChart::class,
+                \Awcodes\Overlook\Widgets\OverlookWidget::class,
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -107,16 +109,16 @@ class AdminPanelProvider extends PanelProvider
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
                     ->myProfile()
                     ->enableTwoFactorAuthentication(),
-                // \Awcodes\Overlook\OverlookPlugin::make()
-                //     ->sort(2)
-                //     ->columns([
-                //         'default' => 1,
-                //         'sm' => 2,
-                //         'md' => 3,
-                //         'lg' => 4,
-                //         'xl' => 5,
-                //         '2xl' => null,
-                //     ]),
+                \Awcodes\Overlook\OverlookPlugin::make()
+                    ->sort(2)
+                    ->columns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'md' => 3,
+                        'lg' => 4,
+                        'xl' => 5,
+                        '2xl' => null,
+                    ]),
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
             ])->maxContentWidth(MaxWidth::Full)

@@ -50,16 +50,27 @@ return [
          */
         'notify_expiring_soon_if_certificate_expires_within_days' => 7,
     ],
-    'exception_deletion' => [
+    'prune_exception' => [
         /*
          * Enable or disable exception deletion globally.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * The age in minutes of the exceptions to delete.
          */
         'delete_exceptions_older_than_days' => 7,
+    ],
+    'prune_server_monitoring' => [
+        /*
+         * Enables or disables pruning server monitoring data.
+         */
+        'enabled' => true,
+
+        /*
+         * Deletes server monitoring logs that are older than 7 days..
+         */
+        'prune_server_monitoring_records_older_than_days' => 7,
     ],
     'exceptions' => [
         /*
@@ -124,6 +135,9 @@ return [
             \App\Events\ExceptionLogGroupUpdatedEvent::class => [
                 \App\Listeners\ExceptionLogGroupUpdatedListener::class,
             ],
+            \App\Events\ServerMetricAlertEvent::class => [
+                \App\Listeners\ServerMetricAlertListener::class,
+            ],
         ],
     ],
     'notifications' => [
@@ -131,12 +145,5 @@ return [
          * The notification channels that are used by default.
          */
         'channels' => ['mail'],
-
-        'slack' => [
-            /*
-             * The Slack webhook url setup.
-             */
-            'webhook_url' => env('SLACK_WEBHOOK_URL'),
-        ],
     ],
 ];

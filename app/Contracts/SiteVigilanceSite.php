@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property SiteVigilanceUptimeCheck $uptimeCheck
  * @property SiteVigilanceSslCertificateCheck $sslCertificateCheck
  * @property SiteVigilanceExceptionLog $exceptionLogs
+ * @property int $cpu_limit
+ * @property int $ram_limit
+ * @property int $disk_limit
+ * @property bool $server_monitoring_notification_enabled
  */
 interface SiteVigilanceSite
 {

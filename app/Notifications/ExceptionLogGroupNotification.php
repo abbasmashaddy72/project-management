@@ -36,24 +36,8 @@ class ExceptionLogGroupNotification extends Notification implements ShouldQueue
             ->action('Review', $this->getActionUrl());
     }
 
-    // public function toSlack(): SlackMessage
-    // {
-    //     $url = $this->getActionUrl();
-    //     $footer = "{$this->exceptionLogGroup->site->name} | {$this->exceptionLogGroup->site->url}";
-
-    //     return (new SlackMessage)
-    //         ->error()
-    //         ->attachment(
-    //             fn (SlackAttachment $attachment) => $attachment
-    //                 ->title($this->exceptionLogGroup->type, $url)
-    //                 ->content($this->exceptionLogGroup->message)
-    //                 ->footer($footer)
-    //                 ->timestamp($this->exceptionLogGroup->last_seen)
-    //         );
-    // }
-
     protected function getActionUrl(): string
     {
-        return route('filament.admin.resources.exceptions.show', $this->exceptionLogGroup->id);
+        return route('filament.admin.resources.exceptions.show', ['record' => $this->exceptionLogGroup->id, 'tenant' => $this->exceptionLogGroup->site->tenant->id]);
     }
 }

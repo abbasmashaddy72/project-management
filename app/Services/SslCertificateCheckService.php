@@ -46,23 +46,23 @@ class SslCertificateCheckService
             event(new SslCertificateExpiresSoonEvent($this->sslCertificateCheck));
         }
 
-        if (!$isCertificateInvalid){
-    return;} 
-            $reason = 'Unknown';
+        if (!$isCertificateInvalid) {
+            return;
+        }
+        $reason = 'Unknown';
 
-            if (!$certificate->appliesToUrl($this->sslCertificateCheck->url)) {
-                $reason = "Certificate does not apply to {$this->sslCertificateCheck->url} but only to these domains: " . implode(',', $certificate->getAdditionalDomains());
-            }
+        if (!$certificate->appliesToUrl($this->sslCertificateCheck->url)) {
+            $reason = "Certificate does not apply to {$this->sslCertificateCheck->url} but only to these domains: " . implode(',', $certificate->getAdditionalDomains());
+        }
 
-            if ($certificate->isExpired()) {
-                $reason = 'The certificate has expired';
-            }
+        if ($certificate->isExpired()) {
+            $reason = 'The certificate has expired';
+        }
 
-            $this->sslCertificateCheck->certificate_check_failure_reason = $reason;
-            $this->sslCertificateCheck->save();
+        $this->sslCertificateCheck->certificate_check_failure_reason = $reason;
+        $this->sslCertificateCheck->save();
 
-            $this->notifyFailure();
-        
+        $this->notifyFailure();
     }
 
     protected function notifyFailure(): void

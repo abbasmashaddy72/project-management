@@ -21,6 +21,10 @@ class CreateSiteVigilanceTables extends Migration
             $table->boolean('ssl_certificate_check_enabled')->default(true);
             $table->unsignedInteger('max_request_duration_ms')->default(1000);
             $table->timestamp('down_for_maintenance_at')->nullable();
+            $table->boolean('server_monitoring_notification_enabled')->default(false);
+            $table->integer('cpu_limit')->nullable();
+            $table->integer('ram_limit')->nullable();
+            $table->integer('disk_limit')->nullable();
             $table->string('api_token', 60)->nullable();
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->timestamps();
@@ -94,6 +98,19 @@ class CreateSiteVigilanceTables extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('server_metrics', function (Blueprint $table) {
+            $table->id();
+            $table->integer('cpu_load');
+            $table->integer('memory_usage');
+            $table->json('disk_usage');
+
+            $table->foreignIdFor(SiteRepository::resolveModelClass())
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->timestamps();
+        });
     }
 
     public function down()
@@ -115,10 +132,15 @@ class CreateSiteVigilanceTables extends Migration
             $table->dropForeignIdFor(SiteRepository::resolveModelClass());
         });
 
+        Schema::table('server_metrics', function (Blueprint $table) {
+            $table->dropForeignIdFor(SiteRepository::resolveModelClass());
+        });
+
         Schema::dropIfExists('uptime_checks');
         Schema::dropIfExists('ssl_certificate_checks');
         Schema::dropIfExists('exception_logs');
         Schema::dropIfExists('exception_log_groups');
+        Schema::dropIfExists('server_metrics');
         Schema::dropIfExists('sites');
     }
 };
