@@ -39,6 +39,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
         'email',
         'contact_no',
         'address',
+        'zipcode',
+        'country',
         'details',
         'password',
         'creation_token',

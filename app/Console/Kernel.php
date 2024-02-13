@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
             $schedule,
             '* * * * *', // <-- Uptime Check Cron
             '* * * * *', //<-- SSL Certificate Cron
-            '* * * * *' //<-- [Optional] Delete Exceptions Cron
+            '* * * * *', //<-- [Optional] Delete Exceptions Cron
+            '* * * * *' //<-- [Optional] Delete Server Metrics Cron
         );
     }
 

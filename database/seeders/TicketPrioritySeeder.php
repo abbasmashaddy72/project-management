@@ -8,21 +8,10 @@ use Illuminate\Database\Seeder;
 class TicketPrioritySeeder extends Seeder
 {
     private array $data = [
-        [
-            'name' => 'Low',
-            'color' => '#4CAF50', // Green
-            'is_default' => false
-        ],
-        [
-            'name' => 'Normal',
-            'color' => '#2196F3', // Blue
-            'is_default' => true
-        ],
-        [
-            'name' => 'High',
-            'color' => '#FFC107', // Amber
-            'is_default' => false
-        ]
+        ['name' => 'Low', 'color' => '#16A34A', 'is_default' => false], // Green
+        ['name' => 'Normal', 'color' => '#2563EB', 'is_default' => true], // Blue
+        ['name' => 'High', 'color' => '#DC2626', 'is_default' => false], // Red
+        ['name' => 'Urgent', 'color' => '#FFA500', 'is_default' => false], // Orange
     ];
 
     /**

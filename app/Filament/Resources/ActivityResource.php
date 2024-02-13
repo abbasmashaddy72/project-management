@@ -30,7 +30,7 @@ class ActivityResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Referential');
+        return __('Configuration Setup');
     }
 
     public static function form(Form $form): Form
@@ -58,6 +58,7 @@ class ActivityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Activity name'))
+                    ->description(fn (Activity $record): ?string => $record->description)
                     ->sortable()
                     ->searchable(),
 

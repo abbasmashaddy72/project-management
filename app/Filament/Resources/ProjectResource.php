@@ -10,6 +10,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use App\Models\ContractType;
 use App\Models\ProjectStatus;
 use Filament\Facades\Filament;
 use App\Models\ProjectFavorite;
@@ -39,7 +40,7 @@ class ProjectResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Management');
+        return __('Project Management');
     }
 
     public static function form(Form $form): Form
@@ -74,6 +75,33 @@ class ProjectResource extends Resource
                         return $users;
                     })
                     ->default(fn () => auth()->user()->id)
+                    ->required(),
+
+                Forms\Components\Select::make('client_id')
+                    ->label(__('Project Client'))
+                    ->searchable()
+                    ->options(function () {
+                        $teamId = Filament::getTenant()->id;
+
+                        // Assuming you have a relationship between Team and User
+                        $users = User::whereHas('teams', function ($query) use ($teamId) {
+                            $query->where('team_id', $teamId);
+                        })->pluck('name', 'id')->toArray();
+
+                        return $users;
+                    })
+                    ->default(fn () => auth()->user()->id)
+                    ->required(),
+
+                Forms\Components\Select::make('contract_type')
+                    ->label(__('Project status'))
+                    ->searchable()
+                    ->options(fn () => ContractType::all()->pluck('name', 'id')->toArray())
+                    ->default(fn () => ContractType::where('is_default', true)->first()?->id)
+                    ->required(),
+
+                Forms\Components\TextInput::make('amount')
+                    ->label(__('Amount'))
                     ->required(),
 
                 Forms\Components\Select::make('status_id')

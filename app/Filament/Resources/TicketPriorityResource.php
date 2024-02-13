@@ -30,7 +30,7 @@ class TicketPriorityResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Referential');
+        return __('Configuration Setup');
     }
 
     public static function form(Form $form): Form

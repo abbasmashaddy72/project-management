@@ -11,19 +11,49 @@ class TicketTypeSeeder extends Seeder
         [
             'name' => 'Task',
             'icon' => 'heroicon-o-document-check',
-            'color' => '#00FFFF',
+            'color' => '#1D4ED8',
             'is_default' => true
         ],
         [
             'name' => 'Evolution',
             'icon' => 'heroicon-o-arrow-trending-up',
-            'color' => '#008000',
+            'color' => '#15803D',
             'is_default' => false
         ],
         [
             'name' => 'Bug',
             'icon' => 'heroicon-o-bug-ant',
-            'color' => '#ff0000',
+            'color' => '#DC2626',
+            'is_default' => false
+        ],
+        [
+            'name' => 'Feature Request',
+            'icon' => 'heroicon-o-light-bulb',
+            'color' => '#FFD700',
+            'is_default' => false
+        ],
+        [
+            'name' => 'Enhancement',
+            'icon' => 'heroicon-o-star',
+            'color' => '#F59E0B',
+            'is_default' => false
+        ],
+        [
+            'name' => 'Support Request',
+            'icon' => 'heroicon-o-lifebuoy',
+            'color' => '#059669',
+            'is_default' => false
+        ],
+        [
+            'name' => 'Documentation',
+            'icon' => 'heroicon-o-document-text',
+            'color' => '#4B5563',
+            'is_default' => false
+        ],
+        [
+            'name' => 'Design Task',
+            'icon' => 'heroicon-o-pencil-square',
+            'color' => '#9333EA',
             'is_default' => false
         ],
     ];

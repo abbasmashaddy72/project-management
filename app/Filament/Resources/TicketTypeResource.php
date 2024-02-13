@@ -18,7 +18,7 @@ class TicketTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationLabel(): string
     {
@@ -32,7 +32,7 @@ class TicketTypeResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Referential');
+        return __('Configuration Setup');
     }
 
     public static function form(Form $form): Form

@@ -20,7 +20,8 @@ class TeamSettings extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Team';
     protected static string $view = 'filament.pages.team-settings';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationGroup = 'User Management';
+    protected static ?int $navigationSort = 3;
 
     public Team $team;
 

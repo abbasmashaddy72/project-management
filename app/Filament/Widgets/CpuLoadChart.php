@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ServerMonitoringResource\Widgets;
+namespace App\Filament\Widgets;
 
 use Flowframe\Trend\Trend;
 use Filament\Support\RawJs;
@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 use Filament\Widgets\ChartWidget;
 use App\Models\ServerMetric;
 
-class DiskSpaceChart extends ChartWidget
+class CpuLoadChart extends ChartWidget
 {
     protected int | string | array $columnSpan = 'full';
 
@@ -18,6 +18,8 @@ class DiskSpaceChart extends ChartWidget
     protected static ?string $maxHeight = '300px';
 
     public ?string $filter = 'hour';
+
+    protected static bool $isDiscovered = false;
 
     #[On('selected-site-changed')]
     public function updateSiteId($siteId): void
@@ -35,39 +37,32 @@ class DiskSpaceChart extends ChartWidget
     {
         if ($this->siteId) {
             $filter = $this->filter;
-
-            $subquery = ServerMetric::selectRaw("site_id, created_at, CAST(ROUND(((JSON_EXTRACT(disk_usage, '$.totalSpace')
-                - JSON_EXTRACT(disk_usage, '$.freeSpace')) / JSON_EXTRACT(disk_usage, '$.totalSpace') * 100), 2) AS DECIMAL(5,2)) AS percentage")
-                ->whereColumn('site_id', 'server_metrics.site_id')
-                ->whereColumn('created_at', 'server_metrics.created_at');
-
-            $query = ServerMetric::fromSub($subquery, 'server_metrics')
-                ->where('site_id', $this->siteId);
+            $query = ServerMetric::where('site_id', $this->siteId);
 
             match ($filter) {
                 'hour' => $data = Trend::query($query)
                     ->between(start: now()->subHour(), end: now())
                     ->perMinute()
-                    ->average('percentage'),
+                    ->average('cpu_load'),
 
                 'day' => $data = Trend::query($query)
                     ->between(start: now()->subDay(), end: now())
                     ->perHour()
-                    ->average('percentage'),
+                    ->average('cpu_load'),
 
                 'week' => $data = Trend::query($query)
                     ->between(start: now()->subWeek(), end: now())
                     ->perDay()
-                    ->average('percentage'),
+                    ->average('cpu_load')
             };
 
             $chartData = [
                 'datasets' => [
                     [
-                        'label' => 'Disk Space Occupied',
+                        'label' => 'CPU Load',
                         'data' => $data->map(fn (TrendValue $value) => $value->aggregate == 0 ? null : $value->aggregate),
                         'spanGaps' => true,
-                        'borderColor' => '#4ade80',
+                        'borderColor' => '#9BD0F5',
                         'fill' => true,
                     ],
                 ],
@@ -110,6 +105,7 @@ class DiskSpaceChart extends ChartWidget
     {
         return RawJs::make(<<<JS
         {
+            responsive: true,
             scales: {
                 y: {
                     min: 0,

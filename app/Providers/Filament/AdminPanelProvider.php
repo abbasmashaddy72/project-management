@@ -34,18 +34,25 @@ class AdminPanelProvider extends PanelProvider
             ->tenant(Team::class, 'id', 'team')
             ->login()
             ->registration()
-            ->emailVerification()
             ->passwordReset()
+            ->emailVerification()
             ->tenantRegistration(RegisterTeam::class)
             ->colors([
+                'danger' => Color::Red,
+                'gray' => Color::Gray,
+                'info' => Color::Indigo,
                 'primary' => Color::Blue,
-                'secondary' => Color::Zinc,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
             ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->navigationGroups([
-                'Site Vigilance',
+                'Configuration Setup',
                 'User Management',
-                'System'
+                'Project Management',
+                'Site Vigilance',
+                'Reports',
+                'System',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -54,11 +61,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                \App\Filament\Widgets\SiteStatsWidget::class,
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\CpuLoadChart::class,
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\DiskSpaceChart::class,
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\MemoryLoadChart::class,
-                \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                \App\Filament\Widgets\OverallWidget::class,
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -107,7 +110,10 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationSort(3)
                     ->navigationCountBadge(),
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
-                    ->myProfile()
+                    ->myProfile(
+                        shouldRegisterNavigation: true,
+                        navigationGroup: 'User Management',
+                    )
                     ->enableTwoFactorAuthentication(),
                 \Awcodes\Overlook\OverlookPlugin::make()
                     ->sort(2)

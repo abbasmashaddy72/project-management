@@ -8,26 +8,12 @@ use Illuminate\Database\Seeder;
 class ProjectStatusSeeder extends Seeder
 {
     private array $data = [
-        [
-            'name' => 'Created',
-            'color' => '#4CAF50', // Green
-            'is_default' => true
-        ],
-        [
-            'name' => 'In Progress',
-            'color' => '#2196F3', // Blue
-            'is_default' => false
-        ],
-        [
-            'name' => 'Archived',
-            'color' => '#FFC107', // Amber
-            'is_default' => false
-        ],
-        [
-            'name' => 'Finished',
-            'color' => '#FF5722', // Deep Orange
-            'is_default' => false
-        ]
+        ['name' => 'Created', 'color' => '#3498db', 'is_default' => true], // Blue (Initiation)
+        ['name' => 'In Progress', 'color' => '#2ecc71', 'is_default' => false], // Green (Active)
+        ['name' => 'Archived', 'color' => '#f39c12', 'is_default' => false], // Orange (Not Active)
+        ['name' => 'Finished', 'color' => '#27ae60', 'is_default' => false], // Green (Positive)
+        ['name' => 'On Hold', 'color' => '#95a5a6', 'is_default' => false], // Grey (Paused)
+        ['name' => 'Cancelled', 'color' => '#e74c3c', 'is_default' => false], // Red (Negative)
     ];
 
     /**

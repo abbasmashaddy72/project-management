@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ServerMonitoringResource\Widgets;
+namespace App\Filament\Widgets;
 
 use Flowframe\Trend\Trend;
 use Filament\Support\RawJs;
@@ -18,6 +18,8 @@ class MemoryLoadChart extends ChartWidget
     protected static ?string $maxHeight = '300px';
 
     public ?string $filter = 'hour';
+
+    protected static bool $isDiscovered = false;
 
     #[On('selected-site-changed')]
     public function updateSiteId($siteId): void

@@ -41,7 +41,7 @@ class TicketResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Management');
+        return __('Project Management');
     }
 
     public static function form(Form $form): Form

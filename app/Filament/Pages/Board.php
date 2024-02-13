@@ -19,7 +19,7 @@ class Board extends Page implements HasForms
 
     public static ?string $slug = 'board';
 
-    public static ?int $navigationSort = 4;
+    public static ?int $navigationSort = 3;
 
     public $project;
 
@@ -40,7 +40,7 @@ class Board extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Management');
+        return __('Project Management');
     }
 
     public function form(Form $form): Form

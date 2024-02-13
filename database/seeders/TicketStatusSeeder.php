@@ -15,7 +15,7 @@ class TicketStatusSeeder extends Seeder
             'order' => 1
         ],
         [
-            'name' => 'In progress',
+            'name' => 'In Progress',
             'color' => '#FF7F00', // Orange
             'is_default' => false,
             'order' => 2
@@ -31,7 +31,19 @@ class TicketStatusSeeder extends Seeder
             'color' => '#FF0000', // Red
             'is_default' => false,
             'order' => 4
-        ]
+        ],
+        [
+            'name' => 'Blocked',
+            'color' => '#FFD700', // Gold
+            'is_default' => false,
+            'order' => 5
+        ],
+        [
+            'name' => 'Review',
+            'color' => '#4169E1', // Royal Blue
+            'is_default' => false,
+            'order' => 6
+        ],
     ];
 
     /**

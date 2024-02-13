@@ -12,6 +12,8 @@ class SiteStatsWidget extends PollableWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    protected static bool $isDiscovered = false;
+
     protected function getViewData(): array
     {
         return [

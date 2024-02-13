@@ -19,7 +19,7 @@ class RoadMap extends Page implements HasForms
 
     public static ?string $slug = 'road-map';
 
-    public static ?int $navigationSort = 5;
+    public static ?int $navigationSort = 4;
 
     public $project;
     public $selectedProject;
@@ -41,7 +41,7 @@ class RoadMap extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Management');
+        return __('Project Management');
     }
 
     public function mount()

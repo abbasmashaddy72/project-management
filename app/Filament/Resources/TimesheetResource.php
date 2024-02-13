@@ -22,7 +22,7 @@ class TimesheetResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
     {
@@ -36,7 +36,7 @@ class TimesheetResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Timesheet');
+        return __('Reports');
     }
 
     public static function form(Form $form): Form

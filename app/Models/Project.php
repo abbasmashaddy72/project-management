@@ -21,6 +21,8 @@ class Project extends Model
         'ticket_prefix',
         'status_type',
         'type',
+        'contract_type',
+        'amount',
     ];
 
     public function owner(): BelongsTo
@@ -28,9 +30,19 @@ class Project extends Model
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'client_id', 'id');
+    }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProjectStatus::class, 'status_id', 'id')->withTrashed();
+    }
+
+    public function contract(): BelongsTo
+    {
+        return $this->belongsTo(ContractType::class, 'contract_type', 'id')->withTrashed();
     }
 
     public function users(): BelongsToMany

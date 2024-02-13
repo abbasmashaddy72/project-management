@@ -56,9 +56,9 @@ class Dashboard extends Page
 
         return array_filter($widgets, function ($widget) {
             $hiddenWidgets = [
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\CpuLoadChart::class,
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\DiskSpaceChart::class,
-                \App\Filament\Resources\ServerMonitoringResource\Widgets\MemoryLoadChart::class,
+                \App\Filament\Widgets\CpuLoadChart::class,
+                \App\Filament\Widgets\DiskSpaceChart::class,
+                \App\Filament\Widgets\MemoryLoadChart::class,
             ];
 
             return !in_array($widget, $hiddenWidgets);

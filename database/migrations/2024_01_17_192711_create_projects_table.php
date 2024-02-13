@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users');
+            $table->foreignId('client_id')->constrained('users');
             $table->foreignId('status_id')->constrained('project_statuses');
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->string('name');
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->string('ticket_prefix')->unique();
             $table->string('type')->default('kanban');
             $table->string('status_type')->default('default');
+            $table->string('contract_type')->default('hourly');
+            $table->string('amount')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

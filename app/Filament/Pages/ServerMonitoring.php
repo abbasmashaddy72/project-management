@@ -1,37 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\ServerMonitoringResource\Pages;
+namespace App\Filament\Pages;
 
-use Filament\Resources\Pages\Page;
 use App\Models\Site;
-use Illuminate\Database\Eloquent\Collection;
-use Filament\Forms\Concerns\InteractsWithForms;
-use App\Filament\Resources\ServerMonitoringResource;
-use App\Filament\Resources\ServerMonitoringResource\Widgets\CpuLoadChart;
-use App\Filament\Resources\ServerMonitoringResource\Widgets\DiskSpaceChart;
-use App\Filament\Resources\ServerMonitoringResource\Widgets\MemoryLoadChart;
+use Filament\Pages\Page;
+use App\Filament\Widgets\CpuLoadChart;
+use App\Filament\Widgets\DiskSpaceChart;
+use App\Filament\Widgets\MemoryLoadChart;
 
-class ServerMonitoringPage extends Page
+class ServerMonitoring extends Page
 {
-    use InteractsWithForms;
+    protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected static string $resource = ServerMonitoringResource::class;
+    protected static string $view = 'filament.pages.server-monitoring';
 
-    protected static ?string $breadcrumb = '';
+    protected static ?string $navigationGroup = 'Site Vigilance';
 
-    protected static ?string $title = 'Server Monitoring';
-
-    protected static string $view = 'resources.server-monitoring-resource.pages.server-monitoring-page';
-
-    protected $columnSpan = 'full';
-
-    protected static ?int $sort = 1;
+    protected static ?int $navigationSort = 3;
 
     public bool $metricsAvailable = false;
 
     public bool $sitesAvailable = false;
 
-    public bool $needsToSelect = false;
+    public bool $needsToSelect = true;
 
     public $siteId = null;
 

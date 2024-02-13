@@ -9,7 +9,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -19,7 +21,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $tenantOwnershipRelationshipName = 'teams';
 
@@ -27,30 +29,54 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->rule(
-                        fn ($record) => 'unique:users,email,'
-                            . ($record ? $record->id : 'NULL')
-                            . ',id,deleted_at,NULL'
-                    )
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('roles')
-                    ->relationship(name: 'roles', titleAttribute: 'name')
-                    ->saveRelationshipsUsing(function (Model $record, $state) {
-                        $record->roles()->syncWithPivotValues($state, [config('permission.column_names.team_foreign_key') => getPermissionsTeamId()]);
-                    })
-                    ->multiple()
-                    ->preload()
-                    ->searchable(),
+                Forms\Components\Fieldset::make('General Information')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->rule(
+                                fn ($record) => 'unique:users,email,'
+                                    . ($record ? $record->id : 'NULL')
+                                    . ',id,deleted_at,NULL'
+                            )
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('contact_no')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('address')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('zipcode')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('country')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\RichEditor::make('details')
+                            ->columnSpanFull(),
+                    ]),
+                Forms\Components\Fieldset::make('Authentication & Authorization')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->required()
+                            ->revealable()
+                            ->maxLength(255),
+
+                        Forms\Components\Select::make('roles')
+                            ->relationship(name: 'roles', titleAttribute: 'name')
+                            ->saveRelationshipsUsing(function (Model $record, $state) {
+                                $record->roles()->syncWithPivotValues($state, [config('permission.column_names.team_foreign_key') => getPermissionsTeamId()]);
+                            })
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                    ]),
             ]);
     }
 
@@ -67,9 +93,17 @@ class UserResource extends Resource
                     ->badge()
                     ->sortable()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('contact_no')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -80,7 +114,7 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make(),
@@ -90,6 +124,8 @@ class UserResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -109,5 +145,13 @@ class UserResource extends Resource
             'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

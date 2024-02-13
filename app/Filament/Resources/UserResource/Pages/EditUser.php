@@ -17,6 +17,8 @@ class EditUser extends EditRecord
             Impersonate::make()->record($this->getRecord()),
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
+            Actions\ForceDeleteAction::make(),
+            Actions\RestoreAction::make(),
         ];
     }
 }
