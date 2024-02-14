@@ -2,22 +2,23 @@
 
 namespace App\Livewire;
 
-use App\Models\TeamInvitation;
 use App\Models\User;
-use Filament\Actions\Action;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
-use Filament\Pages\Concerns\InteractsWithHeaderActions;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
 use Livewire\Component;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Actions\Action;
+use App\Models\TeamInvitation;
+use Filament\Facades\Filament;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Pages\Concerns\InteractsWithHeaderActions;
 
 class TeamMembers extends Component implements HasActions, HasTable, HasForms
 {
@@ -52,10 +53,26 @@ class TeamMembers extends Component implements HasActions, HasTable, HasForms
 
     private function invite($data)
     {
-        TeamInvitation::create([
-            'team_id' => Filament::getTenant()->id,
-            'email' => $data['email'],
-        ]);
+        if ($data['email']) {
+            // Check if the user with the given email already exists
+            $user = User::where('email', $data['email'])->first();
+
+            if ($user) {
+                // User already exists, attach them to the team if not already attached
+                $user->teams()->syncWithoutDetaching(Filament::getTenant()->id);
+
+                Notification::make()
+                    ->title('User Already Existed and Attached to the Team')
+                    ->success()
+                    ->send();
+            } else {
+                // User doesn't exist, create a TeamInvitation record
+                TeamInvitation::create([
+                    'team_id' => Filament::getTenant()->id,
+                    'email' => $data['email'],
+                ]);
+            }
+        }
     }
 
     public function table(Table $table): Table

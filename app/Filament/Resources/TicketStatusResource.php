@@ -14,9 +14,9 @@ class TicketStatusResource extends Resource
 {
     protected static ?string $model = TicketStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
+    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-up';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationLabel(): string
     {
@@ -41,14 +41,13 @@ class TicketStatusResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('Status name'))
-                            ->required()
-                            ->maxLength(255),
+                            ->required(),
 
                         Forms\Components\ColorPicker::make('color')
                             ->label(__('Status color'))
                             ->required(),
 
-                        Forms\Components\Checkbox::make('is_default')
+                        Forms\Components\Toggle::make('is_default')
                             ->label(__('Default status'))
                             ->helperText(
                                 __('If checked, this status will be automatically affected to new projects')

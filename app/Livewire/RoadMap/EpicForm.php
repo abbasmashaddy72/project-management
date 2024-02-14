@@ -58,8 +58,7 @@ class EpicForm extends Component implements HasForms
 
                 TextInput::make('name')
                     ->label(__('Epic name'))
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
 
                 Grid::make()
                     ->schema([

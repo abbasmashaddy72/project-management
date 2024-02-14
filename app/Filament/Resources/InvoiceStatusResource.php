@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ContractTypeResource\Pages;
-use App\Filament\Resources\ContractTypeResource\RelationManagers;
-use App\Models\ContractType;
+use App\Filament\Resources\InvoiceStatusResource\Pages;
+use App\Filament\Resources\InvoiceStatusResource\RelationManagers;
+use App\Models\InvoiceStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,13 +13,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ContractTypeResource extends Resource
+class InvoiceStatusResource extends Resource
 {
-    protected static ?string $model = ContractType::class;
+    protected static ?string $model = InvoiceStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
+    protected static ?string $navigationIcon = 'heroicon-o-document-check';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 7;
 
     public static function getNavigationGroup(): ?string
     {
@@ -32,14 +32,14 @@ class ContractTypeResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\Toggle::make('is_default')
-                    ->required()
-                    ->helperText(
-                        __('If checked, this priority will be automatically affected to new tickets')
-                    ),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-            ])->columns(2);
+                Forms\Components\Toggle::make('is_default')
+                    ->label(__('Default status'))
+                    ->helperText(
+                        __('If checked, this status will be automatically affected to new projects')
+                    ),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -47,7 +47,7 @@ class ContractTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->description(fn (ContractType $record): ?string => $record->description)
+                    ->description(fn (InvoiceStatus $record): ?string => $record->description)
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_default')
                     ->boolean(),
@@ -90,10 +90,10 @@ class ContractTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContractTypes::route('/'),
-            'create' => Pages\CreateContractType::route('/create'),
-            'view' => Pages\ViewContractType::route('/{record}'),
-            'edit' => Pages\EditContractType::route('/{record}/edit'),
+            'index' => Pages\ListInvoiceStatuses::route('/'),
+            'create' => Pages\CreateInvoiceStatus::route('/create'),
+            'view' => Pages\ViewInvoiceStatus::route('/{record}'),
+            'edit' => Pages\EditInvoiceStatus::route('/{record}/edit'),
         ];
     }
 

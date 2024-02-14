@@ -139,8 +139,7 @@ class TicketResource extends Resource
 
                     Forms\Components\TextInput::make('name')
                         ->label(__('Ticket name'))
-                        ->required()
-                        ->maxLength(255),
+                        ->required(),
 
                     Forms\Components\Fieldset::make('Responsible')->schema([
                         Forms\Components\Select::make('owner_id')

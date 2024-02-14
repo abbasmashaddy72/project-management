@@ -98,8 +98,7 @@ class IssueForm extends Component implements HasForms
 
                 Forms\Components\TextInput::make('name')
                     ->label(__('Ticket name'))
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
 
                 Forms\Components\Select::make('owner_id')
                     ->label(__('Ticket owner'))
@@ -123,11 +122,10 @@ class IssueForm extends Component implements HasForms
                                 ->pluck('name', 'id')
                                 ->toArray();
                         }
-                            return TicketStatus::whereNull('project_id')
-                                ->get()
-                                ->pluck('name', 'id')
-                                ->toArray();
-                        
+                        return TicketStatus::whereNull('project_id')
+                            ->get()
+                            ->pluck('name', 'id')
+                            ->toArray();
                     })
                     ->required(),
 

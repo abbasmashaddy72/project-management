@@ -16,7 +16,10 @@ return new class extends Migration
             $table->foreignId('invoice_id')->constrained('invoices')->cascadeOnDelete();
             $table->foreignId('sprint_id')->nullable()->constrained('sprints')->cascadeOnDelete();
             $table->string('description');
-            $table->integer('duration_in_hours');
+            $table->decimal('quantity', 10, 2)->nullable();
+            $table->decimal('unit_price', 10, 2)->nullable();
+            $table->boolean('is_vat')->default(false);
+            $table->decimal('vat', 10, 2)->nullable();
             $table->integer('amount');
             $table->string('currency', 3);
             $table->timestamps();

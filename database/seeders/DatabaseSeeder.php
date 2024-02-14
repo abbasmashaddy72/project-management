@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
                 ActivitySeeder::class,
                 ProjectStatusSeeder::class,
                 ContractTypeSeeder::class,
+                InvoiceStatusSeeder::class,
             ]);
             Site::factory(10)->create();
             UptimeCheck::factory(10)->create();

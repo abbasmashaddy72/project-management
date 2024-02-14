@@ -16,7 +16,7 @@ class TicketPriorityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function getNavigationLabel(): string
     {
@@ -41,14 +41,13 @@ class TicketPriorityResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('Priority name'))
-                            ->required()
-                            ->maxLength(255),
+                            ->required(),
 
                         Forms\Components\ColorPicker::make('color')
                             ->label(__('Priority color'))
                             ->required(),
 
-                        Forms\Components\Checkbox::make('is_default')
+                        Forms\Components\Toggle::make('is_default')
                             ->label(__('Default priority'))
                             ->helperText(
                                 __('If checked, this priority will be automatically affected to new tickets')

@@ -39,16 +39,12 @@ class TeamSettings extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make(['Team Information'])
+                Fieldset::make('Team Information')
                     ->columns(2)
                     ->schema([
-                        Fieldset::make('Team Information')
-                            ->columns(2)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->autofocus()
-                                    ->required(),
-                            ]),
+                        TextInput::make('name')
+                            ->autofocus()
+                            ->required(),
                     ]),
             ])
             ->statePath('data')

@@ -7,7 +7,9 @@ use Filament\Panel;
 use App\Models\Team;
 use Illuminate\View\View;
 use Filament\PanelProvider;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use App\Filament\Pages\TeamSettings;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Tenancy\RegisterTeam;
@@ -37,9 +39,15 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->tenantRegistration(RegisterTeam::class)
+            ->tenantMenuItems([
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url(fn (): string => TeamSettings::getUrl())
+                    ->icon('heroicon-m-cog-8-tooth'),
+            ])
             ->colors([
                 'danger' => Color::Red,
-                'gray' => Color::Gray,
+                'secondary' => Color::Gray,
                 'info' => Color::Indigo,
                 'primary' => Color::Blue,
                 'success' => Color::Emerald,

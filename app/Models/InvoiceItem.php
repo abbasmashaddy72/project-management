@@ -11,10 +11,19 @@ class InvoiceItem extends Model
     use HasFactory;
 
     protected $fillable = [
+        'invoice_id',
+        'sprint_id',
         'description',
-        'duration_in_hours',
+        'quantity',
+        'unit_price',
+        'is_vat',
+        'vat',
         'amount',
         'currency',
+    ];
+
+    protected $casts = [
+        'is_vat' => 'boolean',
     ];
 
     public function invoice(): BelongsTo

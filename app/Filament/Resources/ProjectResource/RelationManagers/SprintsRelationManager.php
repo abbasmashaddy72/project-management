@@ -46,7 +46,7 @@ class SprintsRelationManager extends RelationManager
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('Sprint name'))
-                            ->maxLength(255)
+
                             ->columnSpan(2)
                             ->required(),
 

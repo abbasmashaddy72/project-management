@@ -32,6 +32,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "parfaitementweb/filament-country-field": "^2.0",
         "protonemedia/laravel-verify-new-email": "^1.9",
         "pxlrbt/filament-environment-indicator": "^2.0",
         "saade/filament-fullcalendar": "^3.0",
@@ -43,7 +44,7 @@
         "stechstudio/filament-impersonate": "^3.5",
         "stichoza/google-translate-php": "^5.1",
         "webmozart/assert": "*",
-        "ysfkaya/filament-phone-input": "^2.2"
+        "ysfkaya/filament-phone-input": "^2.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

@@ -11,7 +11,9 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
 class UserResource extends Resource
 {
@@ -29,54 +31,55 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make('General Information')
-                    ->columns(2)
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->rule(
-                                fn ($record) => 'unique:users,email,'
-                                    . ($record ? $record->id : 'NULL')
-                                    . ',id,deleted_at,NULL'
-                            )
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('contact_no')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('address')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('zipcode')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('country')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('details')
-                            ->columnSpanFull(),
-                    ]),
-                Forms\Components\Fieldset::make('Authentication & Authorization')
-                    ->columns(2)
-                    ->schema([
-                        Forms\Components\TextInput::make('password')
-                            ->password()
-                            ->required()
-                            ->revealable()
-                            ->maxLength(255),
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Fieldset::make('General Information')
+                        ->columns(2)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required(),
+                            Forms\Components\TextInput::make('email')
+                                ->email()
+                                ->required()
+                                ->rule(
+                                    fn ($record) => 'unique:users,email,'
+                                        . ($record ? $record->id : 'NULL')
+                                        . ',id,deleted_at,NULL'
+                                ),
+                            PhoneInput::make('contact_no')
+                                ->required()
+                                ->validateFor(
+                                    lenient: true,
+                                ),
+                            Forms\Components\TextInput::make('address')
+                                ->required(),
+                            Forms\Components\TextInput::make('zipcode')
+                                ->required(),
+                            Country::make('country')
+                                ->searchable()
+                                ->required(),
+                            Forms\Components\RichEditor::make('details')
+                                ->columnSpanFull(),
+                        ]),
+                ]),
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Fieldset::make('Authentication & Authorization')
+                        ->columns(2)
+                        ->schema([
+                            Forms\Components\TextInput::make('password')
+                                ->password()
+                                ->required()
+                                ->revealable(),
 
-                        Forms\Components\Select::make('roles')
-                            ->relationship(name: 'roles', titleAttribute: 'name')
-                            ->saveRelationshipsUsing(function (Model $record, $state) {
-                                $record->roles()->syncWithPivotValues($state, [config('permission.column_names.team_foreign_key') => getPermissionsTeamId()]);
-                            })
-                            ->multiple()
-                            ->preload()
-                            ->searchable(),
-                    ]),
+                            Forms\Components\Select::make('roles')
+                                ->relationship(name: 'roles', titleAttribute: 'name')
+                                ->saveRelationshipsUsing(function (Model $record, $state) {
+                                    $record->roles()->syncWithPivotValues($state, [config('permission.column_names.team_foreign_key') => getPermissionsTeamId()]);
+                                })
+                                ->multiple()
+                                ->preload()
+                                ->searchable(),
+                        ]),
+                ]),
             ]);
     }
 

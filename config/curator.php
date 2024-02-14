@@ -4,9 +4,39 @@ return [
     'accepted_file_types' => [
         'image/jpeg',
         'image/png',
+        'image/gif',
         'image/webp',
         'image/svg+xml',
         'application/pdf',
+        'application/msword', // .doc
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/vnd.ms-excel', // .xls
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+        'application/vnd.ms-powerpoint', // .ppt
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+        'application/zip',
+        'application/x-rar-compressed', // .rar
+        'application/x-tar',
+        'application/x-gzip',
+        'application/octet-stream', // generic binary file
+        'text/plain', // plain text file
+        'text/csv', // CSV file
+        'audio/mpeg', // .mp3
+        'audio/wav',
+        'video/mp4', // .mp4
+        'video/mpeg', // .mpeg
+        'application/json',
+        'application/xml',
+        'application/vnd.ms-fontobject',
+        'font/eot',
+        'font/opentype',
+        'font/otf',
+        'font/ttf',
+        'font/woff',
+        'font/woff2',
+        'application/vnd.visio', // .vsd
+        'application/vnd.ms-excel.sheet.macroEnabled.12', // .xlsm
+        'application/vnd.ms-powerpoint.presentation.macroEnabled.12', // .pptm
     ],
     'cloud_disks' => [
         's3',

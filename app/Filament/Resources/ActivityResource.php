@@ -16,7 +16,7 @@ class ActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 6;
 
     public static function getNavigationLabel(): string
     {
@@ -41,9 +41,8 @@ class ActivityResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('Activity name'))
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
+                            ->required(),
+                        Forms\Components\Textarea::make('description')
                             ->label(__('Description'))
                             ->required()
                             ->columnSpan(2),

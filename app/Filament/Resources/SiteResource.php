@@ -61,10 +61,10 @@ class SiteResource extends Resource
                 Fieldset::make('Check Enabled')
                     ->when(UptimeCheckRepository::isEnabled() || SslCertificateCheckRepository::isEnabled())
                     ->schema([
-                        Checkbox::make('uptime_check_enabled')
+                        Toggle::make('uptime_check_enabled')
                             ->when(UptimeCheckRepository::isEnabled())
                             ->label('Uptime check'),
-                        Checkbox::make('ssl_certificate_check_enabled')
+                        Toggle::make('ssl_certificate_check_enabled')
                             ->when(SslCertificateCheckRepository::isEnabled())
                             ->label('SSL certificate check'),
                     ]),

@@ -21,14 +21,13 @@ class StatusesRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(__('Status name'))
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
 
                 Forms\Components\ColorPicker::make('color')
                     ->label(__('Status color'))
                     ->required(),
 
-                Forms\Components\Checkbox::make('is_default')
+                Forms\Components\Toggle::make('is_default')
                     ->label(__('Default status'))
                     ->helperText(
                         __('If checked, this status will be automatically affected to new projects')

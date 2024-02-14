@@ -50,15 +50,13 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label(__('Project name'))
                     ->required()
-                    ->live()
+                    ->live(onBlur: true)
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('ticket_prefix', Str::limit(Str::slug($state), 3, ''))),
 
                 Forms\Components\TextInput::make('ticket_prefix')
                     ->label(__('Ticket prefix'))
                     ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
-                    ->disabled(
-                        fn ($record) => $record && $record->tickets()->count() != 0
-                    )
+                    ->disabled(fn ($record) => $record && $record->tickets()->count() != 0)
                     ->required(),
 
                 Forms\Components\Select::make('owner_id')
@@ -94,7 +92,7 @@ class ProjectResource extends Resource
                     ->required(),
 
                 Forms\Components\Select::make('contract_type')
-                    ->label(__('Project status'))
+                    ->label(__('Contract Type'))
                     ->searchable()
                     ->options(fn () => ContractType::all()->pluck('name', 'id')->toArray())
                     ->default(fn () => ContractType::where('is_default', true)->first()?->id)

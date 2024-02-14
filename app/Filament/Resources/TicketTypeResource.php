@@ -18,7 +18,7 @@ class TicketTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationLabel(): string
     {
@@ -43,8 +43,7 @@ class TicketTypeResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('Type name'))
-                            ->required()
-                            ->maxLength(255),
+                            ->required(),
 
                         Forms\Components\ColorPicker::make('color')
                             ->label(__('Type color'))
@@ -59,7 +58,7 @@ class TicketTypeResource extends Resource
                                 '2xl' => 5,
                             ]),
 
-                        Forms\Components\Checkbox::make('is_default')
+                        Forms\Components\Toggle::make('is_default')
                             ->label(__('Default type'))
                             ->helperText(
                                 __('If checked, this type will be automatically affected to new tickets')
