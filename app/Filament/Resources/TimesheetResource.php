@@ -48,6 +48,7 @@ class TimesheetResource extends Resource
                         Select::make('activity_id')
                             ->label(__('Activity'))
                             ->searchable()
+                            ->preload()
                             ->reactive()
                             ->options(function ($get, $set) {
                                 return Activity::all()->pluck('name', 'id')->toArray();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46fe91ceb6ccfe2c10053fc1071617e5",
+    "content-hash": "703e12720a29e2af5fcd293128843c9c",
     "packages": [
         {
             "name": "althinect/filament-spatie-roles-permissions",
@@ -538,6 +538,83 @@
                 "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.8"
             },
             "time": "2022-12-07T17:46:57+00:00"
+        },
+        {
+            "name": "barryvdh/laravel-dompdf",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-dompdf.git",
+                "reference": "9843d2be423670fb434f4c978b3c0f4dd92c87a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/9843d2be423670fb434f4c978b3c0f4dd92c87a6",
+                "reference": "9843d2be423670fb434f4c978b3c0f4dd92c87a6",
+                "shasum": ""
+            },
+            "require": {
+                "dompdf/dompdf": "^2.0.1",
+                "illuminate/support": "^6|^7|^8|^9|^10",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "nunomaduro/larastan": "^1|^2",
+                "orchestra/testbench": "^4|^5|^6|^7|^8",
+                "phpro/grumphp": "^1",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Barryvdh\\DomPDF\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Pdf": "Barryvdh\\DomPDF\\Facade\\Pdf",
+                        "PDF": "Barryvdh\\DomPDF\\Facade\\Pdf"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\DomPDF\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A DOMPDF Wrapper for Laravel",
+            "keywords": [
+                "dompdf",
+                "laravel",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/barryvdh/laravel-dompdf/issues",
+                "source": "https://github.com/barryvdh/laravel-dompdf/tree/v2.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://fruitcake.nl",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/barryvdh",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-01-12T15:12:49+00:00"
         },
         {
             "name": "bezhansalleh/filament-shield",
@@ -1720,6 +1797,68 @@
                 }
             ],
             "time": "2024-02-05T11:56:58+00:00"
+        },
+        {
+            "name": "dompdf/dompdf",
+            "version": "v2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dompdf/dompdf.git",
+                "reference": "093f2d9739cec57428e39ddadedfd4f3ae862c0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/093f2d9739cec57428e39ddadedfd4f3ae862c0f",
+                "reference": "093f2d9739cec57428e39ddadedfd4f3ae862c0f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-mbstring": "*",
+                "masterminds/html5": "^2.0",
+                "phenx/php-font-lib": ">=0.5.4 <1.0.0",
+                "phenx/php-svg-lib": ">=0.3.3 <1.0.0",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "ext-zip": "*",
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^7.5 || ^8 || ^9",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "suggest": {
+                "ext-gd": "Needed to process images",
+                "ext-gmagick": "Improves image processing performance",
+                "ext-imagick": "Improves image processing performance",
+                "ext-zlib": "Needed for pdf stream compression"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dompdf\\": "src/"
+                },
+                "classmap": [
+                    "lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "The Dompdf Community",
+                    "homepage": "https://github.com/dompdf/dompdf/blob/master/AUTHORS.md"
+                }
+            ],
+            "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
+            "homepage": "https://github.com/dompdf/dompdf",
+            "support": {
+                "issues": "https://github.com/dompdf/dompdf/issues",
+                "source": "https://github.com/dompdf/dompdf/tree/v2.0.4"
+            },
+            "time": "2023-12-12T20:19:39+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -5025,6 +5164,83 @@
             "time": "2023-05-10T11:58:31+00:00"
         },
         {
+            "name": "mokhosh/filament-kanban",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mokhosh/filament-kanban.git",
+                "reference": "9cf4131a9f051d88dd94b6fc31e7ad1d567bf915"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mokhosh/filament-kanban/zipball/9cf4131a9f051d88dd94b6fc31e7ad1d567bf915",
+                "reference": "9cf4131a9f051d88dd94b6fc31e7ad1d567bf915",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "spatie/eloquent-sortable": "^4.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mokhosh\\FilamentKanban\\FilamentKanbanServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentKanban": "Mokhosh\\FilamentKanban\\Facades\\FilamentKanban"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mokhosh\\FilamentKanban\\": "src/",
+                    "Mokhosh\\FilamentKanban\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mo Khosh",
+                    "email": "mskhoshnazar@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Add kanban boards to your Filament pages",
+            "homepage": "https://github.com/mokhosh/filament-kanban",
+            "keywords": [
+                "filament-kanban",
+                "laravel",
+                "mokhosh"
+            ],
+            "support": {
+                "issues": "https://github.com/mokhosh/filament-kanban/issues",
+                "source": "https://github.com/mokhosh/filament-kanban"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mokhosh",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-09T18:15:59+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.5.0",
             "source": {
@@ -5761,6 +5977,96 @@
                 }
             ],
             "time": "2024-01-16T20:58:46+00:00"
+        },
+        {
+            "name": "phenx/php-font-lib",
+            "version": "0.5.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dompdf/php-font-lib.git",
+                "reference": "a1681e9793040740a405ac5b189275059e2a9863"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/a1681e9793040740a405ac5b189275059e2a9863",
+                "reference": "a1681e9793040740a405ac5b189275059e2a9863",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3 || ^4 || ^5 || ^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FontLib\\": "src/FontLib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse, export and make subsets of different types of font files.",
+            "homepage": "https://github.com/PhenX/php-font-lib",
+            "support": {
+                "issues": "https://github.com/dompdf/php-font-lib/issues",
+                "source": "https://github.com/dompdf/php-font-lib/tree/0.5.6"
+            },
+            "time": "2024-01-29T14:45:26+00:00"
+        },
+        {
+            "name": "phenx/php-svg-lib",
+            "version": "0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dompdf/php-svg-lib.git",
+                "reference": "732faa9fb4309221e2bd9b2fda5de44f947133aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/732faa9fb4309221e2bd9b2fda5de44f947133aa",
+                "reference": "732faa9fb4309221e2bd9b2fda5de44f947133aa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^7.1 || ^8.0",
+                "sabberworm/php-css-parser": "^8.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Svg\\": "src/Svg"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse and export to PDF SVG files.",
+            "homepage": "https://github.com/PhenX/php-svg-lib",
+            "support": {
+                "issues": "https://github.com/dompdf/php-svg-lib/issues",
+                "source": "https://github.com/dompdf/php-svg-lib/tree/0.5.2"
+            },
+            "time": "2024-02-07T12:49:40+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -7160,6 +7466,71 @@
             "time": "2024-02-08T18:33:37+00:00"
         },
         {
+            "name": "sabberworm/php-css-parser",
+            "version": "v8.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git",
+                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
+                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "php": ">=5.6.20"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7.27"
+            },
+            "suggest": {
+                "ext-mbstring": "for parsing UTF-8 CSS"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "9.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sabberworm\\CSS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Raphael Schweikert"
+                },
+                {
+                    "name": "Oliver Klee",
+                    "email": "github@oliverklee.de"
+                },
+                {
+                    "name": "Jake Hotson",
+                    "email": "jake.github@qzdesign.co.uk"
+                }
+            ],
+            "description": "Parser for CSS Files written in PHP",
+            "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+            "keywords": [
+                "css",
+                "parser",
+                "stylesheet"
+            ],
+            "support": {
+                "issues": "https://github.com/MyIntervals/PHP-CSS-Parser/issues",
+                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.5.1"
+            },
+            "time": "2024-02-15T16:41:13+00:00"
+        },
+        {
             "name": "shuvroroy/filament-spatie-laravel-health",
             "version": "v2.0.1",
             "source": {
@@ -7233,6 +7604,88 @@
                 }
             ],
             "time": "2023-10-30T15:48:46+00:00"
+        },
+        {
+            "name": "solution-forest/filament-simplelightbox",
+            "version": "0.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/solutionforest/Filament-SimpleLightBox.git",
+                "reference": "2084790303bfdbe2b74ac197735e998d3fa76d42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/solutionforest/Filament-SimpleLightBox/zipball/2084790303bfdbe2b74ac197735e998d3fa76d42",
+                "reference": "2084790303bfdbe2b74ac197735e998d3fa76d42",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "filament/infolists": "^3.0",
+                "filament/tables": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SolutionForest\\FilamentSimpleLightBox\\FilamentSimpleLightBoxServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentSimpleLightBox": "SolutionForest\\FilamentSimpleLightBox\\Facades\\FilamentSimpleLightBox"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SolutionForest\\FilamentSimpleLightBox\\": "src/",
+                    "SolutionForest\\FilamentSimpleLightBox\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alan",
+                    "email": "info@solutionforest.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package filament-simplelightbox",
+            "homepage": "https://github.com/solutionforest/filament-simplelightbox",
+            "keywords": [
+                "filament-simplelightbox",
+                "laravel",
+                "solutionforest"
+            ],
+            "support": {
+                "issues": "https://github.com/solutionforest/filament-simplelightbox/issues",
+                "source": "https://github.com/solutionforest/filament-simplelightbox"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/SolutionForest",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-01-03T15:12:32+00:00"
         },
         {
             "name": "spatie/color",
@@ -7357,6 +7810,80 @@
                 }
             ],
             "time": "2023-10-03T08:36:33+00:00"
+        },
+        {
+            "name": "spatie/eloquent-sortable",
+            "version": "4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/eloquent-sortable.git",
+                "reference": "7614a20c417b53e025b17eac8e84bc3d65962428"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/7614a20c417b53e025b17eac8e84bc3d65962428",
+                "reference": "7614a20c417b53e025b17eac8e84bc3d65962428",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
+                "nesbot/carbon": "^2.63",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\EloquentSortable\\EloquentSortableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\EloquentSortable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be"
+                }
+            ],
+            "description": "Sortable behaviour for eloquent models",
+            "homepage": "https://github.com/spatie/eloquent-sortable",
+            "keywords": [
+                "behaviour",
+                "eloquent",
+                "laravel",
+                "model",
+                "sort",
+                "sortable"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/eloquent-sortable/issues",
+                "source": "https://github.com/spatie/eloquent-sortable/tree/4.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-01-22T08:45:25+00:00"
         },
         {
             "name": "spatie/enum",

@@ -71,6 +71,7 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('project_id')
                     ->label(__('Project'))
                     ->searchable()
+                    ->preload()
                     ->reactive()
                     ->options(
                         fn () => Project::where('owner_id', auth()->user()->id)
@@ -84,6 +85,7 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('epic_id')
                     ->label(__('Epic'))
                     ->searchable()
+                    ->preload()
                     ->reactive()
                     ->visible(fn () => $this->project && $this->project->type !== 'scrum')
                     ->options(fn () => $this->epics),
@@ -91,6 +93,7 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('sprint_id')
                     ->label(__('Sprint'))
                     ->searchable()
+                    ->preload()
                     ->reactive()
                     ->visible(fn () => $this->project && $this->project->type === 'scrum')
                     ->columnSpan(2)
@@ -103,6 +106,7 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('owner_id')
                     ->label(__('Ticket owner'))
                     ->searchable()
+                    ->preload()
                     ->options(fn () => User::all()->pluck('name', 'id')->toArray())
                     ->default(fn () => auth()->user()->id)
                     ->required(),
@@ -110,11 +114,13 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('responsible_id')
                     ->label(__('Ticket responsible'))
                     ->searchable()
+                    ->preload()
                     ->options(fn () => User::all()->pluck('name', 'id')->toArray()),
 
                 Forms\Components\Select::make('status_id')
                     ->label(__('Ticket status'))
                     ->searchable()
+                    ->preload()
                     ->options(function ($get) {
                         if ($this->project?->status_type === 'custom') {
                             return TicketStatus::where('project_id', $this->project->id)
@@ -132,12 +138,14 @@ class IssueForm extends Component implements HasForms
                 Forms\Components\Select::make('type_id')
                     ->label(__('Ticket type'))
                     ->searchable()
+                    ->preload()
                     ->options(fn () => TicketType::all()->pluck('name', 'id')->toArray())
                     ->required(),
 
                 Forms\Components\Select::make('priority_id')
                     ->label(__('Ticket priority'))
                     ->searchable()
+                    ->preload()
                     ->options(fn () => TicketPriority::all()->pluck('name', 'id')->toArray())
                     ->required(),
 

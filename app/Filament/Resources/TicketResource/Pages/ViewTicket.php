@@ -111,6 +111,7 @@ class ViewTicket extends ViewRecord implements HasForms
                     Select::make('activity_id')
                         ->label(__('Activity'))
                         ->searchable()
+                        ->preload()
                         ->reactive()
                         ->options(function ($get, $set) {
                             return Activity::all()->pluck('name', 'id')->toArray();
@@ -159,7 +160,7 @@ class ViewTicket extends ViewRecord implements HasForms
         return $form
             ->schema([
                 RichEditor::make('comment')
-                    ->disableLabel()
+                    ->hiddenLabel()
                     ->placeholder(__('Type a new comment'))
                     ->required()
             ])->statePath('data');

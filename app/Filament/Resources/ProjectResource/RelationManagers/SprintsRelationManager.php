@@ -35,7 +35,7 @@ class SprintsRelationManager extends RelationManager
                     ])
                     ->schema([
                         Forms\Components\Placeholder::make('information')
-                            ->disableLabel()
+                            ->hiddenLabel()
                             ->content(new HtmlString(
                                 '<span class="font-medium">' . __('Important:') . '</span>' . ' ' .
                                     __('The creation of a new Sprint will create a linked Epic into to the Road Map')
@@ -108,8 +108,9 @@ class SprintsRelationManager extends RelationManager
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TagsColumn::make('tickets.name')
+                Tables\Columns\TextColumn::make('tickets.name')
                     ->label(__('Tickets'))
+                    ->badge()
                     ->searchable()
                     ->sortable()
                     ->limit()
@@ -188,7 +189,7 @@ class SprintsRelationManager extends RelationManager
                     ->modalHeading(fn ($record) => $record->name . ' - ' . __('Associated tickets'))
                     ->form([
                         Forms\Components\Placeholder::make('info')
-                            ->label('')
+                            ->hiddenLabel()
                             ->extraAttributes([
                                 'class' => 'text-danger-500 text-xs'
                             ])

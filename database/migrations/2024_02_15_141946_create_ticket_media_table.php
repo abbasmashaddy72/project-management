@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->longText('attachments')->after('estimation')->nullable();
+        Schema::create('ticket_media', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('ticket_id')->constrained('tickets');
+            $table->foreignId('media_id')->constrained('media');
+            $table->integer('order')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->dropColumn('attachments');
-        });
+        Schema::dropIfExists('ticket_media');
     }
 };

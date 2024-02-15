@@ -20,6 +20,7 @@ use Illuminate\Support\HtmlString;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\TicketResource\Pages;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 
 class TicketResource extends Resource
 {
@@ -52,6 +53,7 @@ class TicketResource extends Resource
                     Forms\Components\Select::make('project_id')
                         ->label(__('Project'))
                         ->searchable()
+                        ->preload()
                         ->reactive()
                         ->afterStateUpdated(function ($get, $set) {
                             $project = Project::where('id', $get('project_id'))->first();
@@ -84,10 +86,21 @@ class TicketResource extends Resource
                     Forms\Components\Select::make('epic_id')
                         ->label(__('Epic'))
                         ->searchable()
+                        ->preload()
                         ->reactive()
                         ->options(function ($get, $set) {
                             return Epic::where('project_id', $get('project_id'))->pluck('name', 'id')->toArray();
                         }),
+                ]),
+
+                Forms\Components\Fieldset::make('Attachments')->schema([
+                    CuratorPicker::make('medias')
+                        ->hiddenLabel()
+                        ->relationship('medias', 'id')
+                        ->helperText(__('Here you can attach all files needed for this ticket'))
+                        ->multiple()
+                        ->tenantAware()
+                        ->listDisplay(),
                 ]),
 
                 Forms\Components\Fieldset::make('Relations')->schema([
@@ -102,7 +115,7 @@ class TicketResource extends Resource
                                 . $ticketRelation->relation->name
                                 . ' (' . $ticketRelation->relation->code . ')';
                         })
-                        ->label('')
+                        ->hiddenLabel()
                         ->relationship()
                         ->collapsible()
                         ->collapsed()
@@ -112,6 +125,7 @@ class TicketResource extends Resource
                                 ->label(__('Relation type'))
                                 ->required()
                                 ->searchable()
+                                ->preload()
                                 ->options(config('system.tickets.relations.list'))
                                 ->default(fn () => config('system.tickets.relations.default')),
 
@@ -119,6 +133,7 @@ class TicketResource extends Resource
                                 ->label(__('Related ticket'))
                                 ->required()
                                 ->searchable()
+                                ->preload()
                                 ->options(function ($livewire) {
                                     $query = Ticket::query();
                                     if ($livewire instanceof EditRecord && $livewire->record) {
@@ -145,6 +160,7 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('owner_id')
                             ->label(__('Ticket owner'))
                             ->searchable()
+                            ->preload()
                             ->options(function () {
                                 $teamId = Filament::getTenant()->id;
 
@@ -161,6 +177,7 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('responsible_id')
                             ->label(__('Ticket responsible'))
                             ->searchable()
+                            ->preload()
                             ->options(function () {
                                 $teamId = Filament::getTenant()->id;
 
@@ -176,6 +193,7 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('status_id')
                             ->label(__('Ticket status'))
                             ->searchable()
+                            ->preload()
                             ->options(function ($get) {
                                 $project = Project::where('id', $get('project_id'))->first();
                                 if ($project?->status_type === 'custom') {
@@ -207,6 +225,7 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('type_id')
                             ->label(__('Ticket type'))
                             ->searchable()
+                            ->preload()
                             ->options(fn () => TicketType::all()->pluck('name', 'id')->toArray())
                             ->default(fn () => TicketType::where('is_default', true)->first()?->id)
                             ->required(),
@@ -214,6 +233,7 @@ class TicketResource extends Resource
                         Forms\Components\Select::make('priority_id')
                             ->label(__('Ticket priority'))
                             ->searchable()
+                            ->preload()
                             ->options(fn () => TicketPriority::all()->pluck('name', 'id')->toArray())
                             ->default(fn () => TicketPriority::where('is_default', true)->first()?->id)
                             ->required(),

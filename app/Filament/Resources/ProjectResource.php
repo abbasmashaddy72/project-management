@@ -47,119 +47,126 @@ class ProjectResource extends Resource
     {
         return $form->schema([
             Forms\Components\Grid::make()->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('Project name'))
-                    ->required()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('ticket_prefix', Str::limit(Str::slug($state), 3, ''))),
+                Forms\Components\Fieldset::make('Project Details')->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label(__('Project name'))
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn (Set $set, ?string $state) => $set('ticket_prefix', Str::limit(Str::slug($state), 3, ''))),
 
-                Forms\Components\TextInput::make('ticket_prefix')
-                    ->label(__('Ticket prefix'))
-                    ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
-                    ->disabled(fn ($record) => $record && $record->tickets()->count() != 0)
-                    ->required(),
+                    Forms\Components\TextInput::make('ticket_prefix')
+                        ->label(__('Ticket prefix'))
+                        ->unique(Project::class, column: 'ticket_prefix', ignoreRecord: true)
+                        ->disabled(fn ($record) => $record && $record->tickets()->count() != 0)
+                        ->required(),
 
-                Forms\Components\Select::make('owner_id')
-                    ->label(__('Project owner'))
-                    ->searchable()
-                    ->options(function () {
-                        $teamId = Filament::getTenant()->id;
+                    Forms\Components\Select::make('owner_id')
+                        ->label(__('Project owner'))
+                        ->searchable()
+                        ->preload()
+                        ->options(function () {
+                            $teamId = Filament::getTenant()->id;
 
-                        // Assuming you have a relationship between Team and User
-                        $users = User::whereHas('teams', function ($query) use ($teamId) {
-                            $query->where('team_id', $teamId);
-                        })->pluck('name', 'id')->toArray();
+                            // Assuming you have a relationship between Team and User
+                            $users = User::whereHas('teams', function ($query) use ($teamId) {
+                                $query->where('team_id', $teamId);
+                            })->pluck('name', 'id')->toArray();
 
-                        return $users;
-                    })
-                    ->default(fn () => auth()->user()->id)
-                    ->required(),
+                            return $users;
+                        })
+                        ->default(fn () => auth()->user()->id)
+                        ->required(),
 
-                Forms\Components\Select::make('client_id')
-                    ->label(__('Project Client'))
-                    ->searchable()
-                    ->options(function () {
-                        $teamId = Filament::getTenant()->id;
+                    Forms\Components\Select::make('client_id')
+                        ->label(__('Project Client'))
+                        ->searchable()
+                        ->preload()
+                        ->options(function () {
+                            $teamId = Filament::getTenant()->id;
 
-                        // Assuming you have a relationship between Team and User
-                        $users = User::whereHas('teams', function ($query) use ($teamId) {
-                            $query->where('team_id', $teamId);
-                        })->pluck('name', 'id')->toArray();
+                            // Assuming you have a relationship between Team and User
+                            $users = User::whereHas('teams', function ($query) use ($teamId) {
+                                $query->where('team_id', $teamId);
+                            })->pluck('name', 'id')->toArray();
 
-                        return $users;
-                    })
-                    ->default(fn () => auth()->user()->id)
-                    ->required(),
+                            return $users;
+                        })
+                        ->default(fn () => auth()->user()->id)
+                        ->required(),
+                ])->columnSpan(2)->columns(2),
 
-                Forms\Components\Select::make('contract_type')
-                    ->label(__('Contract Type'))
-                    ->searchable()
-                    ->options(fn () => ContractType::all()->pluck('name', 'id')->toArray())
-                    ->default(fn () => ContractType::where('is_default', true)->first()?->id)
-                    ->required(),
+                Forms\Components\Fieldset::make('Status Details')->schema([
+                    Forms\Components\Select::make('type')
+                        ->label(__('Project type'))
+                        ->searchable()
+                        ->preload()
+                        ->options([
+                            'kanban' => __('Kanban'),
+                            'scrum' => __('Scrum')
+                        ])
+                        ->reactive()
+                        ->default(fn () => 'kanban')
+                        ->helperText(function ($state) {
+                            if ($state === 'kanban') {
+                                return __('Streamline your project progress by managing powerful board issues.');
+                            } elseif ($state === 'scrum') {
+                                return __('Reach project goals with a board, backlog, and roadmap.');
+                            }
+                            return '';
+                        })
+                        ->required(),
 
-                Forms\Components\TextInput::make('amount')
-                    ->label(__('Amount'))
-                    ->required(),
+                    Forms\Components\Select::make('status_type')
+                        ->label(__('Statuses configuration'))
+                        ->helperText(
+                            __('Configure project-specific statuses when choosing a custom type.')
+                        )
+                        ->searchable()
+                        ->preload()
+                        ->options([
+                            'default' => __('Default'),
+                            'custom' => __('Custom configuration')
+                        ])
+                        ->default(fn () => 'default')
+                        ->disabled(fn ($record) => $record && $record->tickets()->count())
+                        ->required(),
 
-                Forms\Components\Select::make('status_id')
-                    ->label(__('Project status'))
-                    ->searchable()
-                    ->options(fn () => ProjectStatus::all()->pluck('name', 'id')->toArray())
-                    ->default(fn () => ProjectStatus::where('is_default', true)->first()?->id)
-                    ->required(),
-            ])->columns(2),
+                    Forms\Components\Select::make('status_id')
+                        ->label(__('Project status'))
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () => ProjectStatus::all()->pluck('name', 'id')->toArray())
+                        ->default(fn () => ProjectStatus::where('is_default', true)->first()?->id)
+                        ->required(),
+                ])->columnSpan(2)->columns(2),
 
-            Forms\Components\RichEditor::make('description')
-                ->label(__('Project description'))
-                ->columnSpanFull(),
+                Forms\Components\Fieldset::make('Contract Details')->schema([
+                    Forms\Components\Select::make('contract_type')
+                        ->label(__('Contract Type'))
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () => ContractType::all()->pluck('name', 'id')->toArray())
+                        ->default(fn () => ContractType::where('is_default', true)->first()?->id)
+                        ->required(),
 
-            Forms\Components\Select::make('type')
-                ->label(__('Project type'))
-                ->searchable()
-                ->options([
-                    'kanban' => __('Kanban'),
-                    'scrum' => __('Scrum')
-                ])
-                ->reactive()
-                ->default(fn () => 'kanban')
-                ->helperText(function ($state) {
-                    if ($state === 'kanban') {
-                        return __('Display and move your project forward with issues on a powerful board.');
-                    } elseif ($state === 'scrum') {
-                        return __('Achieve your project goals with a board, backlog, and roadmap.');
-                    }
-                    return '';
-                })
-                ->required(),
+                    Forms\Components\TextInput::make('amount')
+                        ->label(__('Amount'))
+                        ->required(),
+                ])->columnSpan(1)->columns(1),
 
-            Forms\Components\Select::make('status_type')
-                ->label(__('Statuses configuration'))
-                ->helperText(
-                    __('If custom type selected, you need to configure project specific statuses')
-                )
-                ->searchable()
-                ->options([
-                    'default' => __('Default'),
-                    'custom' => __('Custom configuration')
-                ])
-                ->default(fn () => 'default')
-                ->disabled(fn ($record) => $record && $record->tickets()->count())
-                ->required(),
-        ])->columns(3);
+                Forms\Components\Fieldset::make('Status Details')->schema([
+                    Forms\Components\RichEditor::make('description')
+                        ->label(__('Project description'))
+                        ->columnSpanFull(),
+                ])->columnSpan(3)->columns(1),
+            ])->columns(4),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('cover')
-                    ->label(__('Cover image'))
-                    ->formatStateUsing(fn ($state) => new HtmlString('
-                            <div style=\'background-image: url("' . $state . '")\'
-                                 class="w-8 h-8 bg-center bg-no-repeat bg-cover"></div>
-                        ')),
-
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Project name'))
                     ->sortable()
@@ -187,8 +194,15 @@ class ProjectResource extends Resource
                     ->label(__('Affected users'))
                     ->limit(2),
 
+                Tables\Columns\TextColumn::make('contract.name')
+                    ->badge(),
+
+                Tables\Columns\TextColumn::make('amount')
+                    ->money(),
+
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
+                    ->formatStateUsing(fn ($state): string => ucwords($state))
                     ->colors([
                         'secondary' => 'kanban',
                         'warning' => 'scrum',
@@ -212,9 +226,22 @@ class ProjectResource extends Resource
                     ->options(fn () => ProjectStatus::all()->pluck('name', 'id')->toArray()),
             ])
             ->actions([
+                Tables\Actions\Action::make('kanban')
+                    ->label(
+                        fn ($record)
+                        => ($record->type === 'scrum' ? __('Scrum board') : __('Kanban board'))
+                    )
+                    ->icon('heroicon-o-view-columns')
+                    ->color('secondary')
+                    ->url(function ($record) {
+                        if ($record->type === 'scrum') {
+                            return route('filament.admin.pages.scrum.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
+                        }
+                        return route('filament.admin.pages.kanban.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
+                    }),
 
                 Tables\Actions\Action::make('favorite')
-                    ->label('')
+                    ->hiddenLabel()
                     ->icon('heroicon-o-star')
                     ->color(fn ($record) => auth()->user()->favoriteProjects()
                         ->where('projects.id', $record->id)->count() ? 'success' : 'default')
@@ -239,22 +266,6 @@ class ProjectResource extends Resource
 
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('kanban')
-                        ->label(
-                            fn ($record)
-                            => ($record->type === 'scrum' ? __('Scrum board') : __('Kanban board'))
-                        )
-                        ->icon('heroicon-o-view-columns')
-                        ->color('secondary')
-                        ->url(function ($record) {
-                            if ($record->type === 'scrum') {
-                                return route('filament.admin.pages.scrum.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
-                            }
-                            return route('filament.admin.pages.kanban.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
-                        }),
-                ])->color('secondary'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -265,6 +276,7 @@ class ProjectResource extends Resource
     {
         return [
             RelationManagers\SprintsRelationManager::class,
+            RelationManagers\TicketsRelationManager::class,
             RelationManagers\UsersRelationManager::class,
             RelationManagers\StatusesRelationManager::class,
         ];

@@ -10,4 +10,9 @@ class CustomMedia extends Media
     use HasTenantScope;
 
     protected $table = 'media';
+
+    public function getImageUrlAttribute()
+    {
+        return asset($this->path);
+    }
 }

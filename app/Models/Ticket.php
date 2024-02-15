@@ -5,8 +5,10 @@ namespace App\Models;
 use Carbon\CarbonInterval;
 use App\Traits\HasTenantScope;
 use App\Notifications\TicketCreated;
+use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\TicketStatusUpdated;
+use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,11 +28,6 @@ class Ticket extends Model
         'issue_link',
         'pr_link',
         'estimation',
-        'attachments',
-    ];
-
-    protected $casts = [
-        'attachments' => 'array',
     ];
 
     public static function boot()
@@ -228,5 +225,12 @@ class Ticket extends Model
         return new Attribute(
             get: fn () => $this->estimationProgress
         );
+    }
+
+    public function medias(): BelongsToMany
+    {
+        return $this->belongsToMany(CustomMedia::class, 'ticket_media', 'ticket_id', 'media_id')
+            ->withPivot('order')
+            ->orderBy('order');
     }
 }

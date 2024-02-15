@@ -348,7 +348,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getCheckboxListFormComponent(string $name, array $options, bool $searchable = true): Component
     {
         return Forms\Components\CheckboxList::make($name)
-            ->label('')
+            ->hiddenLabel()
             ->options(fn (): array => $options)
             ->searchable($searchable)
             ->afterStateHydrated(

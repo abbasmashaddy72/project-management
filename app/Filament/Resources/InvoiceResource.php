@@ -9,7 +9,9 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use App\Models\InvoiceStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\InvoiceResource\Pages;
@@ -36,12 +38,17 @@ class InvoiceResource extends Resource
                 Forms\Components\Grid::make()->schema([
                     Forms\Components\Fieldset::make('Invoice Details')->schema([
                         Forms\Components\TextInput::make('invoice_number')
+                            ->unique(Invoice::class, column: 'invoice_number', ignoreRecord: true)
                             ->required()
                             ->default(fn () => Invoice::generateInvoiceNumber()),
                         Forms\Components\Select::make('client_id')
+                            ->searchable()
+                            ->preload()
                             ->relationship('client', 'name')
                             ->required(),
                         Forms\Components\Select::make('project_id')
+                            ->searchable()
+                            ->preload()
                             ->relationship('project', 'name'),
                         Forms\Components\TextInput::make('vat')
                             ->afterStateUpdated(fn (Get $get, Set $set) => self::updateTotals($get, $set))
@@ -55,6 +62,7 @@ class InvoiceResource extends Resource
                             ->numeric(),
                         Forms\Components\Select::make('currency')
                             ->searchable()
+                            ->preload()
                             ->required()
                             ->default('USD')
                             ->options(config('main.currencies')),
@@ -74,6 +82,7 @@ class InvoiceResource extends Resource
                         Forms\Components\Select::make('status_id')
                             ->label(__('Invoice status'))
                             ->searchable()
+                            ->preload()
                             ->options(fn () => InvoiceStatus::all()->pluck('name', 'id')->toArray())
                             ->default(fn () => InvoiceStatus::where('is_default', true)->first()?->id)
                             ->required(),
@@ -84,7 +93,7 @@ class InvoiceResource extends Resource
                         ->relationship()
                         ->reorderableWithButtons()
                         ->reorderable()
-                        ->live()
+                        ->live(onBlur: true)
                         ->schema([
                             Forms\Components\Toggle::make('is_vat')
                                 ->reactive(),
@@ -95,6 +104,7 @@ class InvoiceResource extends Resource
                                 ->numeric(),
                             Forms\Components\Select::make('currency')
                                 ->searchable()
+                                ->preload()
                                 ->required()
                                 ->default('USD')
                                 ->options(config('main.currencies')),
@@ -112,9 +122,12 @@ class InvoiceResource extends Resource
                                 ->readonly()
                                 ->required(),
                             Forms\Components\Select::make('sprint_id')
+                                ->searchable()
+                                ->preload()
                                 ->relationship('sprint', 'name'),
                             Forms\Components\Textarea::make('description')
                                 ->columnSpanFull()
+                                ->live(onBlur: true)
                                 ->required(),
                         ])->afterStateUpdated(function (Get $get, Set $set) {
                             self::updateTotals($get, $set);
@@ -129,6 +142,8 @@ class InvoiceResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('invoice_number')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -159,19 +174,27 @@ class InvoiceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('issued_on')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('due_on')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('paid_on')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cancelled_on')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('reminded_on')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('items_count')->counts('items'),
+                Tables\Columns\TextColumn::make('status.name')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -189,6 +212,12 @@ class InvoiceResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('Print')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalIcon('heroicon-o-printer')
+                    ->icon('heroicon-o-printer')
+                    ->action(fn (Invoice $record) => InvoiceResource::printInvoice($record)),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
@@ -269,5 +298,17 @@ class InvoiceResource extends Resource
         // Update the state with the new values
         $set('total', $total);
         $set('subtotal', $subtotal);
+    }
+
+    public static function printInvoice(Invoice $invoice)
+    {
+        $invoice->load('items');
+
+        $invoiceDate = $invoice->issued_on->format('jFY');
+        $clientName = Str::snake($invoice->client->name);
+        $fileName = "invoice_{$invoiceDate}_{$clientName}.pdf";
+        $pdf = Pdf::loadView('print', compact('invoice', 'fileName'));
+
+        return response()->streamDownload(fn () => print($pdf->output()), $fileName);
     }
 }

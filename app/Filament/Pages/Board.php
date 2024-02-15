@@ -55,6 +55,7 @@ class Board extends Page implements HasForms
                                 ->label(__('Project'))
                                 ->required()
                                 ->searchable()
+                                ->preload()
                                 ->reactive()
                                 ->afterStateUpdated(fn () => $this->search())
                                 ->helperText(__("Choose a project to show it's board"))

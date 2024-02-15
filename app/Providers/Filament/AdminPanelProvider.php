@@ -58,8 +58,8 @@ class AdminPanelProvider extends PanelProvider
                 'Configuration Setup',
                 'User Management',
                 'Project Management',
-                'Site Vigilance',
                 'Reports',
+                'Site Vigilance',
                 'System',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -135,6 +135,7 @@ class AdminPanelProvider extends PanelProvider
                     ]),
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
+                \SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin::make(),
             ])->maxContentWidth(MaxWidth::Full)
             ->renderHook('panels::topbar.start', fn (): View => view('filament.app.hooks.welcome_user'))
             ->sidebarCollapsibleOnDesktop()->spa();

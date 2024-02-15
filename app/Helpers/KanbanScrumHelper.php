@@ -41,16 +41,22 @@ trait KanbanScrumHelper
             ])
                 ->schema([
                     Select::make('users')
+                        ->searchable()
+                        ->preload()
                         ->label(__('Owners / Responsibles'))
                         ->multiple()
                         ->options(User::all()->pluck('name', 'id')),
 
                     Select::make('types')
+                        ->searchable()
+                        ->preload()
                         ->label(__('Ticket types'))
                         ->multiple()
                         ->options(TicketType::all()->pluck('name', 'id')),
 
                     Select::make('priorities')
+                        ->searchable()
+                        ->preload()
                         ->label(__('Ticket priorities'))
                         ->multiple()
                         ->options(TicketPriority::all()->pluck('name', 'id')),

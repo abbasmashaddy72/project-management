@@ -46,11 +46,15 @@ class EpicForm extends Component implements HasForms
                 Grid::make()
                     ->schema([
                         Select::make('project_id')
+                            ->searchable()
+                            ->preload()
                             ->label(__('Project'))
                             ->disabled()
                             ->options(Project::all()->pluck('name', 'id')),
 
                         Select::make('parent_id')
+                            ->searchable()
+                            ->preload()
                             ->label(__('Parent epic'))
                             ->searchable()
                             ->options($this->epics),

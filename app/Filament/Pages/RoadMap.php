@@ -68,6 +68,7 @@ class RoadMap extends Page implements HasForms
                 Select::make('selectedProject')
                     ->placeholder(__('Project'))
                     ->searchable()
+                    ->preload()
                     ->required()
                     ->options(function () {
                         return $this->projectQuery()
