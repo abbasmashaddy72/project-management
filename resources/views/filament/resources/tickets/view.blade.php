@@ -1,7 +1,7 @@
 @php($record = $this->record)
 <x-filament::page>
 
-    <a href="{{ route('filament.admin.pages.kanban.{project}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]) }}"
+    <a href="{{ route('filament.admin.pages.kanban.{project?}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]) }}"
         class="flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-gray-700">
         <x-heroicon-o-arrow-left class="w-4 h-4" /> {{ __('Back to kanban board') }}
     </a>

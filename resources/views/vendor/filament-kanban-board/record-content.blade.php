@@ -2,23 +2,12 @@
     <button type="button" class="handle">
         <x-heroicon-o-arrows-pointing-out class="w-5 h-5" />
     </button>
-    <div class="record-info">
-        @if ($this->isMultiProject())
-            <span class="text-sm text-gray-500 record-subtitle">
-                {{ $record['project']->name }}
-            </span>
-        @endif
-        <a href="{{ route('filament.admin.resources.tickets.view', ['record' => $record['id'], 'tenant' => \Filament\Facades\Filament::getTenant()->id]) }}"
-            target="_blank" class="flex items-center space-x-2 record-title">
-            <span class="px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-full code">
-                {{ $record['code'] }}
-            </span>
-            <span class="text-lg font-semibold title">
-                Badge: {{ $record['title'] }}
-            </span>
-        </a>
+    <div class="space-y-2 record-info">
+        <span class="record-subtitle">{{ $record['title'] }}</span>
+        <span class="code">{{ $record['code'] }}</span>
+        <span class="title">{{ $record['title'] }}</span>
     </div>
-    <div class="flex items-center justify-between mt-2 space-x-2 record-footer">
+    <div class="flex items-center justify-between space-x-2 record-footer">
         <div class="flex items-center space-x-2 record-type-code">
             @php($epic = $record['epic'])
             @if ($epic && $epic != '')

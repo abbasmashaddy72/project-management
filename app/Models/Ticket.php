@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Ticket extends Model
+class Ticket extends Model implements Sortable
 {
-    use HasFactory, SoftDeletes, HasTenantScope;
+    use HasFactory, SoftDeletes, HasTenantScope, SortableTrait;
 
     protected $fillable = [
         'name',

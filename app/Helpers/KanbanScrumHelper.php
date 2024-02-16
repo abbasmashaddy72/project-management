@@ -20,7 +20,6 @@ use Illuminate\Contracts\Support\Htmlable;
 
 trait KanbanScrumHelper
 {
-
     public bool $sortable = true;
 
     public Project|null $project = null;
@@ -83,7 +82,7 @@ trait KanbanScrumHelper
         ];
     }
 
-    public function getStatuses(): Collection
+    public function statuses(): Collection
     {
         $query = TicketStatus::query();
         if ($this->project && $this->project->status_type === 'custom') {
@@ -109,8 +108,10 @@ trait KanbanScrumHelper
             });
     }
 
-    public function getRecords(): Collection
+    public function records(): Collection
     {
+        $this->project = Project::findOrFail(request('id'));
+
         $query = Ticket::query();
         if ($this->project->type === 'scrum') {
             $query->where('sprint_id', $this->project->currentSprint->id);
@@ -159,20 +160,20 @@ trait KanbanScrumHelper
             ]);
     }
 
-    public function recordUpdated(int $record, int $newIndex, int $newStatus): void
-    {
-        $ticket = Ticket::find($record);
-        if (!$ticket) {
-            return;
-        }
-        $ticket->order = $newIndex;
-        $ticket->status_id = $newStatus;
-        $ticket->save();
-        Notification::make()
-            ->title(__('Tickets updated'))
-            ->success()
-            ->send();
-    }
+    // public function recordUpdated(int $record, int $newIndex, int $newStatus): void
+    // {
+    //     $ticket = Ticket::find($record);
+    //     if (!$ticket) {
+    //         return;
+    //     }
+    //     $ticket->order = $newIndex;
+    //     $ticket->status_id = $newStatus;
+    //     $ticket->save();
+    //     Notification::make()
+    //         ->title(__('Tickets updated'))
+    //         ->success()
+    //         ->send();
+    // }
 
     public function isMultiProject(): bool
     {
@@ -274,5 +275,15 @@ trait KanbanScrumHelper
                     . '</span>' : '')
                 . '</div>'
         );
+    }
+
+    public function onRecordClick($recordId, $data): void
+    {
+        $redirectUrl = route('filament.admin.resources.tickets.view', [
+            'record' => $recordId,
+            'tenant' => \Filament\Facades\Filament::getTenant()->id
+        ]);
+
+        redirect($redirectUrl);
     }
 }

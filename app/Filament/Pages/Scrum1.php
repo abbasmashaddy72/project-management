@@ -11,13 +11,13 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Htmlable;
 
-class Scrum extends Page implements HasForms
+class Scrum1 extends Page implements HasForms
 {
     use  KanbanScrumHelper;
 
     public static ?string $navigationIcon = 'heroicon-o-view-columns';
 
-    public static ?string $slug = 'scrum/{project}';
+    public static ?string $slug = 'scrum1/{project}';
 
     public static string $view = 'filament.pages.scrum';
 
@@ -32,7 +32,7 @@ class Scrum extends Page implements HasForms
     {
         $this->project = $project;
         if ($this->project->type !== 'scrum') {
-            $this->redirect(route('filament.admin.pages.kanban.{project}', ['project' => $project, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
+            $this->redirect(route('filament.admin.pages.kanban.{project?}', ['project' => $project, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
         } elseif (
             $this->project->owner_id != auth()->user()->id
             &&

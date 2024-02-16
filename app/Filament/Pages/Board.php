@@ -75,7 +75,7 @@ class Board extends Page implements HasForms
         if ($project->type === "scrum") {
             $this->redirect(route('filament.admin.pages.scrum.{project}', ['project' => $project, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
         } else {
-            $this->redirect(route('filament.admin.pages.kanban.{project}', ['project' => $project, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
+            $this->redirect(route('filament.admin.pages.kanban.{project?}', ['project' => $project, 'tenant' => \Filament\Facades\Filament::getTenant()->id]));
         }
     }
 }

@@ -24,7 +24,7 @@ class ViewProject extends ViewRecord
                     if ($this->record->type === 'scrum') {
                         return route('filament.admin.pages.scrum.{project}', ['project' => $this->record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                     }
-                    return route('filament.admin.pages.kanban.{project}', ['project' => $this->record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
+                    return route('filament.admin.pages.kanban.{project?}', ['project' => $this->record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                 }),
 
             Actions\EditAction::make(),
