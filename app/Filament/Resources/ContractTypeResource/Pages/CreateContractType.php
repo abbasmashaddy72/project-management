@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ContractTypeResource\Pages;
 
-use Filament\Actions;
 use App\Models\ContractType;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ContractTypeResource;

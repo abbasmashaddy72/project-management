@@ -19,14 +19,15 @@ class ServerMetricAlertListener
         $notifiablesForMail = UserRepository::all();
 
         foreach ($channels as $channel) {
-            if ($event->server_monitoring_notification_enabled) {
-                $notifiables = $notifiablesForMail;
-
-                Notification::send(
-                    $notifiables,
-                    new ServerMetricNotification($event->site, $event->resource, $event->usage, $channel)
-                );
+            if (!$event->server_monitoring_notification_enabled) {
+                continue;
             }
+            $notifiables = $notifiablesForMail;
+
+            Notification::send(
+                $notifiables,
+                new ServerMetricNotification($event->site, $event->resource, $event->usage, $channel)
+            );
         }
     }
 }

@@ -14,13 +14,9 @@ use App\Models\TicketStatus;
 use App\Models\TicketPriority;
 use App\Models\TicketRelation;
 use Filament\Facades\Filament;
-use Filament\Actions\CreateAction;
 use Illuminate\Support\HtmlString;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Resources\Pages\CreateRecord;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class TicketsRelationManager extends RelationManager

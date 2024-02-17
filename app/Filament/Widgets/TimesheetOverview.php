@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Timesheet;
 use App\Contracts\TimesheetService;
 use App\Models\TicketHour;
 use Filament\Widgets\StatsOverviewWidget\Stat;

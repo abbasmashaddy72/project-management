@@ -7,7 +7,6 @@ use App\Models\Ticket;
 use App\Models\Project;
 use Livewire\Component;
 use Filament\Forms\Form;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;

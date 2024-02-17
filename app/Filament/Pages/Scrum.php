@@ -5,12 +5,13 @@ namespace App\Filament\Pages;
 use App\Models\Ticket;
 use App\Models\Project;
 use App\Models\TicketStatus;
+use Filament\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Filament\Notifications\Notification;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 
-class Kanban extends KanbanBoard
+class Scrum extends KanbanBoard
 {
     // Custom
     public Project|null $project = null;
@@ -21,14 +22,14 @@ class Kanban extends KanbanBoard
     public bool $ticket = false;
 
     // Slug
-    public static ?string $slug = 'kanban/{project?}';
+    public static ?string $slug = 'scrum/{project?}';
     public static bool $shouldRegisterNavigation = false;
 
     // Package
     protected static string $recordTitleAttribute = 'name';
     protected static string $recordStatusAttribute = 'status_id';
     protected static string $model = Ticket::class;
-    public bool $disableEditModal = true;
+    public bool $disableEditModal = false;
 
     public function statuses(): Collection
     {
@@ -59,7 +60,7 @@ class Kanban extends KanbanBoard
     public function records(): Collection
     {
         $query = Ticket::query()->ordered();
-        if ($this->project->type === 'scrum') {
+        if ($this->project->type === 'scrum') { // Redirect to other view if no Sprints available
             $query->where('sprint_id', $this->project->currentSprint->id);
         }
         $query->with(['project', 'owner', 'responsible', 'status', 'type', 'priority', 'epic']);
@@ -89,7 +90,7 @@ class Kanban extends KanbanBoard
                         });
                 });
         });
-
+        // Check if tickets available else Redirect to other view
         return $query->get()->map(function (Ticket $item) {
             return $item;
         });
@@ -114,8 +115,33 @@ class Kanban extends KanbanBoard
             ->send();
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('manage-sprints')
+                ->button()
+                ->visible(fn () => $this->project->currentSprint)
+                ->label(__('Manage sprints'))
+                ->color('primary')
+                ->url(route('filament.admin.resources.projects.edit', ['record' => $this->project, 'tenant' => \Filament\Facades\Filament::getTenant()->id])),
+
+            Action::make('refresh')
+                ->button()
+                ->visible(fn () => $this->project->currentSprint)
+                ->label(__('Refresh'))
+                ->color('secondary')
+                ->action(function () {
+                    $this->records();
+                    Notification::make()
+                        ->title(__('Kanban board updated'))
+                        ->success()
+                        ->send();
+                }),
+        ];
+    }
+
     public function getHeader(): ?View
     {
-        return view('filament.kanban.kanban-header');
+        return view('filament.kanban.scrum-header');
     }
 }

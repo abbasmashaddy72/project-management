@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mokhosh\FilamentKanban\Concerns\HasRecentUpdateIndication;
 
 class Ticket extends Model implements Sortable
 {
-    use HasFactory, SoftDeletes, HasTenantScope, SortableTrait;
+    use HasFactory, SoftDeletes, HasTenantScope, SortableTrait, HasRecentUpdateIndication;
 
     protected $fillable = [
         'name',

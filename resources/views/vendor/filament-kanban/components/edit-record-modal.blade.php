@@ -1,16 +1,19 @@
-<x-filament-panels::form wire:submit.prevent="onEditRecordSubmit">
-    <x-filament::modal id="kanban--edit-modal-record" :width="$this->getEditModalRecordWidth()">
+<x-filament-panels::form wire:submit.prevent="editModalFormSubmitted">
+    <x-filament::modal id="kanban--edit-record-modal" :width="$this->getEditModalWidth()">
         <x-slot name="header">
             <x-filament::modal.heading>
-                {{ $this->getEditModalRecordTitle() }}
+                {{ $this->getEditModalTitle() }}
             </x-filament::modal.heading>
         </x-slot>
-        {{ $this->editModalRecord }}
+
+        {{ $this->form }}
+
         <x-slot name="footer">
-            <x-filament::button type="submit" form="onEditRecordSubmit">
+            <x-filament::button type="submit">
                 {{$this->getEditModalSaveButtonLabel()}}
             </x-filament::button>
-            <x-filament::button color="secondary" x-on:click="isOpen = false">
+
+            <x-filament::button color="gray" x-on:click="isOpen = false">
                 {{$this->getEditModalCancelButtonLabel()}}
             </x-filament::button>
         </x-slot>

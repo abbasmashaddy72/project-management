@@ -7,6 +7,7 @@ use Filament\Pages\Page;
 use App\Filament\Widgets\CpuLoadChart;
 use App\Filament\Widgets\DiskSpaceChart;
 use App\Filament\Widgets\MemoryLoadChart;
+use Illuminate\Database\Eloquent\Collection;
 
 class ServerMonitoring extends Page
 {

@@ -35,56 +35,56 @@ class MemoryLoadChart extends ChartWidget
 
     protected function getData(): array
     {
-        if ($this->siteId) {
-            $filter = $this->filter;
-            $query = ServerMetric::where('site_id', $this->siteId);
+        if (!$this->siteId) {
 
-            match ($filter) {
-                'hour' => $data = Trend::query($query)
-                    ->between(start: now()->subHour(), end: now())
-                    ->perMinute()
-                    ->average('memory_usage'),
-
-                'day' => $data = Trend::query($query)
-                    ->between(start: now()->subDay(), end: now())
-                    ->perHour()
-                    ->average('memory_usage'),
-
-                'week' => $data = Trend::query($query)
-                    ->between(start: now()->subWeek(), end: now())
-                    ->perDay()
-                    ->average('memory_usage')
-            };
-
-            $chartData = [
-                'datasets' => [
-                    [
-                        'label' => 'Memory Usage',
-                        'data' => $data->map(fn (TrendValue $value) => $value->aggregate == 0 ? null : $value->aggregate),
-                        'spanGaps' => true,
-                        'borderColor' => '#fcd34d',
-                        'fill' => true,
-                    ],
-                ],
-                'labels' => $data->map(function (TrendValue $value) use ($filter) {
-                    if ($filter === 'hour') {
-                        [$date, $time] = explode(' ', $value->date);
-
-                        return substr($time, 0, 5);
-                    } elseif ($filter === 'day') {
-                        [$date, $time] = explode(' ', $value->date);
-
-                        return $time;
-                    } else {
-                        return $value->date;
-                    }
-                }),
-            ];
-
-            return $chartData;
+            return [];
         }
+        $filter = $this->filter;
+        $query = ServerMetric::where('site_id', $this->siteId);
 
-        return [];
+        match ($filter) {
+            'hour' => $data = Trend::query($query)
+                ->between(start: now()->subHour(), end: now())
+                ->perMinute()
+                ->average('memory_usage'),
+
+            'day' => $data = Trend::query($query)
+                ->between(start: now()->subDay(), end: now())
+                ->perHour()
+                ->average('memory_usage'),
+
+            'week' => $data = Trend::query($query)
+                ->between(start: now()->subWeek(), end: now())
+                ->perDay()
+                ->average('memory_usage')
+        };
+
+        $chartData = [
+            'datasets' => [
+                [
+                    'label' => 'Memory Usage',
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate == 0 ? null : $value->aggregate),
+                    'spanGaps' => true,
+                    'borderColor' => '#fcd34d',
+                    'fill' => true,
+                ],
+            ],
+            'labels' => $data->map(function (TrendValue $value) use ($filter) {
+                if ($filter === 'hour') {
+                    [$date, $time] = explode(' ', $value->date);
+
+                    return substr($time, 0, 5);
+                } elseif ($filter === 'day') {
+                    [$date, $time] = explode(' ', $value->date);
+
+                    return $time;
+                } else {
+                    return $value->date;
+                }
+            }),
+        ];
+
+        return $chartData;
     }
 
     protected function getType(): string

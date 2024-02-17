@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Filament\Forms\Form;
-use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;

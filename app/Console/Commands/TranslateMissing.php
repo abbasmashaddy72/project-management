@@ -41,20 +41,24 @@ class TranslateMissing extends Command
                 continue;
             }
             $filePath = lang_path($locale . '.json');
-            if (File::exists($filePath)) {
-                $localeTranslations = json_decode(File::get(lang_path($locale . '.json')), true);
-                $translator = new GoogleTranslate($locale);
-                $translator->setSource('en');
-                $newLocaleTranslations = [];
-                foreach ($baseTranslations as $kbt => $baseTranslation) {
-                    if (!array_key_exists($kbt, $localeTranslations)) {
-                        $newLocaleTranslations[$kbt] = $translator->translate($kbt);
-                    } else {
-                        $newLocaleTranslations[$kbt] = $localeTranslations[$kbt];
-                    }
-                }
-                File::put($filePath, json_encode($newLocaleTranslations, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+            if (!File::exists($filePath)) {
+
+                $bar->advance();
+                continue;
             }
+            $localeTranslations = json_decode(File::get(lang_path($locale . '.json')), true);
+            $translator = new GoogleTranslate($locale);
+            $translator->setSource('en');
+            $newLocaleTranslations = [];
+            foreach ($baseTranslations as $kbt => $baseTranslation) {
+                if (!array_key_exists($kbt, $localeTranslations)) {
+                    $newLocaleTranslations[$kbt] = $translator->translate($kbt);
+                } else {
+                    $newLocaleTranslations[$kbt] = $localeTranslations[$kbt];
+                }
+            }
+            File::put($filePath, json_encode($newLocaleTranslations, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
 
             $bar->advance();
         }

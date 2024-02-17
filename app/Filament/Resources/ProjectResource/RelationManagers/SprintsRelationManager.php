@@ -11,7 +11,6 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Facades\Filament;
 use Illuminate\Support\HtmlString;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
@@ -153,7 +152,7 @@ class SprintsRelationManager extends RelationManager
                                     )
                                     ->url(function () use ($record) {
                                         if ($record->project->type === 'scrum') {
-                                            return route('filament.admin.pages.scrum/{project}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
+                                            return route('filament.admin.pages.scrum/{project?}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                                         }
                                         return route('filament.admin.pages.kanban.{project?}', ['project' => $record->project->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                                     }),

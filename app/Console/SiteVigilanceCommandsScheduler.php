@@ -6,7 +6,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CheckUptimeCommand;
 use App\Console\Commands\PruneExceptionCommand;
 use App\Console\Commands\PruneServerMetricCommand;
-use App\Console\Commands\DeleteOldExceptionCommand;
 use App\Console\Commands\CheckSslCertificateCommand;
 
 class SiteVigilanceCommandsScheduler

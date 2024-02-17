@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\Team;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;

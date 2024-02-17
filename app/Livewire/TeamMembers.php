@@ -28,7 +28,7 @@ class TeamMembers extends Component implements HasActions, HasTable, HasForms
     use InteractsWithTable;
 
     /**
-     * @return array<Action | ActionGroup>
+     * @return array<Action>
      */
     protected function getHeaderActions(): array
     {
@@ -53,25 +53,26 @@ class TeamMembers extends Component implements HasActions, HasTable, HasForms
 
     private function invite($data)
     {
-        if ($data['email']) {
-            // Check if the user with the given email already exists
-            $user = User::where('email', $data['email'])->first();
+        if (!$data['email']) {
+            return;
+        }
+        // Check if the user with the given email already exists
+        $user = User::where('email', $data['email'])->first();
 
-            if ($user) {
-                // User already exists, attach them to the team if not already attached
-                $user->teams()->syncWithoutDetaching(Filament::getTenant()->id);
+        if ($user) {
+            // User already exists, attach them to the team if not already attached
+            $user->teams()->syncWithoutDetaching(Filament::getTenant()->id);
 
-                Notification::make()
-                    ->title('User Already Existed and Attached to the Team')
-                    ->success()
-                    ->send();
-            } else {
-                // User doesn't exist, create a TeamInvitation record
-                TeamInvitation::create([
-                    'team_id' => Filament::getTenant()->id,
-                    'email' => $data['email'],
-                ]);
-            }
+            Notification::make()
+                ->title('User Already Existed and Attached to the Team')
+                ->success()
+                ->send();
+        } else {
+            // User doesn't exist, create a TeamInvitation record
+            TeamInvitation::create([
+                'team_id' => Filament::getTenant()->id,
+                'email' => $data['email'],
+            ]);
         }
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Timesheet;
 
 use Filament\Tables;
-use App\Models\Ticket;
 use Livewire\Component;
 use App\Models\TicketHour;
 use Filament\Tables\Table;

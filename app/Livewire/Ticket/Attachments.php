@@ -4,20 +4,14 @@ namespace App\Livewire\Ticket;
 
 use App\Models\Ticket;
 use Livewire\Component;
-use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Livewire\WithFileUploads;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Attachments extends Component implements HasForms, HasTable
