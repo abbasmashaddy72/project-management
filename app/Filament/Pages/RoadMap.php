@@ -10,9 +10,12 @@ use Filament\Pages\Page;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Concerns\InteractsWithForms;
 
 class RoadMap extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     public static ?string $navigationIcon = 'heroicon-o-calendar';
 
     public static string $view = 'filament.pages.road-map';
@@ -61,22 +64,25 @@ class RoadMap extends Page implements HasForms
         }
     }
 
-    public function form(Form $form): Form
+    protected function getFormSchema(): array
     {
-        return $form
-            ->schema([
-                Select::make('selectedProject')
-                    ->placeholder(__('Project'))
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->options(function () {
-                        return $this->projectQuery()
-                            ->get()
-                            ->pluck('name', 'id')
-                            ->toArray();
-                    })
-            ]);
+        return [
+            Select::make('selectedProject')
+                ->placeholder(__('Project'))
+                ->hiddenLabel()
+                ->searchable()
+                ->extraAttributes([
+                    'class' => 'min-w-[16rem]'
+                ])
+                ->selectablePlaceholder(false)
+                ->required()
+                ->options(function () {
+                    return $this->projectQuery()
+                        ->get()
+                        ->pluck('name', 'id')
+                        ->toArray();
+                })
+        ];
     }
 
     public function filter(): void

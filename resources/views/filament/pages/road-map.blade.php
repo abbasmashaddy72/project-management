@@ -71,15 +71,30 @@
             const g = new JSGantt.GanttChart(document.getElementById('gantt-chart'), 'week');
             // Set settings
             g.setOptions({
-                // ... (your other options)
+                vCaptionType: 'Complete',
+                vDayColWidth: 26,
+                vWeekColWidth: 52,
+                vMonthColWidth: 52,
+                vDateTaskDisplayFormat: 'day dd month yyyy',
+                vDayMajorDateDisplayFormat: 'mon yyyy - Week ww',
+                vWeekMinorDateDisplayFormat: 'dd mon',
+                vLang: '{{ config('app.locale') }}',
+                vShowTaskInfoLink: 1,
+                vShowEndWeekDate: 0,
+                vUseSingleCell: 10000,
+                vFormatArr: ['Day', 'Week', 'Month'],
                 vEvents: {
                     taskname: (task) => {
                         const data = task.getAllData();
                         const meta = data.pDataObject.meta;
+                        const tenant = '{{ \Filament\Facades\Filament::getTenant()->id }}';
+                        const slug = meta.id;
+                        const url = `/${tenant}/tickets/share/${slug}`;
+
                         if (meta.epic) {
                             Livewire.emit('updateEpic', meta.id);
                         } else {
-                            window.open('/tickets/share/' + meta.slug, '_blank');
+                            window.open(url, '_blank');
                         }
                     }
                 }
@@ -92,25 +107,17 @@
 
             window.addEventListener('projectChanged', (e) => {
                 g.ClearTasks();
-                try {
-                    JSGantt.parseJSON(e.detail.url, g);
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                }
+                JSGantt.parseJSON(e.detail[0].url, g);
 
-                const start_date = e.detail.start_date ? e.detail.start_date.split('-') : null;
-                const end_date = e.detail.end_date ? e.detail.end_date.split('-') : null;
-                const scrollToDate = e.detail.scroll_to ? e.detail.scroll_to.split('-') : null;
+                // Corrected indices for split
+                const minDate = e.detail[0].start_date.split('-');
+                const maxDate = e.detail[0].end_date.split('-');
+                const scrollToDate = e.detail[0].scroll_to.split('-');
 
-                g.setMinDate(start_date ? new Date(start_date[0], (+start_date[1]) - 1, start_date[2]) : null);
-                g.setMaxDate(end_date ? new Date(end_date[0], (+end_date[1]) - 1, end_date[2]) : null);
-
-                // Check if vScrollTo is not null before accessing its methods or properties
-                if (g.vScrollTo) {
-                    g.vScrollTo(scrollToDate ? new Date(scrollToDate[0], (+scrollToDate[1]) - 1, scrollToDate[2]) :
-                        null);
-                }
-
+                // Use numerical indices for accessing array values
+                g.setMinDate(new Date(minDate[0], (+minDate[1]) - 1, minDate[2]));
+                g.setMaxDate(new Date(maxDate[0], (+maxDate[1]) - 1, maxDate[2]));
+                g.setScrollTo(new Date(scrollToDate[0], (+scrollToDate[1]) - 1, scrollToDate[2]));
                 g.Draw();
             });
         </script>
