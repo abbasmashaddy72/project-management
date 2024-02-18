@@ -235,7 +235,7 @@ class ProjectResource extends Resource
                     ->color('secondary')
                     ->url(function ($record) {
                         if ($record->type === 'scrum') {
-                            return route('filament.admin.pages.scrum.{project}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
+                            return route('filament.admin.pages.scrum.{project?}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                         }
                         return route('filament.admin.pages.kanban.{project?}', ['project' => $record->id, 'tenant' => \Filament\Facades\Filament::getTenant()->id]);
                     }),

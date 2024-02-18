@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use Carbon\Carbon;
 use App\Models\Epic;
 use App\Models\Project;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
@@ -75,6 +74,7 @@ class RoadMap extends Page implements HasForms
                     'class' => 'min-w-[16rem]'
                 ])
                 ->selectablePlaceholder(false)
+                ->preload()
                 ->required()
                 ->options(function () {
                     return $this->projectQuery()

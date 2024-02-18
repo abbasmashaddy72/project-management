@@ -12,8 +12,8 @@
 ## Error that Need to be Fixed
 
 - Ticket View Attachment - **Done**
-- Kanban Issue Fix **Ref:** _[Youtube](https://www.youtube.com/watch?v=Pk-yZIrHTiQ&list=PL2KN3agjdhLZf6wgnJ09M6i7HvY09B0gX)_
-- Roadmap
+- Kanban Issue Fix **Ref:** _[Youtube](https://www.youtube.com/watch?v=Pk-yZIrHTiQ&list=PL2KN3agjdhLZf6wgnJ09M6i7HvY09B0gX)_ - **Done**
+- Roadmap - **Done**
 - TimeSheet **Ref:** _[Filament Plugin](https://github.com/timwassenburg/filament-timesheets)_ - **Done**
 
 ## Flow needs to be checked

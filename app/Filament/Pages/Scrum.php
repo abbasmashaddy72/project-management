@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Redirect;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 
 class Scrum extends KanbanBoard
@@ -60,8 +61,13 @@ class Scrum extends KanbanBoard
     public function records(): Collection
     {
         $query = Ticket::query()->ordered();
-        if ($this->project->type === 'scrum') { // Redirect to other view if no Sprints available
-            $query->where('sprint_id', $this->project->currentSprint->id);
+        if ($this->project->type === 'scrum') {
+            // Redirect to other view if no Sprints available
+            if (is_null($this->project->currentSprint)) {
+                abort(404, 'No active sprint for this project! | If you think a sprint should be started, please contact an administrator');
+            } else {
+                $query->where('sprint_id', $this->project->currentSprint->id);
+            }
         }
         $query->with(['project', 'owner', 'responsible', 'status', 'type', 'priority', 'epic']);
         $query->where('project_id', $this->project->id);
@@ -90,8 +96,13 @@ class Scrum extends KanbanBoard
                         });
                 });
         });
-        // Check if tickets available else Redirect to other view
-        return $query->get()->map(function (Ticket $item) {
+
+        $tickets = $query->get();
+        if ($tickets->isEmpty()) {
+            abort(404, 'No active sprint for this project! | If you think a sprint should be started, please contact an administrator');
+        }
+
+        return $tickets->map(function (Ticket $item) {
             return $item;
         });
     }

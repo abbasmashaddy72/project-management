@@ -6,12 +6,11 @@
             <div class="flex items-center justify-between w-full">
                 <form wire:submit.prevent="filter" class="flex items-center gap-2 min-w-[16rem]">
                     {{ $this->form }}
-                    <button type="submit" class="px-3 py-2 text-white rounded bg-primary-500 hover:bg-primary-600">
-                        <x-heroicon-o-magnifying-glass class="w-6 h-6" wire:loading.remove />
-                        <div wire:loading.flex>
-                            <div class="w-4 h-4 lds-dual-ring"></div>
-                        </div>
-                    </button>
+                    <div class="relative">
+                        <button type="submit" class="px-3 py-2 text-white rounded bg-primary-500 hover:bg-primary-600">
+                            <x-heroicon-o-magnifying-glass class="w-6 h-6" />
+                        </button>
+                    </div>
                 </form>
                 <div class="flex items-center gap-2">
                     <button wire:click="createEpic" wire:loading.attr="disabled"
@@ -89,7 +88,7 @@
                         const meta = data.pDataObject.meta;
                         const tenant = '{{ \Filament\Facades\Filament::getTenant()->id }}';
                         const slug = meta.id;
-                        const url = `/${tenant}/tickets/share/${slug}`;
+                        const url = `/${tenant}/tickets/${slug}`;
 
                         if (meta.epic) {
                             Livewire.emit('updateEpic', meta.id);
