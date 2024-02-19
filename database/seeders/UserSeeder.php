@@ -31,9 +31,6 @@ class UserSeeder extends Seeder
             $team = Team::where('name', 'Default')->first();
 
             if ($team) {
-                // Update the team's user_id with the first user's id
-                $team->update(['user_id' => $superAdmin->id]);
-
                 // Attach the first user to the existing team
                 $team->members()->attach($superAdmin);
             }

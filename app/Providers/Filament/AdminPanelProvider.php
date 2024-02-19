@@ -33,11 +33,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->default()
             ->path('')
-            ->tenant(Team::class, 'id', 'team')
             ->login()
             ->registration()
             ->passwordReset()
             ->emailVerification()
+            ->tenant(Team::class, ownershipRelationship: 'team')
             ->tenantRegistration(RegisterTeam::class)
             ->tenantMenuItems([
                 MenuItem::make()
@@ -88,7 +88,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 'auth',
                 Authenticate::class,
-            ])->tenantMiddleware([
+            ])
+            ->tenantMiddleware([
                 SyncSpatiePermissionsWithFilamentTenants::class,
             ], isPersistent: true)
             ->plugins([
@@ -136,8 +137,10 @@ class AdminPanelProvider extends PanelProvider
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
                 \SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin::make(),
-            ])->maxContentWidth(MaxWidth::Full)
+            ])
+            ->maxContentWidth(MaxWidth::Full)
             ->renderHook('panels::topbar.start', fn (): View => view('filament.app.hooks.welcome_user'))
-            ->sidebarCollapsibleOnDesktop()->spa();
+            ->sidebarCollapsibleOnDesktop()
+            ->spa();
     }
 }

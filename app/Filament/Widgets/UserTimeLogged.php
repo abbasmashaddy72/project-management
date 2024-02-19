@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Ticket;
 use App\Models\User;
 use Filament\Widgets\BarChartWidget;
 

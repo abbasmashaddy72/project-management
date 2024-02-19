@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Team extends Model
@@ -13,39 +13,39 @@ class Team extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'slug',
     ];
 
-    public function getCurrentTenantLabel(): string
+    protected static function boot()
     {
-        return 'Active team';
-    }
+        parent::boot();
 
-    public function sites(): HasMany
-    {
-        return $this->hasMany(Site::class);
+        static::creating(function ($team) {
+            $team->slug = Str::slug($team->name);
+        });
     }
 
     // Model Relations
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_user', 'team_id', 'user_id')->using(Member::class);
-    }
-
-    public function owner(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class);
     }
 
     // Configuration Setup
-    public function activities(): HasMany
+    public function contractTypes(): HasMany
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(ContractType::class);
     }
 
     public function projectStatuses(): HasMany
     {
         return $this->hasMany(ProjectStatus::class);
+    }
+
+    public function ticketStatuses(): HasMany
+    {
+        return $this->hasMany(TicketStatus::class);
     }
 
     public function ticketTypes(): HasMany
@@ -58,14 +58,9 @@ class Team extends Model
         return $this->hasMany(TicketPriority::class);
     }
 
-    public function ticketStatuses(): HasMany
+    public function activities(): HasMany
     {
-        return $this->hasMany(TicketStatus::class);
-    }
-
-    public function contractTypes(): HasMany
-    {
-        return $this->hasMany(ContractType::class);
+        return $this->hasMany(Activity::class);
     }
 
     public function invoiceStatuses(): HasMany
@@ -74,9 +69,9 @@ class Team extends Model
     }
 
     // User Management
-    public function users(): BelongsToMany
+    public function roles(): HasMany
     {
-        return $this->belongsToMany(User::class, 'team_user', 'team_id', 'user_id')->using(Member::class);
+        return $this->hasMany(Role::class);
     }
 
     // Project Management
@@ -93,5 +88,11 @@ class Team extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    // Site Vigilance
+    public function sites(): HasMany
+    {
+        return $this->hasMany(Site::class);
     }
 }

@@ -2,16 +2,12 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Project;
-use App\Models\Ticket;
 use App\Models\TicketComment;
-use Closure;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
 
 class LatestComments extends BaseWidget
 {
@@ -59,12 +55,12 @@ class LatestComments extends BaseWidget
                 ->formatStateUsing(function ($state) {
                     return new HtmlString('
                     <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 font-medium text-xs">
+                        <span class="text-xs font-medium text-gray-400">
                             ' . $state->project->name . '
                         </span>
                         <span>
                             <a href="' . route('filament.resources.tickets.share', $state->code)
-                        . '" target="_blank" class="text-primary-500 text-sm hover:underline">'
+                        . '" target="_blank" class="text-sm text-primary-500 hover:underline">'
                         . $state->code
                         . '</a>
                             <span class="text-sm text-gray-400">|</span> '

@@ -9,7 +9,6 @@ use Filament\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Redirect;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 
 class Scrum extends KanbanBoard

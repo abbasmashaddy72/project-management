@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->index();
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('name')->unique();
+            $table->string('slug')->unique()->index();
             $table->softDeletes();
             $table->timestamps();
         });

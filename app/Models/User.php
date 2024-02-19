@@ -25,9 +25,9 @@ use ProtoneMedia\LaravelVerifyNewEmail\MustVerifyNewEmail;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail, SiteVigilanceUser, HasTenants
+class User extends Authenticatable implements FilamentUser, HasTenants, MustVerifyEmail, SiteVigilanceUser
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyNewEmail, HasRoles, HasPanelShield, TwoFactorAuthenticatable, SoftDeletes, HasSuperAdmin;
+    use HasApiTokens, HasFactory, HasPanelShield, HasRoles, HasSuperAdmin, MustVerifyNewEmail, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -86,7 +86,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasVerifiedEmail();
+        return true;
     }
 
     public function projectsOwning(): HasMany
@@ -130,21 +130,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Sit
 
     public function getTenants(Panel $panel): Collection
     {
-        return $this->ownedTeams;
+        return $this->teams;
     }
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->ownedTeams->contains($tenant);
-    }
-
-    public function ownedTeams(): HasMany
-    {
-        return $this->hasMany(Team::class, 'user_id');
+        return $this->teams->contains($tenant);
     }
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id')->using(Member::class);
+        return $this->belongsToMany(Team::class);
+    }
+
+    public function team(): BelongsToMany
+    {
+        return $this->teams()->where('team_id', \Filament\Facades\Filament::getTenant()->id);
     }
 }

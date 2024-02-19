@@ -36,5 +36,3 @@ Route::get('/validate-account/{user:creation_token}', function (User $user) {
 Route::get('road-map/data/{project}', [DataController::class, 'data'])
     ->middleware(['verified', 'auth'])
     ->name('road-map.data');
-
-Route::redirect('/', '/login')->name('login');
