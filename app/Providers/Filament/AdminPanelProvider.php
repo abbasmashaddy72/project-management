@@ -11,6 +11,7 @@ use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use App\Filament\Pages\TeamSettings;
 use Filament\Support\Enums\MaxWidth;
+use App\Filament\Pages\Auth\Register;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Tenancy\RegisterTeam;
 use Filament\Http\Middleware\IdentifyTenant;
@@ -34,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->path('')
             ->login()
-            ->registration()
+            ->registration(Register::class)
             ->passwordReset()
             ->emailVerification()
             ->tenant(Team::class, ownershipRelationship: 'team')

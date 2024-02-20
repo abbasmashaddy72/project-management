@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
     {
         if (config('app.env') == 'production') {
             $this->call([
+                TeamSeeder::class,
                 ShieldSeeder::class,
                 UserSeeder::class,
                 TicketTypeSeeder::class,
@@ -28,6 +29,8 @@ class DatabaseSeeder extends Seeder
                 TicketStatusSeeder::class,
                 ActivitySeeder::class,
                 ProjectStatusSeeder::class,
+                ContractTypeSeeder::class,
+                InvoiceStatusSeeder::class,
             ]);
         } else {
             $this->call([

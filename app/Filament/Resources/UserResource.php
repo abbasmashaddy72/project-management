@@ -40,16 +40,12 @@ class UserResource extends Resource
                             Forms\Components\TextInput::make('email')
                                 ->email()
                                 ->required()
-                                ->rule(
-                                    fn ($record) => 'unique:users,email,'
-                                        . ($record ? $record->id : 'NULL')
-                                        . ',id,deleted_at,NULL'
-                                ),
+                                ->rule(fn ($record) => 'unique:users,email,'
+                                    . ($record ? $record->id : 'NULL')
+                                    . ',id,deleted_at,NULL'),
                             PhoneInput::make('contact_no')
                                 ->required()
-                                ->validateFor(
-                                    lenient: true,
-                                ),
+                                ->validateFor(lenient: true),
                             Forms\Components\TextInput::make('address')
                                 ->required(),
                             Forms\Components\TextInput::make('zipcode')
