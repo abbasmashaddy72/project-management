@@ -61,9 +61,10 @@ class Scrum extends KanbanBoard
     {
         $query = Ticket::query()->ordered();
         if ($this->project->type === 'scrum') {
-            // Redirect to other view if no Sprints available
+            // Redirect to another view if no Sprints are available
             if (is_null($this->project->currentSprint)) {
-                abort(404, 'No active sprint for this project! | If you think a sprint should be started, please contact an administrator');
+                $message = 'Oops! There is no active sprint for this project. If you believe a sprint should be started, please contact an administrator / Project Manager.';
+                abort(404, $message);
             } else {
                 $query->where('sprint_id', $this->project->currentSprint->id);
             }
@@ -98,7 +99,8 @@ class Scrum extends KanbanBoard
 
         $tickets = $query->get();
         if ($tickets->isEmpty()) {
-            abort(404, 'No active sprint for this project! | If you think a sprint should be started, please contact an administrator');
+            $message = 'Oops! There are no active tickets for this sprint. If you believe a ticket should be started, please get in touch with an administrator / Project Management.';
+            abort(404, $message);
         }
 
         return $tickets->map(function (Ticket $item) {
@@ -143,7 +145,7 @@ class Scrum extends KanbanBoard
                 ->action(function () {
                     $this->records();
                     Notification::make()
-                        ->title(__('Kanban board updated'))
+                        ->title(__('Scrum board updated'))
                         ->success()
                         ->send();
                 }),

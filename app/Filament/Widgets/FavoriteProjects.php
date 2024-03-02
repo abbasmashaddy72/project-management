@@ -32,7 +32,7 @@ class FavoriteProjects extends BaseWidget
             $cards[] = Card::make('', new HtmlString('
                     <div class="flex items-center gap-2 -mt-2 text-lg">
                         <div style=\'background-image: url("' . $project->cover . '")\'
-                             class="w-8 h-8 bg-cover bg-center bg-no-repeat"></div>
+                             class="w-8 h-8 bg-center bg-no-repeat bg-cover"></div>
                         <span>' . $project->name . '</span>
                     </div>
                 '))
@@ -41,7 +41,7 @@ class FavoriteProjects extends BaseWidget
                     'class' => 'hover:shadow-lg'
                 ])
                 ->description(new HtmlString('
-                        <div class="w-full flex items-center gap-2 mt-2 text-gray-500 font-normal">'
+                        <div class="flex items-center w-full gap-2 mt-2 font-normal text-gray-500">'
                     . $ticketsCount
                     . ' '
                     . __($ticketsCount > 1 ? 'Tickets' : 'Ticket')
@@ -52,14 +52,14 @@ class FavoriteProjects extends BaseWidget
                     . ' '
                     . __($contributorsCount > 1 ? 'Contributors' : 'Contributor')
                     . '</div>
-                        <div class="text-xs w-full flex items-center gap-2 mt-2">
+                        <div class="flex items-center w-full gap-2 mt-2 text-xs">
                             <a class="text-primary-400 hover:text-primary-500 hover:cursor-pointer"
-                               href="' . route('filament.resources.projects.view', $project) . '">
+                               href="' . route('filament.admin.resources.projects.view', ['record' => $project->id, 'tenant' => \Filament\Facades\Filament::getTenant()?->id]) . '">
                                 ' . __('View details') . '
                             </a>
                             <span class="text-gray-300">|</span>
                             <a class="text-primary-400 hover:text-primary-500 hover:cursor-pointer"
-                               href="' . route('filament.pages.kanban/{project}', ['project' => $project->id]) . '">
+                               href="' . route('filament.admin.pages.kanban.{project?}', ['project' => $project->id, 'tenant' => \Filament\Facades\Filament::getTenant()?->id]) . '">
                                 ' . __('Tickets') . '
                             </a>
                         </div>

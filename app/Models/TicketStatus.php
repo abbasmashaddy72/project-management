@@ -24,6 +24,10 @@ class TicketStatus extends Model
     {
         parent::boot();
 
+        static::creating(function (TicketStatus $item) {
+            $item->team_id = \Filament\Facades\Filament::getTenant()->id;
+        });
+
         static::saved(function (TicketStatus $item) {
             if ($item->is_default) {
                 $query = TicketStatus::where('id', '<>', $item->id)

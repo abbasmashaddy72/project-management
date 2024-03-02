@@ -51,7 +51,6 @@
         "ysfkaya/filament-phone-input": "^2.3"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.9",
         "fakerphp/faker": "^1.9.1",
         "imanghafoori/laravel-microscope": "^1.0",
         "kkomelin/laravel-translatable-string-exporter": "^1.21",
