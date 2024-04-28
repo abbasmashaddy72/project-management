@@ -210,7 +210,7 @@
                                     {{ __(config('system.tickets.relations.list.' . $relation->type)) }}
                                 </span>
                                 <a target="_blank" class="font-medium hover:underline"
-                                    href="{{ route('filament.resources.tickets.share', $relation->relation->code) }}">
+                                    href="{{ route('filament.resources.tickets.share', ['ticket' => $relation->relation->code, 'tenant' => \Filament\Facades\Filament::getTenant()->id]) }}">
                                     {{ $relation->relation->code }}
                                 </a>
                             </div>
