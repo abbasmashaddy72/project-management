@@ -25,7 +25,7 @@ class TicketStatus extends Model
         parent::boot();
 
         static::creating(function (TicketStatus $item) {
-            $item->team_id = \Filament\Facades\Filament::getTenant()->id;
+            $item->team_id = \Filament\Facades\Filament::getTenant()->id ?? 1;
         });
 
         static::saved(function (TicketStatus $item) {

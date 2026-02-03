@@ -95,7 +95,7 @@ class Kanban extends KanbanBoard
         });
     }
 
-    public function onStatusChanged(int $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
+    public function onStatusChanged(int|string $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
     {
         Ticket::find($recordId)->update(['status_id' => $status]);
         Ticket::setNewOrder($toOrderedIds);
@@ -105,7 +105,7 @@ class Kanban extends KanbanBoard
             ->send();
     }
 
-    public function onSortChanged(int $recordId, string $status, array $orderedIds): void
+    public function onSortChanged(int|string $recordId, string $status, array $orderedIds): void
     {
         Ticket::setNewOrder($orderedIds);
         Notification::make()

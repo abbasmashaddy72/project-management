@@ -25,6 +25,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -56,11 +57,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/js/filament/admin/scroll-fix.js'])
             ->navigationGroups([
-                'Configuration Setup',
-                'User Management',
                 'Project Management',
                 'Reports',
                 'Site Vigilance',
+                'Configuration Setup',
+                'User Management',
                 'System',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -138,6 +139,7 @@ class AdminPanelProvider extends PanelProvider
                 \pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin::make(),
                 \FilipFonal\FilamentLogManager\FilamentLogManager::make(),
                 \SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin::make(),
+                FilamentSpatieLaravelHealthPlugin::make(),
             ])
             ->maxContentWidth(MaxWidth::Full)
             ->renderHook('panels::topbar.start', fn (): View => view('filament.app.hooks.welcome_user'))
